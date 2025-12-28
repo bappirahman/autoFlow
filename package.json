@@ -1,0 +1,23 @@
+{
+  "name": "autoFlow",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Self-hosted workflow automation platform",
+  "license": "MIT",
+  "scripts": {
+    "install": "pnpm -w install",
+    "dev:api": "pnpm --filter ./apps/api... run start:dev",
+    "dev:frontend": "pnpm --filter ./apps/frontend... run dev",
+    "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:frontend\"",
+    "build": "pnpm -w -r --filter ./apps/** run build",
+    "test": "pnpm -w -r --filter ./apps/** run test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "libs/*",
+    "packages/*"
+  ]
+}
