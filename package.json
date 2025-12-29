@@ -5,7 +5,7 @@
   "description": "Self-hosted workflow automation platform",
   "license": "MIT",
   "scripts": {
-    "install": "pnpm -w install",
+    "bootstrap": "pnpm -w install",
     "dev:api": "pnpm --filter ./apps/api... run start:dev",
     "dev:frontend": "pnpm --filter ./apps/frontend... run dev",
     "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:frontend\"",

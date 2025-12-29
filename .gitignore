@@ -4,3 +4,4 @@
 .nx/workspace-data
 
 .DS_Store
+node_modules
