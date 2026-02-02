@@ -24,6 +24,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Google } from "@/components/icons/google";
+import { Github } from "@/components/icons/github";
+import { Logo } from "@/components/icons/logo";
 
 const registerSchema = z
   .object({
@@ -70,6 +73,7 @@ export default function SignupForm() {
     <section className="flex flex-col gap-6 w-full max-w-md px-4">
       <Card>
         <CardHeader className="text-center">
+          <Logo className="h-20 w-20 mx-auto" />
           <CardTitle>Create an Account</CardTitle>
           <CardDescription>
             Get started by creating your account
@@ -155,6 +159,7 @@ export default function SignupForm() {
                     className="w-full"
                     type="button"
                   >
+                    <Google />
                     Continue with Google
                   </Button>
                   <Button
@@ -163,6 +168,7 @@ export default function SignupForm() {
                     className="w-full"
                     type="button"
                   >
+                    <Github />
                     Continue with Github
                   </Button>
                 </div>

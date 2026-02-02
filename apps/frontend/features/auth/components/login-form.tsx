@@ -1,5 +1,8 @@
 "use client";
 
+import { Github } from "@/components/icons/github";
+import { Google } from "@/components/icons/google";
+import { Logo } from "@/components/icons/logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -60,6 +63,7 @@ export function LoginForm() {
     <section className="flex flex-col gap-6 w-full max-w-md px-4">
       <Card>
         <CardHeader className="text-center">
+          <Logo className="h-20 w-20 mx-auto" />
           <CardTitle>Welcome Back</CardTitle>
           <CardDescription>Login to continue</CardDescription>
         </CardHeader>
@@ -120,6 +124,7 @@ export function LoginForm() {
                     className="w-full"
                     type="button"
                   >
+                    <Google />
                     Continue with Google
                   </Button>
                   <Button
@@ -128,6 +133,7 @@ export function LoginForm() {
                     className="w-full"
                     type="button"
                   >
+                    <Github />
                     Continue with Github
                   </Button>
                 </div>
