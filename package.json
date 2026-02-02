@@ -9,11 +9,15 @@
     "dev:api": "pnpm --filter ./apps/api... run start:dev",
     "dev:frontend": "pnpm --filter ./apps/frontend... run dev",
     "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:frontend\"",
-    "build": "pnpm -w -r --filter ./apps/** run build",
-    "test": "pnpm -w -r --filter ./apps/** run test"
+    "lint": "pnpm -r run lint",
+    "build": "pnpm -r run build",
+    "test": "pnpm -w -r --filter ./apps/** run test",
+    "prepare": "husky",
+    "npkill": "pnpm dlx npkill --delete-all -y"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0",
+    "husky": "^9.1.7"
   },
   "workspaces": [
     "apps/*",
