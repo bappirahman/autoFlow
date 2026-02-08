@@ -1,16 +1,22 @@
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 import { user } from './user.schema';
 import { SESSION_TABLE_CONSTANTS } from '../constants/session.constant';
 
 export const session = pgTable(SESSION_TABLE_CONSTANTS.TABLE_NAME, {
-  id: text(SESSION_TABLE_CONSTANTS.COLUMNS.ID).primaryKey(),
-  expiresAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.EXPIRES_AT).notNull(),
+  id: uuid(SESSION_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().defaultRandom(),
+  expiresAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.EXPIRES_AT, {
+    withTimezone: true,
+  }).notNull(),
   token: text(SESSION_TABLE_CONSTANTS.COLUMNS.TOKEN).notNull(),
-  createdAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.CREATED_AT)
+  createdAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.CREATED_AT, {
+    withTimezone: true,
+  })
     .notNull()
     .defaultNow(),
-  updatedAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.UPDATED_AT)
+  updatedAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.UPDATED_AT, {
+    withTimezone: true,
+  })
     .notNull()
     .defaultNow(),
   ipAddress: text(SESSION_TABLE_CONSTANTS.COLUMNS.IP_ADDRESS),
