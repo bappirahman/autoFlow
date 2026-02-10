@@ -17,6 +17,11 @@ const testExecute = inngest.createFunction(
       model: google('gemini-2.0-flash'),
       system: 'You are a helpful assistant.',
       prompt: 'What is love?',
+      experimental_telemetry: {
+        isEnabled: true,
+        recordInputs: true,
+        recordOutputs: true,
+      },
     });
     return { message: text };
   },
