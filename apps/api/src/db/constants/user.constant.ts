@@ -8,5 +8,9 @@ export const USER_TABLE_CONSTANTS = {
     UPDATED_AT: 'updated_at',
     EMAIL_VERIFIED: 'email_verified',
     IMAGE: 'image',
+    POLAR_CUSTOMER_ID: 'polar_customer_id',
+    POLAR_SUBSCRIPTION_ID: 'polar_subscription_id',
+    PLAN: 'plan',
+    SUBSCRIPTION_STATUS: 'subscription_status',
   },
 };

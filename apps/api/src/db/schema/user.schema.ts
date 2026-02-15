@@ -1,15 +1,21 @@
-import { pgTable, text, timestamp, boolean, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 import { USER_TABLE_CONSTANTS } from '../constants/user.constant';
 
 export const user = pgTable(USER_TABLE_CONSTANTS.TABLE_NAME, {
-  id: uuid(USER_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().defaultRandom(),
+  id: text(USER_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().notNull(),
   name: text(USER_TABLE_CONSTANTS.COLUMNS.NAME).notNull(),
   email: text(USER_TABLE_CONSTANTS.COLUMNS.EMAIL).notNull(),
   emailVerified: boolean(USER_TABLE_CONSTANTS.COLUMNS.EMAIL_VERIFIED)
     .notNull()
     .default(false),
   image: text(USER_TABLE_CONSTANTS.COLUMNS.IMAGE),
+  plan: text(USER_TABLE_CONSTANTS.COLUMNS.PLAN, { enum: ['free', 'pro'] })
+    .notNull()
+    .default('free'),
+  subscriptionStatus: text(USER_TABLE_CONSTANTS.COLUMNS.SUBSCRIPTION_STATUS, {
+    enum: ['active', 'canceled', 'past_due', 'expired'],
+  }),
   createdAt: timestamp(USER_TABLE_CONSTANTS.COLUMNS.CREATED_AT, {
     withTimezone: true,
   })
