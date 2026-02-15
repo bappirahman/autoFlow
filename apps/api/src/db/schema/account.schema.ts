@@ -1,10 +1,10 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 import { user } from './user.schema';
 import { ACCOUNT_TABLE_CONSTANTS } from '../constants/account.constant';
 
 export const account = pgTable(ACCOUNT_TABLE_CONSTANTS.TABLE_NAME, {
-  id: uuid(ACCOUNT_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().defaultRandom(),
+  id: text(ACCOUNT_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().notNull(),
   accountId: text(ACCOUNT_TABLE_CONSTANTS.COLUMNS.ACCOUNT_ID).notNull(),
   providerId: text(ACCOUNT_TABLE_CONSTANTS.COLUMNS.PROVIDER_ID).notNull(),
   userId: text(ACCOUNT_TABLE_CONSTANTS.COLUMNS.USER_ID)

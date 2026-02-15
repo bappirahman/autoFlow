@@ -23,7 +23,8 @@
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org bappi-rahman --project autoflow-api ./dist && sentry-cli sourcemaps upload --org bappi-rahman --project autoflow-api ./dist"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org bappi-rahman --project autoflow-api ./dist && sentry-cli sourcemaps upload --org bappi-rahman --project autoflow-api ./dist",
+    "polar:clear-sandbox": "node --env-file=.env --experimental-strip-types src/scripts/clear-polar-sandbox.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.39",
@@ -33,6 +34,8 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@polar-sh/better-auth": "^1.8.1",
+    "@polar-sh/sdk": "^0.43.1",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@sentry/cli": "^2.58.4",

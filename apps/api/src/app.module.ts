@@ -9,7 +9,11 @@ import { auth } from './lib/auth';
 import { DbModule } from './db/db.module';
 
 @Module({
-  imports: [SentryModule.forRoot(), AuthModule.forRoot({ auth }), DbModule],
+  imports: [
+    SentryModule.forRoot(),
+    AuthModule.forRoot({ auth, enableRawBodyParser: true }),
+    DbModule,
+  ],
   controllers: [AppController],
   providers: [
     {

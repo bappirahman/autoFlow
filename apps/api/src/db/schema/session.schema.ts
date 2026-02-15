@@ -1,10 +1,10 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 import { user } from './user.schema';
 import { SESSION_TABLE_CONSTANTS } from '../constants/session.constant';
 
 export const session = pgTable(SESSION_TABLE_CONSTANTS.TABLE_NAME, {
-  id: uuid(SESSION_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().defaultRandom(),
+  id: text(SESSION_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().notNull(),
   expiresAt: timestamp(SESSION_TABLE_CONSTANTS.COLUMNS.EXPIRES_AT, {
     withTimezone: true,
   }).notNull(),

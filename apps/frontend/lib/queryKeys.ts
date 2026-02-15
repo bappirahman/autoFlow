@@ -7,6 +7,11 @@ export const queryKeys = {
     detail: (id: string) => [...queryKeys.workflow.all, "detail", id] as const,
   },
 
+  subscription: {
+    all: ["subscription"] as const,
+    state: () => [...queryKeys.subscription.all, "state"] as const,
+  },
+
   // posts: {
   //   all: ["posts"] as const,
   //   lists: () => [...queryKeys.posts.all, "list"] as const,
