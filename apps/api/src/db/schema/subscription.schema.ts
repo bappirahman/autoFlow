@@ -2,9 +2,13 @@ import { pgTable, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 import { user } from './user.schema';
 import { SUBSCRIPTION_TABLE_CONSTANTS } from '../constants/subscription.constant';
+import { uuid } from 'drizzle-orm/pg-core';
 
 export const subscription = pgTable(SUBSCRIPTION_TABLE_CONSTANTS.TABLE_NAME, {
-  id: text(SUBSCRIPTION_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().notNull(),
+  id: uuid(SUBSCRIPTION_TABLE_CONSTANTS.COLUMNS.ID)
+    .primaryKey()
+    .notNull()
+    .defaultRandom(),
   userId: text(SUBSCRIPTION_TABLE_CONSTANTS.COLUMNS.USER_ID)
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),

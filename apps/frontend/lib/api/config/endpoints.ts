@@ -1,9 +1,18 @@
-// src/lib/api/endpoints.ts
+// lib/api/endpoints.ts
 export const API_ENDPOINTS = {
-  workflows: {
-    base: "/workflows",
-    getAll: () => `${API_ENDPOINTS.workflows.base}/get-all`,
-    byId: (id: string) => `${API_ENDPOINTS.workflows.base}/${id}`,
-    publish: (id: string) => `${API_ENDPOINTS.workflows.base}/${id}/publish`,
+  WORKFLOWS: {
+    getAll: `/workflows`,
+    getById: (id: string) => `/workflows/${id}`,
+    create: `/workflows`,
+    updateName: (id: string) => `/workflows/${id}`,
+    delete: (id: string) => `/workflows/${id}`,
+  },
+  USER: {
+    base: "/users",
+    getAll: () => `/users`,
+    getById: (id: string) => `/users/${id}`,
+    create: () => `/users`,
+    update: (id: string) => `/users/${id}`,
+    delete: (id: string) => `/users/${id}`,
   },
 };
