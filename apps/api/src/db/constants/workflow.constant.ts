@@ -3,6 +3,7 @@ export const WORKFLOW_TABLE_CONSTANTS = {
   COLUMNS: {
     ID: 'id',
     NAME: 'name',
+    USER_ID: 'user_id',
     CREATED_AT: 'created_at',
     UPDATED_AT: 'updated_at',
   },

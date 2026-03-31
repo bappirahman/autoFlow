@@ -1,7 +1,7 @@
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
-import { user } from './user.schema';
 import { SESSION_TABLE_CONSTANTS } from '../constants/session.constant';
+import { user } from './user.schema';
 
 export const session = pgTable(SESSION_TABLE_CONSTANTS.TABLE_NAME, {
   id: text(SESSION_TABLE_CONSTANTS.COLUMNS.ID).primaryKey().notNull(),
