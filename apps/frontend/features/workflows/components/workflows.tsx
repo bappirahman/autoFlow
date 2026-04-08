@@ -1,18 +1,37 @@
 "use client";
 
-import { EntityContainer, EntityHeader } from "@/components/entity-component";
+import {
+  EntityContainer,
+  EntityHeader,
+  EntityPagination,
+  EntitySearch,
+} from "@/components/entity-component";
 import {
   useCreateWorkflow,
   useWorkflows,
 } from "@/features/workflows/hooks/use-workflows";
+import { useWorkflowsParams } from "@/features/workflows/hooks/use-workflows-params";
 import { type Workflow } from "@/features/workflows/types/workflow";
+import { useEntitySearch } from "@/hooks/use-entity-search";
 import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { useRouter } from "next/navigation";
 
+export const WorkflowsSearch = () => {
+  const [params, setParams] = useWorkflowsParams();
+  const { searchValue, onSearchChange } = useEntitySearch({
+    params,
+    setParams,
+  });
+  return (
+    <EntitySearch
+      placeholder="Search workflows..."
+      value={searchValue}
+      onChange={onSearchChange}
+    />
+  );
+};
+
 export const WorkflowList = () => {
-  // Same component supports both SSR + CSR:
-  // - SSR: query is prefetched in a server component and hydrated.
-  // - CSR: React Query still revalidates/fetches on client navigation.
   const { data, isPending, isError, error } = useWorkflows();
 
   if (isPending) {
@@ -23,7 +42,7 @@ export const WorkflowList = () => {
     return <div>Failed to load workflows: {error.message}</div>;
   }
 
-  const workflows: Workflow[] = data ?? [];
+  const workflows: Workflow[] = data?.items ?? [];
 
   if (workflows.length === 0) {
     return <div>No workflows yet.</div>;
@@ -73,6 +92,23 @@ export const WorkflowHeader = ({ disabled }: { disabled?: boolean }) => {
   );
 };
 
+export const WorkflowsPagination = () => {
+  const workflows = useWorkflows();
+  const [params, setParams] = useWorkflowsParams();
+
+  const totalPages = workflows.data?.totalPages ?? 1;
+  const page = workflows.data?.page ?? params.page;
+
+  return (
+    <EntityPagination
+      disabled={workflows.isFetching}
+      totalPages={totalPages}
+      page={page}
+      onPageChange={(page) => setParams({ ...params, page })}
+    />
+  );
+};
+
 export const WorkfkowsContainer = ({
   children,
 }: {
@@ -81,8 +117,8 @@ export const WorkfkowsContainer = ({
   return (
     <EntityContainer
       header={<WorkflowHeader />}
-      search={<></>}
-      pagination={<></>}
+      search={<WorkflowsSearch />}
+      pagination={<WorkflowsPagination />}
     >
       {children}
     </EntityContainer>

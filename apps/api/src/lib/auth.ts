@@ -16,6 +16,12 @@ export const auth = betterAuth({
   }),
   baseUrl: process.env.API_URL || 'http://localhost:3000',
   basePath: '/api/auth',
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 24, // 1 day in seconds
+    },
+  },
   trustedOrigins: [process.env.CORS_URL!],
   emailAndPassword: {
     enabled: true,

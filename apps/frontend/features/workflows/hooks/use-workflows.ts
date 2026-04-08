@@ -1,8 +1,9 @@
 "use client";
 
 import { createWorkflow } from "@/features/workflows/api/create-workflow";
+import { useWorkflowsParams } from "@/features/workflows/hooks/use-workflows-params";
 import { fetchWorkflows } from "@/features/workflows/services/fetchWorkflows";
-import { type Workflow } from "@/features/workflows/types/workflow";
+import { type WorkflowsResponse } from "@/features/workflows/types/workflow";
 import { workflowKeys } from "@/lib/query-keys/workflows";
 
 import {
@@ -15,14 +16,20 @@ import { toast } from "sonner";
 
 export const useWorkflows = (
   options: Omit<
-    UseQueryOptions<Workflow[], Error, Workflow[], typeof workflowKeys.all>,
+    UseQueryOptions<
+      WorkflowsResponse,
+      Error,
+      WorkflowsResponse,
+      ReturnType<typeof workflowKeys.list>
+    >,
     "queryKey" | "queryFn"
   > = {},
 ) => {
+  const [params] = useWorkflowsParams();
   return useQuery({
-    queryKey: workflowKeys.all,
+    queryKey: workflowKeys.list(params),
     // CSR: same function auto-resolves browser Axios client.
-    queryFn: fetchWorkflows,
+    queryFn: () => fetchWorkflows({ params }),
     enabled: typeof window !== "undefined",
     ...options,
   });
