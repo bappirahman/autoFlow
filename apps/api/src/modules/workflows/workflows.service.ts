@@ -1,8 +1,10 @@
 import { DRIZZLE_INJECTION_TOKEN } from '@/db';
 import * as schema from '@/db/schema';
 import { workflow } from '@/db/schema';
+import { GetAllWorkflowsDto } from '@/modules/workflows/dto/get-all-workflow.dto';
 import { Inject, Injectable } from '@nestjs/common';
-import { and } from 'drizzle-orm';
+import { desc, ilike } from 'drizzle-orm';
+import { and, count } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres/driver';
 import { eq } from 'drizzle-orm/sql/expressions/conditions';
 
@@ -17,7 +19,7 @@ export class WorkflowsService {
       .insert(workflow)
       .values({
         userId,
-        name: 'Test Workflow',
+        name: 'New Workflow',
       })
       .returning();
   }
@@ -46,7 +48,42 @@ export class WorkflowsService {
       .returning();
   }
 
-  async getAllWorkflows(userId: string) {
-    return this.db.select().from(workflow).where(eq(workflow.userId, userId));
+  async getAllWorkflows(
+    userId: string,
+    getAllWorkflowsDto: GetAllWorkflowsDto,
+  ) {
+    const { page, pageSize, search } = getAllWorkflowsDto;
+    const filters = [
+      eq(workflow.userId, userId),
+      ...(search ? [ilike(workflow.name, `%${search}%`)] : []),
+    ];
+    const [items, totalCount] = await Promise.all([
+      this.db
+        .select()
+        .from(workflow)
+        .where(and(...filters))
+        .orderBy(desc(workflow.updatedAt))
+        .offset((page - 1) * pageSize)
+        .limit(pageSize),
+      this.db
+        .select({ count: count() })
+        .from(workflow)
+        .where(and(...filters))
+        .then((res) => res[0]?.count ?? 0),
+    ]);
+
+    const totalPages = Math.ceil(totalCount / pageSize);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+
+    return {
+      items,
+      totalCount,
+      totalPages,
+      hasNextPage,
+      hasPreviousPage,
+      page,
+      pageSize,
+    };
   }
 }

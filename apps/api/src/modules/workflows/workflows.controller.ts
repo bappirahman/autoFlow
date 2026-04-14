@@ -1,5 +1,6 @@
 import { User } from '@/common/decorators/user.decorator';
 import { PremiumGuard } from '@/lib/premium.guard';
+import { GetAllWorkflowsDto } from '@/modules/workflows/dto/get-all-workflow.dto';
 import { UpdateWorkflowNameDto } from '@/modules/workflows/dto/update-workflow-name.dto';
 import { WorkflowsService } from '@/modules/workflows/workflows.service';
 import {
@@ -10,6 +11,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -18,8 +20,11 @@ export class WorkflowsController {
   constructor(private readonly workflowService: WorkflowsService) {}
 
   @Get()
-  async getAllWorkflows(@User('id') userId: string) {
-    return this.workflowService.getAllWorkflows(userId);
+  async getAllWorkflows(
+    @User('id') userId: string,
+    @Query() getAllWorkflowsDto: GetAllWorkflowsDto,
+  ) {
+    return this.workflowService.getAllWorkflows(userId, getAllWorkflowsDto);
   }
 
   @Post()
