@@ -32,9 +32,7 @@ export const useWorkflows = (
   const [params] = useWorkflowsParams();
   return useQuery({
     queryKey: workflowKeys.list(params),
-    // CSR: same function auto-resolves browser Axios client.
     queryFn: () => fetchWorkflows({ params }),
-    enabled: typeof window !== "undefined",
     ...options,
   });
 };

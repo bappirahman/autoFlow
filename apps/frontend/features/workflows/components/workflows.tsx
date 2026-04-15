@@ -41,9 +41,9 @@ export const WorkflowsSearch = () => {
 };
 
 export const WorkflowsList = () => {
-  const { data, isPending, isError, error } = useWorkflows();
+  const { data, isLoading, isError, error } = useWorkflows();
 
-  if (isPending) {
+  if (isLoading) {
     return <LoadingView entity="workflows" message="Loading workflows..." />;
   }
 
