@@ -1,5 +1,5 @@
 import { queryDefaults } from "@/lib/query-defaults";
-import { QueryClient, isServer } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 const createQueryClient = () => {
   return new QueryClient({
@@ -12,15 +12,15 @@ const createQueryClient = () => {
   });
 };
 
-let borwserQueryClient: QueryClient | null = null;
+let browserQueryClient: QueryClient | null = null;
 
 export const getQueryClient = () => {
-  if (isServer) {
+  if (typeof window === "undefined") {
     return createQueryClient();
   }
-  if (!borwserQueryClient) {
-    borwserQueryClient = createQueryClient();
+  if (!browserQueryClient) {
+    browserQueryClient = createQueryClient();
   }
 
-  return borwserQueryClient;
+  return browserQueryClient;
 };

@@ -14,12 +14,28 @@ export const fetchWorkflows = async ({
   return response.data;
 };
 
-export const createWorkflow = async (data: unknown) => {
+export const fetchWorkflowById = async ({ id }: { id: string }) => {
+  const response = await api.get(API_ENDPOINTS.WORKFLOWS.getById(id));
+  return response.data;
+};
+
+export const createWorkflow = async (data: unknown = {}) => {
   const response = await api.post(API_ENDPOINTS.WORKFLOWS.create, data);
   return response.data;
 };
 
-export const removeWorkflow = async (id: string) => {
+export const updateWorkflow = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: unknown;
+}) => {
+  const response = await api.patch(API_ENDPOINTS.WORKFLOWS.update(id), data);
+  return response.data;
+};
+
+export const removeWorkflow = async ({ id }: { id: string }) => {
   const response = await api.delete(API_ENDPOINTS.WORKFLOWS.remove(id));
   return response.data;
 };

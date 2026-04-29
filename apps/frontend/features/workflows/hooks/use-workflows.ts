@@ -2,8 +2,10 @@
 
 import {
   createWorkflow,
+  fetchWorkflowById,
   fetchWorkflows,
   removeWorkflow,
+  updateWorkflow,
 } from "@/features/workflows/api/workflow.api";
 import { useWorkflowsParams } from "@/features/workflows/hooks/use-workflows-params";
 import { type WorkflowsResponse } from "@/features/workflows/types/workflow";
@@ -36,12 +38,33 @@ export const useWorkflows = (
     ...options,
   });
 };
+export const useWorkflow = ({
+  id,
+  options,
+}: {
+  id: string;
+  options?: Omit<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof fetchWorkflowById>>,
+      Error,
+      Awaited<ReturnType<typeof fetchWorkflowById>>,
+      ReturnType<typeof workflowKeys.details>
+    >,
+    "queryKey" | "queryFn"
+  >;
+}) => {
+  return useQuery({
+    queryKey: workflowKeys.details(id),
+    queryFn: () => fetchWorkflowById({ id }),
+    ...options,
+  });
+};
 
 export const useCreateWorkflow = (
   options?: UseMutationOptions<
     Awaited<ReturnType<typeof createWorkflow>>,
     Error,
-    unknown
+    unknown | undefined
   >,
 ) => {
   const { onSuccess, onError, ...restOptions } = options ?? {};
@@ -49,7 +72,7 @@ export const useCreateWorkflow = (
 
   return useMutation({
     ...restOptions,
-    mutationFn: createWorkflow,
+    mutationFn: (data) => createWorkflow(data ?? undefined),
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: workflowKeys.all });
       toast.success(`${data[0].name} workflow created successfully`);
@@ -57,6 +80,31 @@ export const useCreateWorkflow = (
     },
     onError: (error, variables, onMutateResult, context) => {
       toast.error(`Failed to create workflow: ${error.message}`);
+      onError?.(error, variables, onMutateResult, context);
+    },
+  });
+};
+export const useUpdateWorkflow = (
+  options?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateWorkflow>>,
+    Error,
+    { id: string; data: unknown }
+  >,
+) => {
+  const { onSuccess, onError, ...restOptions } = options ?? {};
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...restOptions,
+    mutationFn: ({ id, data }: { id: string; data: unknown }) =>
+      updateWorkflow({ id, data }),
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: workflowKeys.all });
+      toast.success(`${data[0].name} workflow updated successfully`);
+      onSuccess?.(data, variables, onMutateResult, context);
+    },
+    onError: (error, variables, onMutateResult, context) => {
+      toast.error(`Failed to update workflow: ${error.message}`);
       onError?.(error, variables, onMutateResult, context);
     },
   });
@@ -74,7 +122,7 @@ export const useRemoveWorkflow = (
 
   return useMutation({
     ...restOptions,
-    mutationFn: ({ id }: { id: string }) => removeWorkflow(id),
+    mutationFn: ({ id }: { id: string }) => removeWorkflow({ id }),
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: workflowKeys.all });
       console.log(data);
