@@ -42,14 +42,14 @@ export class WorkflowsController {
     return this.workflowService.getWorkflow(id, userId);
   }
   @Patch(':id')
-  async updateWorkflowName(
+  async updateWorkflow(
     @Param('id') id: string,
     @Body() updateWorkflowNameDto: UpdateWorkflowNameDto,
     @User('id') userId: string,
   ) {
-    return this.workflowService.updateWorkflowName(
+    return this.workflowService.updateWorkflow(
       id,
-      updateWorkflowNameDto.name,
+      updateWorkflowNameDto,
       userId,
     );
   }

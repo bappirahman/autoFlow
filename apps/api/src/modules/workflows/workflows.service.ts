@@ -37,11 +37,17 @@ export class WorkflowsService {
       .where(and(eq(workflow.id, id), eq(workflow.userId, userId)));
   }
 
-  async updateWorkflowName(id: string, name: string, userId: string) {
+  async updateWorkflow(
+    id: string,
+    data: {
+      name?: string;
+    },
+    userId: string,
+  ) {
     return this.db
       .update(workflow)
       .set({
-        name,
+        ...data,
         updatedAt: new Date(),
       })
       .where(and(eq(workflow.id, id), eq(workflow.userId, userId)))
