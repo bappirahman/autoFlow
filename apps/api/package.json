@@ -27,6 +27,7 @@
     "polar:clear-sandbox": "node --env-file=.env --experimental-strip-types src/scripts/clear-polar-sandbox.ts"
   },
   "dependencies": {
+    "@autoflow/shared": "workspace:*",
     "@ai-sdk/anthropic": "^3.0.39",
     "@ai-sdk/google": "^3.0.22",
     "@ai-sdk/openai": "^3.0.26",
@@ -36,8 +37,6 @@
     "@nestjs/platform-express": "^11.0.1",
     "@polar-sh/better-auth": "^1.8.1",
     "@polar-sh/sdk": "^0.43.1",
-    "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
     "@sentry/cli": "^2.58.4",
     "@sentry/nestjs": "^10.38.0",
     "@thallesp/nestjs-better-auth": "^2.2.0",
@@ -73,7 +72,6 @@
     "globals": "^16.0.0",
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
-    "prisma": "^7.2.0",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",

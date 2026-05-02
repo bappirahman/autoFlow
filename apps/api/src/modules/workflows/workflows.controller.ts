@@ -1,6 +1,6 @@
 import { User } from '@/common/decorators/user.decorator';
 import { PremiumGuard } from '@/lib/premium.guard';
-import { GetAllWorkflowsDto } from '@/modules/workflows/dto/get-all-workflow.dto';
+import { GetAllWorkflowsDto } from '@/modules/workflows/dto/get-all-workflows.dto';
 import { UpdateWorkflowNameDto } from '@/modules/workflows/dto/update-workflow-name.dto';
 import { WorkflowsService } from '@/modules/workflows/workflows.service';
 import {
@@ -38,8 +38,8 @@ export class WorkflowsController {
   }
 
   @Get(':id')
-  async getWorkflow(@Param('id') id: string, @User('id') userId: string) {
-    return this.workflowService.getWorkflow(id, userId);
+  async getOneWorkflow(@Param('id') id: string, @User('id') userId: string) {
+    return this.workflowService.getOneWorkflow(id, userId);
   }
   @Patch(':id')
   async updateWorkflow(

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+
+    "target": "ES2022",
+    "lib": ["ES2022"],
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "composite": true,
+    "declarationMap": true,
+
+    "importHelpers": true,
+    "isolatedModules": true,
+
+    "ignoreDeprecations": "5.0",
+    "customConditions": ["autoFlow"],
+    "paths": {
+      "@autoflow/shared": ["libs/shared/src/index.ts"],
+      "@autoflow/*": ["libs/*/src"]
+    }
+  }
+}

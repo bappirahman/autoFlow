@@ -16,6 +16,7 @@ export const fetchWorkflows = async ({
 
 export const fetchWorkflowById = async ({ id }: { id: string }) => {
   const response = await api.get(API_ENDPOINTS.WORKFLOWS.getById(id));
+  console.log("response", response);
   return response.data;
 };
 

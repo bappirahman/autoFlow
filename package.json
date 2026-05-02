@@ -16,12 +16,21 @@
     "npkill": "pnpm dlx npkill --delete-all -y"
   },
   "devDependencies": {
+    "@nx/js": "^22.7.1",
+    "@swc-node/register": "~1.11.1",
+    "@swc/core": "~1.15.5",
+    "@swc/helpers": "~0.5.18",
+    "@types/node": "20.19.9",
     "concurrently": "^8.2.0",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "prettier": "~3.6.2",
+    "tslib": "^2.3.0",
+    "typescript": "~5.9.2"
   },
   "workspaces": [
     "apps/*",
     "libs/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {}
 }
