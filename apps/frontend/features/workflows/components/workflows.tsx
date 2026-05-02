@@ -64,19 +64,6 @@ export const WorkflowsList = () => {
       renderItem={(workflow) => <WorkflowItem workflow={workflow} />}
     />
   );
-
-  return (
-    <ul className="space-y-2">
-      {workflows.map((workflow: Workflow) => (
-        <li key={workflow.id} className="rounded-md border p-3">
-          <p className="font-medium">{workflow.name}</p>
-          <p className="text-sm text-muted-foreground">
-            Created at: {new Date(workflow.createdAt).toLocaleString()}
-          </p>
-        </li>
-      ))}
-    </ul>
-  );
 };
 
 export const WorkflowHeader = ({ disabled }: { disabled?: boolean }) => {

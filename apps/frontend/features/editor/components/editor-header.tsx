@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Button } from '@/components/ui/button';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,15 +9,15 @@ import {
   BreadcrumbList,
   // BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
-import { SaveIcon } from "lucide-react";
-import Link from "next/link";
+} from '@/components/ui/breadcrumb';
+import { Input } from '@/components/ui/input';
+import { useEffect, useRef, useState } from 'react';
+import { SaveIcon } from 'lucide-react';
+import Link from 'next/link';
 import {
   useUpdateWorkflow,
   useWorkflow,
-} from "@/features/workflows/hooks/use-workflows";
+} from '@/features/workflows/hooks/use-workflows';
 
 export function EditorBreadcrumbs({ workflowId }: { workflowId: string }) {
   return (
@@ -31,7 +31,7 @@ export function EditorBreadcrumbs({ workflowId }: { workflowId: string }) {
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <EditorNameInput workflowId={workflowId} />
+        <EditorNameInput key={workflowId} workflowId={workflowId} />
       </BreadcrumbList>
     </Breadcrumb>
   );
@@ -39,19 +39,14 @@ export function EditorBreadcrumbs({ workflowId }: { workflowId: string }) {
 
 export function EditorNameInput({ workflowId }: { workflowId: string }) {
   const { data } = useWorkflow({ id: workflowId });
-  const workflow = data?.[0];
+  const workflow = data;
   const updateWorkflow = useUpdateWorkflow();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(workflow?.name || "");
+  const [editValue, setEditValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (workflow?.name) {
-      setName(workflow.name);
-    }
-  }, [workflow?.name]);
+  const displayName = isEditing ? editValue : workflow?.name || '';
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -60,25 +55,33 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
     }
   }, [isEditing]);
 
+  const handleEdit = () => {
+    setEditValue(workflow?.name || '');
+    setIsEditing(true);
+  };
+
   const handleSave = async () => {
-    if (name === workflow?.name) {
+    if (editValue === workflow?.name) {
       setIsEditing(false);
       return;
     }
     try {
-      await updateWorkflow.mutateAsync({ id: workflowId, data: { name } });
+      await updateWorkflow.mutateAsync({
+        id: workflowId,
+        data: { name: editValue },
+      });
     } catch {
-      setName(workflow?.name || "");
+      setEditValue(workflow?.name || '');
     } finally {
       setIsEditing(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSave();
-    } else if (e.key === "Escape") {
-      setName(workflow?.name || "");
+    } else if (e.key === 'Escape') {
+      setEditValue(workflow?.name || '');
       setIsEditing(false);
     }
   };
@@ -88,8 +91,8 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
       <Input
         disabled={updateWorkflow.isPending}
         ref={inputRef}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={editValue}
+        onChange={(e) => setEditValue(e.target.value)}
         onBlur={handleSave}
         onKeyDown={handleKeyDown}
         className="h-7 w-auto min-w-[100px] px-2"
@@ -100,9 +103,9 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
   return (
     <BreadcrumbItem
       className="cursor-pointer hover:text-foreground transition-colors"
-      onClick={() => setIsEditing(true)}
+      onClick={handleEdit}
     >
-      {workflow?.name}
+      {displayName}
     </BreadcrumbItem>
   );
 }
