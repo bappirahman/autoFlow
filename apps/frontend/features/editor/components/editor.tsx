@@ -20,6 +20,8 @@ import {
 import '@xyflow/react/dist/style.css';
 import { nodeComponents } from '@/config/node-components';
 import { AddNodeButton } from '@/features/editor/components/add-node-button';
+import { useSetAtom } from 'jotai';
+import { editorAtom } from '@/features/editor/store/atom';
 
 export const EditorLoading = () => {
   return <LoadingView message="Loading Editor..." />;
@@ -38,6 +40,7 @@ const EditorCanvas = ({
 }) => {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const setEditor = useSetAtom(editorAtom);
   console.log('initialEdges', initialEdges);
 
   const onNodesChange = useCallback(
@@ -64,11 +67,16 @@ const EditorCanvas = ({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onInit={setEditor}
         nodeTypes={nodeComponents}
         fitView
         proOptions={{
           hideAttribution: true,
         }}
+        snapGrid={[10, 10]}
+        snapToGrid
+        panOnScroll
+        selectionOnDrag
       >
         <Background />
         <MiniMap />

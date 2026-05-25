@@ -3,6 +3,7 @@ import * as schema from '@/db/schema';
 import { workflow } from '@/db/schema';
 import { node, connection } from '@/db/schema';
 import { GetAllWorkflowsDto } from '@/modules/workflows/dto/get-all-workflows.dto';
+import { UpdateWorkflowNameDto } from '@/modules/workflows/dto/update-workflow-name.dto';
 import { NodeType } from '@autoflow/shared';
 import { Inject, Injectable } from '@nestjs/common';
 import { desc, ilike } from 'drizzle-orm';
@@ -32,6 +33,7 @@ export class WorkflowsService {
       name: 'Start',
       type: NodeType.INITIAL,
       position: { x: 0, y: 0 },
+      data: {},
     });
 
     return wf;
@@ -84,19 +86,61 @@ export class WorkflowsService {
 
   async updateWorkflow(
     id: string,
-    data: {
-      name?: string;
-    },
+    payload: UpdateWorkflowNameDto,
     userId: string,
   ) {
-    return this.db
-      .update(workflow)
-      .set({
-        ...data,
+    return this.db.transaction(async (tx) => {
+      const workflowData = {
+        ...(payload.name !== undefined && { name: payload.name }),
         updatedAt: new Date(),
-      })
-      .where(and(eq(workflow.id, id), eq(workflow.userId, userId)))
-      .returning();
+      };
+      await tx
+        .update(workflow)
+        .set(workflowData)
+        .where(and(eq(workflow.id, id), eq(workflow.userId, userId)));
+
+      if (payload.nodes !== undefined) {
+        await tx.delete(node).where(eq(node.workflowId, id));
+
+        if (payload.nodes.length) {
+          await tx.insert(node).values(
+            payload.nodes.map((n) => ({
+              id: n.id,
+              workflowId: id,
+              type: n.type,
+              name: n.type || 'unknown',
+              position: n.position,
+              data: n.data ?? {},
+            })),
+          );
+        }
+      }
+
+      if (payload.edges !== undefined) {
+        await tx.delete(connection).where(eq(connection.workflowId, id));
+
+        if (payload.edges.length) {
+          await tx.insert(connection).values(
+            payload.edges.map((e) => ({
+              workflowId: id,
+              fromNodeId: e.source,
+              toNodeId: e.target,
+              fromOutput: e.sourceHandle ?? 'main',
+              toInput: e.targetHandle ?? 'main',
+            })),
+          );
+        }
+      }
+
+      const updatedWf = await tx
+        .select()
+        .from(workflow)
+        .where(and(eq(workflow.id, id), eq(workflow.userId, userId)))
+        .limit(1)
+        .then((res) => res[0]);
+
+      return updatedWf;
+    });
   }
 
   async getAllWorkflows(
