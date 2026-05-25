@@ -18,6 +18,8 @@ import {
   useUpdateWorkflow,
   useWorkflow,
 } from '@/features/workflows/hooks/use-workflows';
+import { useAtomValue } from 'jotai';
+import { editorAtom } from '@/features/editor/store/atom';
 
 export function EditorBreadcrumbs({ workflowId }: { workflowId: string }) {
   return (
@@ -111,11 +113,28 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
 }
 
 export function EditorSaveButton({ workflowId }: { workflowId: string }) {
+  const editor = useAtomValue(editorAtom);
+  const saveworkflow = useUpdateWorkflow();
+
+  const handleSave = async () => {
+    if (!editor) return;
+
+    const nodes = editor.getNodes();
+    const edges = editor.getEdges();
+
+    await saveworkflow.mutateAsync({
+      id: workflowId,
+      data: {
+        nodes,
+        edges,
+      },
+    });
+  };
   return (
     <div className="ml-auto">
-      <Button size="sm" onClick={() => {}} disabled={false}>
+      <Button size="sm" onClick={handleSave} disabled={saveworkflow.isPending}>
         <SaveIcon className="size-4" />
-        Save {workflowId}
+        Save
       </Button>
     </div>
   );
