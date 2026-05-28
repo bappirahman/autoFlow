@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { ErrorView, LoadingView } from '@/components/entity-component';
 import { useWorkflow } from '@/features/workflows/hooks/use-workflows';
 import {
@@ -22,6 +22,8 @@ import { nodeComponents } from '@/config/node-components';
 import { AddNodeButton } from '@/features/editor/components/add-node-button';
 import { useSetAtom } from 'jotai';
 import { editorAtom } from '@/features/editor/store/atom';
+import { NodeType } from '@autoflow/shared';
+import { ExecuteWorkflowButton } from '@/features/editor/components/execute-workflow-button';
 
 export const EditorLoading = () => {
   return <LoadingView message="Loading Editor..." />;
@@ -34,9 +36,11 @@ export const EditorError = ({ message }: { message: string }) => {
 const EditorCanvas = ({
   initialNodes,
   initialEdges,
+  workflowId,
 }: {
   initialNodes: Node[];
   initialEdges: Edge[];
+  workflowId: string;
 }) => {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
@@ -58,7 +62,11 @@ const EditorCanvas = ({
       setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
     [],
   );
-  console.log(nodeComponents);
+
+  const hasManualTrigger = useMemo(() => {
+    return nodes.some((node) => node.type === NodeType.MANUAL_TRIGGER);
+  }, [nodes]);
+
   return (
     <section className="size-full">
       <ReactFlow
@@ -83,6 +91,11 @@ const EditorCanvas = ({
         <Panel position="top-right">
           <AddNodeButton />
         </Panel>
+        {hasManualTrigger && (
+          <Panel position="bottom-center">
+            <ExecuteWorkflowButton workflowId={workflowId} />
+          </Panel>
+        )}
       </ReactFlow>
     </section>
   );
@@ -106,6 +119,7 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
       key={workflow.id}
       initialNodes={workflow.nodes ?? []}
       initialEdges={workflow.edges ?? []}
+      workflowId={workflow.id}
     />
   );
 };

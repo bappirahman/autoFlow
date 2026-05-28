@@ -2,6 +2,7 @@
 
 import {
   createWorkflow,
+  executeWorkflow,
   fetchWorkflowById,
   fetchWorkflows,
   removeWorkflow,
@@ -131,6 +132,29 @@ export const useRemoveWorkflow = (
     },
     onError: (error, variables, onMutateResult, context) => {
       toast.error(`Failed to remove workflow: ${error.message}`);
+      onError?.(error, variables, onMutateResult, context);
+    },
+  });
+};
+
+export const useExecuteWorkflow = (
+  options?: UseMutationOptions<
+    Awaited<ReturnType<typeof executeWorkflow>>,
+    Error,
+    { id: string }
+  >,
+) => {
+  const { onSuccess, onError, ...restOptions } = options ?? {};
+
+  return useMutation({
+    ...restOptions,
+    mutationFn: ({ id }: { id: string }) => executeWorkflow({ id }),
+    onSuccess: (data, variables, onMutateResult, context) => {
+      toast.success(`${data.name} workflow executed successfully`);
+      onSuccess?.(data, variables, onMutateResult, context);
+    },
+    onError: (error, variables, onMutateResult, context) => {
+      toast.error(`Failed to execute workflow: ${error.message}`);
       onError?.(error, variables, onMutateResult, context);
     },
   });

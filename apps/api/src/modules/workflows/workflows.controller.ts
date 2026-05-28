@@ -32,6 +32,14 @@ export class WorkflowsController {
   async createWorkflow(@User('id') userId: string) {
     return this.workflowService.createWorkflow(userId);
   }
+  @Post(':id/execute')
+  @UseGuards(PremiumGuard)
+  async executeWorkflow(
+    @Param('id') workflowId: string,
+    @User('id') userId: string,
+  ) {
+    return this.workflowService.executeWorkflow(workflowId, userId);
+  }
   @Delete(':id')
   async removeWorkflow(@Param('id') id: string, @User('id') userId: string) {
     return this.workflowService.removeWorkflow(id, userId);
