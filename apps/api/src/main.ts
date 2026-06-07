@@ -3,6 +3,7 @@ import './instrument';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { setApp } from './app-ref';
 import { serve } from 'inngest/express';
 import express from 'express';
 import { inngest } from './lib/inngest/client';
@@ -10,6 +11,7 @@ import { functions } from './lib/inngest/functions';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
+  setApp(app);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

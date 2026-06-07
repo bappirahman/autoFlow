@@ -1,25 +1,33 @@
-import { drizzleDb } from '@/db';
 import { workflow, node, connection, execution } from '@/db/schema';
 import type { Node, Connection, Workflow } from '@/db/schema';
+import { DRIZZLE_INJECTION_TOKEN } from '@/db';
 import { ExecutionStatus } from '@/common/enums/execution-status';
 import { NodeType } from '@autoflow/shared';
 import { UpdateWorkflowNameDto } from '@/modules/workflows/dto/update-workflow-name.dto';
+import { Inject, Injectable } from '@nestjs/common';
 import { and, count, desc, eq, ilike } from 'drizzle-orm';
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import type * as schema from '@/db/schema';
+
+type DrizzleDb = NodePgDatabase<typeof schema>;
 
 type WorkflowWithRelations = Workflow & {
   nodes: Node[];
   connections: Connection[];
 };
 
+@Injectable()
 export class WorkflowsRepository {
+  constructor(@Inject(DRIZZLE_INJECTION_TOKEN) private readonly db: DrizzleDb) {}
+
   async create(userId: string) {
-    const wf = await drizzleDb
+    const wf = await this.db
       .insert(workflow)
       .values({ userId, name: 'New Workflow' })
       .returning()
       .then((res) => res[0]);
 
-    await drizzleDb.insert(node).values({
+    await this.db.insert(node).values({
       workflowId: wf.id,
       name: 'Start',
       type: NodeType.INITIAL,
@@ -31,7 +39,7 @@ export class WorkflowsRepository {
   }
 
   async findById(id: string, userId: string) {
-    const wf = (await drizzleDb.query.workflow.findFirst({
+    const wf = (await this.db.query.workflow.findFirst({
       where: and(eq(workflow.id, id), eq(workflow.userId, userId)),
       with: {
         nodes: true,
@@ -60,13 +68,13 @@ export class WorkflowsRepository {
     );
 
     const [items, totalCount] = await Promise.all([
-      drizzleDb.query.workflow.findMany({
+      this.db.query.workflow.findMany({
         where: filters,
         orderBy: [desc(workflow.updatedAt)],
         limit: pageSize,
         offset: (page - 1) * pageSize,
       }),
-      drizzleDb
+      this.db
         .select({ count: count() })
         .from(workflow)
         .where(filters)
@@ -87,7 +95,7 @@ export class WorkflowsRepository {
   }
 
   async update(id: string, userId: string, payload: UpdateWorkflowNameDto) {
-    return drizzleDb.transaction(async (tx) => {
+    return this.db.transaction(async (tx) => {
       await tx
         .update(workflow)
         .set({
@@ -137,7 +145,7 @@ export class WorkflowsRepository {
   }
 
   async createExecution(workflowId: string, inngestEventId: string) {
-    return drizzleDb
+    return this.db
       .insert(execution)
       .values({ workflowId, status: ExecutionStatus.RUNNING, inngestEventId })
       .returning()
@@ -145,7 +153,7 @@ export class WorkflowsRepository {
   }
 
   async delete(id: string, userId: string) {
-    return drizzleDb
+    return this.db
       .delete(workflow)
       .where(and(eq(workflow.id, id), eq(workflow.userId, userId)))
       .returning();

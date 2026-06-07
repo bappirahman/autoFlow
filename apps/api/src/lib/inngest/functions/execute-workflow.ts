@@ -1,3 +1,4 @@
+import { getApp } from '@/app-ref';
 import { getExecutor } from '@/lib/executor-registry';
 import { inngest } from '@/lib/inngest/client';
 import { topologicalSort } from '@/lib/inngest/utils';
@@ -24,10 +25,9 @@ export const executeWorkflow = inngest.createFunction(
       throw new NonRetriableError('workflowId and userId are required');
     }
 
-    const workflowsRepository = new WorkflowsRepository();
-
     const sortedNodes = await step.run('prepare-workflow', async () => {
-      const wf = await workflowsRepository.findById(workflowId, userId);
+      const repo = getApp().get(WorkflowsRepository);
+      const wf = await repo.findById(workflowId, userId);
       return topologicalSort(wf.nodes, wf.connections);
     });
 

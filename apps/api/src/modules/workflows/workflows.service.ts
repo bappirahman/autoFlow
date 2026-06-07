@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class WorkflowsService {
-  private readonly workflowsRepository = new WorkflowsRepository();
+  constructor(private readonly workflowsRepository: WorkflowsRepository) {}
 
   async createWorkflow(userId: string) {
     return this.workflowsRepository.create(userId);
