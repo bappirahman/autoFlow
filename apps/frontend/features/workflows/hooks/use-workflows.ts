@@ -150,7 +150,8 @@ export const useExecuteWorkflow = (
     ...restOptions,
     mutationFn: ({ id }: { id: string }) => executeWorkflow({ id }),
     onSuccess: (data, variables, onMutateResult, context) => {
-      toast.success(`${data.name} workflow executed successfully`);
+      console.log(data);
+      toast.success(`Workflow executed successfully`);
       onSuccess?.(data, variables, onMutateResult, context);
     },
     onError: (error, variables, onMutateResult, context) => {

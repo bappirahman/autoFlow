@@ -16,8 +16,25 @@ export const fetchWorkflows = async ({
 
 export const fetchWorkflowById = async ({ id }: { id: string }) => {
   const response = await api.get(API_ENDPOINTS.WORKFLOWS.getById(id));
-  console.log('response', response);
-  return response.data;
+  const data = response.data;
+
+  const edges = (data.connections ?? []).map(
+    (conn: {
+      id: string;
+      fromNodeId: string;
+      toNodeId: string;
+      fromOutput: string;
+      toInput: string;
+    }) => ({
+      id: conn.id,
+      source: conn.fromNodeId,
+      target: conn.toNodeId,
+      sourceHandle: conn.fromOutput,
+      targetHandle: conn.toInput,
+    }),
+  );
+
+  return { ...data, edges };
 };
 
 export const createWorkflow = async (data: unknown = {}) => {

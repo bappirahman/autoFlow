@@ -2,3 +2,12 @@ packages:
   - "apps/**"
   - "libs/**"
   - "packages/**"
+allowBuilds:
+  '@nestjs/core': true
+  '@sentry/cli': true
+  '@swc/core': true
+  esbuild: true
+  nx: true
+  protobufjs: true
+  sharp: true
+  unrs-resolver: true
