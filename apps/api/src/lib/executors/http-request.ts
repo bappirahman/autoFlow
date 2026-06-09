@@ -3,7 +3,7 @@ import { NonRetriableError } from 'inngest';
 import Handlebars from 'handlebars';
 
 Handlebars.registerHelper('json', (context) => {
-  const jsonString = JSON.stringify(context, null, 2);
+  const jsonString = JSON.stringify(context ?? null, null, 2);
   return new Handlebars.SafeString(jsonString);
 });
 type TMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';

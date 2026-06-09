@@ -202,9 +202,11 @@ export const HttpRequestDialog = ({
                       />
                     </FormControl>
                     <FormDescription>
-                      {
-                        'JSON with template variables. Use {{variableName}} for simple values or {{JSON variable}} to stringify objects'
-                      }
+                      JSON body with template support. Use{' '}
+                      <code>{'{{variableName.httpResponse.data.field}}'}</code>{' '}
+                      for simple values, or{' '}
+                      <code>{`{{json ${watchVariableName}.httpResponse.data}}`}</code>{' '}
+                      to embed a full object from a previous node.
                     </FormDescription>
                     {fieldState.error && (
                       <FieldError className="text-red-500">
