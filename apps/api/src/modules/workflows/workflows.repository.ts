@@ -18,7 +18,9 @@ type WorkflowWithRelations = Workflow & {
 
 @Injectable()
 export class WorkflowsRepository {
-  constructor(@Inject(DRIZZLE_INJECTION_TOKEN) private readonly db: DrizzleDb) {}
+  constructor(
+    @Inject(DRIZZLE_INJECTION_TOKEN) private readonly db: DrizzleDb,
+  ) {}
 
   async create(userId: string) {
     const wf = await this.db
