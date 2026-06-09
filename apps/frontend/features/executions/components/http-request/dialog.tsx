@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { FieldError } from '@/components/ui/field';
 import {
   Form,
   FormControl,
@@ -106,7 +107,7 @@ export const HttpRequestDialog = ({
             <FormField
               control={form.control}
               name="variableName"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Variable Name</FormLabel>
                   <FormControl>
@@ -117,13 +118,18 @@ export const HttpRequestDialog = ({
                     subsequent nodes, e.g.{' '}
                     <code>{`{{${watchVariableName}.httpResponse.data}}`}</code>.
                   </FormDescription>
+                  {fieldState.error && (
+                    <FieldError className="text-red-500">
+                      {fieldState.error.message}
+                    </FieldError>
+                  )}
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name="method"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Method</FormLabel>
                   <Select
@@ -146,13 +152,18 @@ export const HttpRequestDialog = ({
                   <FormDescription>
                     The HTTP method to use for the request.
                   </FormDescription>
+                  {fieldState.error && (
+                    <FieldError className="text-red-500">
+                      {fieldState.error.message}
+                    </FieldError>
+                  )}
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name="endpoint"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Method</FormLabel>
                   <FormControl>
@@ -166,6 +177,11 @@ export const HttpRequestDialog = ({
                     variables from previous nodes, e.g.{' '}
                     <code>{'{{httpResponse.data.id}}'}</code>.
                   </FormDescription>
+                  {fieldState.error && (
+                    <FieldError className="text-red-500">
+                      {fieldState.error.message}
+                    </FieldError>
+                  )}
                 </FormItem>
               )}
             />
@@ -173,7 +189,7 @@ export const HttpRequestDialog = ({
               <FormField
                 control={form.control}
                 name="body"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Request Body</FormLabel>
                     <FormControl>
@@ -186,10 +202,17 @@ export const HttpRequestDialog = ({
                       />
                     </FormControl>
                     <FormDescription>
-                      {
-                        'JSON with template variables. Use {{variableName}} for simple values or {{JSON variable}} to stringify objects'
-                      }
+                      JSON body with template support. Use{' '}
+                      <code>{'{{variableName.httpResponse.data.field}}'}</code>{' '}
+                      for simple values, or{' '}
+                      <code>{`{{json ${watchVariableName}.httpResponse.data}}`}</code>{' '}
+                      to embed a full object from a previous node.
                     </FormDescription>
+                    {fieldState.error && (
+                      <FieldError className="text-red-500">
+                        {fieldState.error.message}
+                      </FieldError>
+                    )}
                   </FormItem>
                 )}
               />

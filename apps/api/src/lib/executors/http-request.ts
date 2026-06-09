@@ -1,11 +1,16 @@
 import type { NodeExecutor } from '@/types';
 import { NonRetriableError } from 'inngest';
+import Handlebars from 'handlebars';
 
+Handlebars.registerHelper('json', (context) => {
+  const jsonString = JSON.stringify(context ?? null, null, 2);
+  return new Handlebars.SafeString(jsonString);
+});
 type TMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type HttpRequestData = {
-  variableName?: string; // variable name to store the response in context
-  endpoint?: string;
-  method?: TMethod;
+  variableName: string; // variable name to store the response in context
+  endpoint: string;
+  method: TMethod;
   body?: string;
 };
 
@@ -18,22 +23,32 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
 
   if (!data.variableName) {
     throw new NonRetriableError(
-      'Variable name is required for HTTP Request node',
+      'HTTP Request Node: Variable name is required for HTTP Request node',
     );
   }
   if (!data.endpoint) {
-    throw new NonRetriableError('Endpoint is required for HTTP Request node');
+    throw new NonRetriableError(
+      'HTTP Request Node: Endpoint is required for HTTP Request node',
+    );
+  }
+  if (!data.method) {
+    throw new NonRetriableError(
+      'HTTP Request Node: Method is required for HTTP Request node',
+    );
   }
 
   const result = await step.run('http-request', async () => {
-    const method = data.method || 'GET';
-    const endpoint = data.endpoint!;
+    // Compile the endpoint with Handlebars to allow dynamic values from context
+    const endpoint = Handlebars.compile(data.endpoint)(context);
+    const method = data.method;
 
     const options: RequestInit = { method };
 
-    if (['POST', 'PUT', 'PATCH'].includes(method) && data.body) {
+    if (['POST', 'PUT', 'PATCH'].includes(method)) {
       options.headers = { 'Content-Type': 'application/json' };
-      options.body = data.body;
+      const resolved = Handlebars.compile(data.body || '{}')(context);
+      JSON.parse(resolved); // Validate JSON format
+      options.body = resolved;
     }
 
     const response = await step.fetch(endpoint, options);
@@ -52,7 +67,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
 
     return {
       ...context,
-      [data.variableName!]: responsePayload,
+      [data.variableName]: responsePayload,
     };
   });
   return result;
