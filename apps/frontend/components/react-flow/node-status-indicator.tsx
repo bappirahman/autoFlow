@@ -1,14 +1,15 @@
 import { type ReactNode } from 'react';
 import { LoaderCircle } from 'lucide-react';
+import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
 
 import { cn } from '@/lib/utils';
 
-export type NodeStatus = 'loading' | 'success' | 'error' | 'initial';
+export type { NodeStatusEnum as NodeStatus };
 
 export type NodeStatusVariant = 'overlay' | 'border';
 
 export type NodeStatusIndicatorProps = {
-  status?: NodeStatus;
+  status?: NodeStatusEnum;
   variant?: NodeStatusVariant;
   children: ReactNode;
   className?: string;
@@ -101,7 +102,7 @@ export const NodeStatusIndicator = ({
   className,
 }: NodeStatusIndicatorProps) => {
   switch (status) {
-    case 'loading':
+    case NodeStatus.LOADING:
       switch (variant) {
         case 'overlay':
           return <SpinnerLoadingIndicator>{children}</SpinnerLoadingIndicator>;
@@ -114,13 +115,13 @@ export const NodeStatusIndicator = ({
         default:
           return <>{children}</>;
       }
-    case 'success':
+    case NodeStatus.SUCCESS:
       return (
         <StatusBorder className={cn('border-green-700/50', className)}>
           {children}
         </StatusBorder>
       );
-    case 'error':
+    case NodeStatus.ERROR:
       return (
         <StatusBorder className={cn('border-red-700/50', className)}>
           {children}
