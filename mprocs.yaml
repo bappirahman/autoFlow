@@ -1,0 +1,9 @@
+procs:
+  api:
+    cmd: ["pnpm", "run", "dev:api"]
+
+  frontend:
+    cmd: ["pnpm", "run", "dev:frontend"]
+
+  inngest:
+    cmd: ["pnpm", "--filter", "./apps/api", "run", "dev:inngest"]
