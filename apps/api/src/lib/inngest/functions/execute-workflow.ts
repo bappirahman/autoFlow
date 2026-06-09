@@ -20,7 +20,7 @@ export const executeWorkflow = inngest.createFunction(
       userId?: string;
       initialData?: Record<string, unknown>;
     };
-
+    console.log('initialData', initialData);
     if (!workflowId || !userId) {
       throw new NonRetriableError('workflowId and userId are required');
     }
