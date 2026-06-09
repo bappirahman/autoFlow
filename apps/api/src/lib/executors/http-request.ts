@@ -3,6 +3,7 @@ import { NonRetriableError } from 'inngest';
 
 type TMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type HttpRequestData = {
+  variableName?: string; // variable name to store the response in context
   endpoint?: string;
   method?: TMethod;
   body?: string;
@@ -15,6 +16,11 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
 }) => {
   // TODO: publish 'loading' state for http request node
 
+  if (!data.variableName) {
+    throw new NonRetriableError(
+      'Variable name is required for HTTP Request node',
+    );
+  }
   if (!data.endpoint) {
     throw new NonRetriableError('Endpoint is required for HTTP Request node');
   }
@@ -26,6 +32,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
     const options: RequestInit = { method };
 
     if (['POST', 'PUT', 'PATCH'].includes(method) && data.body) {
+      options.headers = { 'Content-Type': 'application/json' };
       options.body = data.body;
     }
 
@@ -35,17 +42,18 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
       ? await response.json()
       : await response.text();
 
-    return {
-      ...context,
+    const responsePayload = {
       httpResponse: {
         status: response.status,
         statusText: response.statusText,
         data: responseData,
       },
     };
+
+    return {
+      ...context,
+      [data.variableName!]: responsePayload,
+    };
   });
-
-  // TODO: publish 'success' state for http request node with result
-
   return result;
 };
