@@ -14,6 +14,7 @@ export * from './execution.schema';
 export * from './enums/node-type.enum';
 export * from './enums/credential-type.enum';
 export * from './enums/execution-status.enum';
+export * from './relations';
 
 export type { User, NewUser } from './user.schema';
 export type { Session, NewSession } from './session.schema';

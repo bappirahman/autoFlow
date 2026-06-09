@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "bootstrap": "pnpm -w install",
-    "dev:api": "pnpm --filter ./apps/api... run start:dev",
+    "dev:api": "pnpm --filter ./apps/api... run dev",
     "dev:frontend": "pnpm --filter ./apps/frontend... run dev",
     "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:frontend\"",
     "lint": "pnpm -r run lint",

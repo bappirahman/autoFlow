@@ -27,10 +27,10 @@
     "polar:clear-sandbox": "node --env-file=.env --experimental-strip-types src/scripts/clear-polar-sandbox.ts"
   },
   "dependencies": {
-    "@autoflow/shared": "workspace:*",
     "@ai-sdk/anthropic": "^3.0.39",
     "@ai-sdk/google": "^3.0.22",
     "@ai-sdk/openai": "^3.0.26",
+    "@autoflow/shared": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -52,6 +52,7 @@
     "pg": "^8.18.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "toposort": "^2.0.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -65,6 +66,7 @@
     "@types/node": "^22.10.7",
     "@types/pg": "^8.16.0",
     "@types/supertest": "^6.0.2",
+    "@types/toposort": "^2.0.7",
     "drizzle-kit": "^0.31.8",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",

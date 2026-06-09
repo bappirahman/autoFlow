@@ -6,9 +6,10 @@ export const API_ENDPOINTS = {
     create: `/workflows`,
     update: (id: string) => `/workflows/${id}`,
     remove: (id: string) => `/workflows/${id}`,
+    execute: (id: string) => `/workflows/${id}/execute`,
   },
   USER: {
-    base: "/users",
+    base: '/users',
     getAll: () => `/users`,
     getById: (id: string) => `/users/${id}`,
     create: () => `/users`,

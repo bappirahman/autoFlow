@@ -1,9 +1,9 @@
 import {
   type WorkflowsQueryParams,
   type WorkflowsResponse,
-} from "@/features/workflows/types/workflow";
-import { api } from "@/lib/api/config/axios";
-import { API_ENDPOINTS } from "@/lib/api/config/endpoints";
+} from '@/features/workflows/types/workflow';
+import { api } from '@/lib/api/config/axios';
+import { API_ENDPOINTS } from '@/lib/api/config/endpoints';
 
 export const fetchWorkflows = async ({
   params,
@@ -16,8 +16,25 @@ export const fetchWorkflows = async ({
 
 export const fetchWorkflowById = async ({ id }: { id: string }) => {
   const response = await api.get(API_ENDPOINTS.WORKFLOWS.getById(id));
-  console.log("response", response);
-  return response.data;
+  const data = response.data;
+
+  const edges = (data.connections ?? []).map(
+    (conn: {
+      id: string;
+      fromNodeId: string;
+      toNodeId: string;
+      fromOutput: string;
+      toInput: string;
+    }) => ({
+      id: conn.id,
+      source: conn.fromNodeId,
+      target: conn.toNodeId,
+      sourceHandle: conn.fromOutput,
+      targetHandle: conn.toInput,
+    }),
+  );
+
+  return { ...data, edges };
 };
 
 export const createWorkflow = async (data: unknown = {}) => {
@@ -38,5 +55,10 @@ export const updateWorkflow = async ({
 
 export const removeWorkflow = async ({ id }: { id: string }) => {
   const response = await api.delete(API_ENDPOINTS.WORKFLOWS.remove(id));
+  return response.data;
+};
+
+export const executeWorkflow = async ({ id }: { id: string }) => {
+  const response = await api.post(API_ENDPOINTS.WORKFLOWS.execute(id));
   return response.data;
 };
