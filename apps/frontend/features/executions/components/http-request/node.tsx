@@ -8,6 +8,8 @@ import {
   HttpRequestFormValues,
   HttpRequestDialog,
 } from '@/features/executions/components/http-request/dialog';
+import { useHttpRequestStatusToken } from '@/features/executions/hooks/use-http-request-status-token';
+import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
 
 type HttpRequestNodeData = {
   endpoint?: string;
@@ -20,8 +22,13 @@ type HttpRequestNodeType = Node<HttpRequestNodeData>;
 export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { setNodes } = useReactFlow();
+  const { refreshToken } = useHttpRequestStatusToken();
 
-  const nodeStatus = 'initial'; // TODO: Replace with actual status
+  const nodeStatus = useNodeStatus({
+    nodeId: props.id,
+    topic: 'status',
+    refreshToken,
+  });
 
   const handleOpenSettings = () => setDialogOpen(true);
 

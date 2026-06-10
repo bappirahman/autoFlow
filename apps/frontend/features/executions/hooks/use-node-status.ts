@@ -1,54 +1,47 @@
-// import type { Realtime } from '@inngest/realtime';
-// import { useInngestSubscription } from '@inngest/realtime/hooks';
-// import { useEffect, useState } from 'react';
-// import { type NodeStatusEnum, NodeStatus } from '@autoflow/shared';
+import type { Realtime } from '@inngest/realtime';
+import { useInngestSubscription } from '@inngest/realtime/hooks';
+import { useMemo } from 'react';
 
-// interface UseNodeStatusProps {
-//   nodeId: string;
-//   channel: string;
-//   topic: string;
-//   refreshToken: () => Promise<Realtime.Subscribe.Token>;
-// }
+import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
 
-// export const useNodeStatus = ({
-//   nodeId,
-//   channel,
-//   topic,
-//   refreshToken,
-// }: UseNodeStatusProps) => {
-//   const [status, setStatus] = useState<NodeStatusEnum>(NodeStatus.INITIAL);
+interface UseNodeStatusProps {
+  nodeId: string;
+  topic: string;
+  refreshToken: () => Promise<Realtime.Subscribe.Token>;
+}
 
-//   const { data } = useInngestSubscription({
-//     refreshToken,
-//     enabled: true,
-//   });
+export const useNodeStatus = ({
+  nodeId,
+  topic,
+  refreshToken,
+}: UseNodeStatusProps) => {
+  const { data } = useInngestSubscription({
+    refreshToken,
+    enabled: true,
+  });
 
-//   useEffect(() => {
-//     if (!data.length) return;
+  return useMemo(() => {
+    if (!data?.length) {
+      return NodeStatus.INITIAL as NodeStatusEnum;
+    }
 
-//     // find the latest message for this node
+    const latestMessage = data
+      .filter(
+        (message) =>
+          message.kind === 'data' &&
+          message.topic === topic &&
+          message.data.nodeId === nodeId,
+      )
+      .sort((a, b) => {
+        if (a.kind === 'data' && b.kind === 'data') {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
 
-//     const latestMessage = data
-//       .filter(
-//         (message) =>
-//           message.kind === 'data' &&
-//           message.channel === channel &&
-//           message.topic === topic &&
-//           message.data.nodeId === nodeId,
-//       )
-//       .sort((a, b) => {
-//         if (a.kind === 'data' && b.kind === 'data') {
-//           return (
-//             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-//           );
-//         }
-//         return 0;
-//       })[0];
+        return 0;
+      })[0];
 
-//     if (latestMessage?.kind === 'data') {
-//       setStatus(latestMessage.data.status as NodeStatusEnum);
-//     }
-//   }, [data, nodeId, channel, topic]);
-
-//   return status;
-// };
+    return (latestMessage?.data.status as NodeStatusEnum) ?? NodeStatus.INITIAL;
+  }, [data, nodeId, topic]);
+};

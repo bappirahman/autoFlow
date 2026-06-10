@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { auth } from './lib/auth';
 import { DbModule } from './db/db.module';
+import { InngestRealtimeModule } from './modules/inngest-realtime/inngest-realtime.module';
 import { WorkflowsModule } from './modules/workflows/workflows.module';
 
 @Module({
@@ -14,6 +15,7 @@ import { WorkflowsModule } from './modules/workflows/workflows.module';
     SentryModule.forRoot(),
     AuthModule.forRoot({ auth, enableRawBodyParser: true }),
     DbModule,
+    InngestRealtimeModule,
     WorkflowsModule,
   ],
   controllers: [AppController],

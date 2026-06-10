@@ -11,7 +11,7 @@ export const executeWorkflow = inngest.createFunction(
     id: 'execute-workflow',
     name: 'Execute Workflow',
     description: 'A function to execute a workflow',
-    retries: 0,
+    retries: 0, // TODO: change retry for production
   },
   { event: 'workflows/execute.workflow' },
   async ({ event, step, publish }) => {
@@ -39,6 +39,7 @@ export const executeWorkflow = inngest.createFunction(
       context = await executor({
         data: node.data as Record<string, unknown>,
         nodeId: node.id,
+        userId,
         context,
         step,
         publish,
