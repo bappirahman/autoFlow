@@ -1,5 +1,5 @@
 import { httpRequestExecutor } from '@/lib/executors/http-request';
-import { manualTriggerExecutor } from '@/lib/executors/maual-trigger';
+import { manualTriggerExecutor } from '@/lib/executors/manual-trigger';
 import { NodeExecutor } from '@/types';
 import { NodeType, NodeTypeEnum } from '@autoflow/shared';
 

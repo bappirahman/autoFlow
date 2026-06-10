@@ -154,6 +154,27 @@ export class WorkflowsRepository {
       .then((res) => res[0]);
   }
 
+  async updateExecutionByInngestEventId(
+    inngestEventId: string,
+    payload: {
+      status: (typeof ExecutionStatus)[keyof typeof ExecutionStatus];
+      error?: string | null;
+      errorStack?: string | null;
+      output?: Record<string, unknown> | null;
+      completedAt?: Date;
+    },
+  ) {
+    return this.db
+      .update(execution)
+      .set({
+        ...payload,
+        updatedAt: new Date(),
+      })
+      .where(eq(execution.inngestEventId, inngestEventId))
+      .returning()
+      .then((res) => res[0]);
+  }
+
   async delete(id: string, userId: string) {
     return this.db
       .delete(workflow)

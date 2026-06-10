@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
   },
   EXECUTIONS: {
     httpRequestStatusToken: () => '/realtime/http-request/status',
+    manualTriggerStatusToken: () => '/realtime/manual-trigger/status',
   },
   USER: {
     base: '/users',

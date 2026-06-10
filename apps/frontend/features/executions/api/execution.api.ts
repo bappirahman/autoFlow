@@ -7,3 +7,8 @@ export const fetchHttpRequestStatusToken = async (): Promise<Realtime.Subscribe.
   const response = await api.get(API_ENDPOINTS.EXECUTIONS.httpRequestStatusToken());
   return response.data;
 };
+
+export const fetchManualTriggerStatusToken = async (): Promise<Realtime.Subscribe.Token> => {
+  const response = await api.get(API_ENDPOINTS.EXECUTIONS.manualTriggerStatusToken());
+  return response.data;
+};
