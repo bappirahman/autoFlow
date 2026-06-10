@@ -4,8 +4,6 @@ import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
 
 import { cn } from '@/lib/utils';
 
-export type { NodeStatusEnum as NodeStatus };
-
 export type NodeStatusVariant = 'overlay' | 'border';
 
 export type NodeStatusIndicatorProps = {

@@ -1,6 +1,8 @@
 import type { NodeExecutor } from '@/types';
 import { NonRetriableError } from 'inngest';
 import Handlebars from 'handlebars';
+import { httpRequestChannel } from '@/lib/inngest/channels/http-request';
+import { NodeStatus } from '@autoflow/shared';
 
 Handlebars.registerHelper('json', (context) => {
   const jsonString = JSON.stringify(context ?? null, null, 2);
@@ -16,22 +18,47 @@ type HttpRequestData = {
 
 export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
   data,
+  nodeId,
   context,
   step,
+  publish,
 }) => {
-  // TODO: publish 'loading' state for http request node
+  await publish(
+    httpRequestChannel().status({
+      nodeId,
+      status: NodeStatus.LOADING,
+    }),
+  );
 
   if (!data.variableName) {
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: NodeStatus.ERROR,
+      }),
+    );
     throw new NonRetriableError(
       'HTTP Request Node: Variable name is required for HTTP Request node',
     );
   }
   if (!data.endpoint) {
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: NodeStatus.ERROR,
+      }),
+    );
     throw new NonRetriableError(
       'HTTP Request Node: Endpoint is required for HTTP Request node',
     );
   }
   if (!data.method) {
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: NodeStatus.ERROR,
+      }),
+    );
     throw new NonRetriableError(
       'HTTP Request Node: Method is required for HTTP Request node',
     );
@@ -70,5 +97,13 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
       [data.variableName]: responsePayload,
     };
   });
+
+  await publish(
+    httpRequestChannel().status({
+      nodeId,
+      status: NodeStatus.SUCCESS,
+    }),
+  );
+
   return result;
 };
