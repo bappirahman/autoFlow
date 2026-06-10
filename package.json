@@ -12,6 +12,7 @@
     "dev:all": "mprocs",
     "lint": "pnpm -r run lint",
     "build:packages": "pnpm --filter './libs/**' -r run build",
+    "watch:packages": "pnpm --filter './libs/**' -r run watch",
     "build": "pnpm -r run build",
     "test": "pnpm -w -r --filter ./apps/** run test",
     "prepare": "husky",

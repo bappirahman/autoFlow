@@ -7,6 +7,7 @@ export const executorRegistry: Record<NodeTypeEnum, NodeExecutor> = {
   [NodeType.INITIAL]: manualTriggerExecutor, // Initial will never be executed, but we need to have an executor for it to avoid errors during topological sort
   [NodeType.MANUAL_TRIGGER]: manualTriggerExecutor,
   [NodeType.HTTP_REQUEST]: httpRequestExecutor,
+  [NodeType.GOOGLE_FORM_TRIGGER]: manualTriggerExecutor, // Google Form Trigger will use the same executor as Manual Trigger since it also creates an execution and waits for it to be triggered
 };
 
 export const getExecutor = (type: NodeTypeEnum): NodeExecutor => {

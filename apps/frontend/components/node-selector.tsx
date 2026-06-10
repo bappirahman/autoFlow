@@ -1,5 +1,6 @@
 'use client';
 
+import { GoogleFormIcon } from '@/components/icons/google-form-icon';
 import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
@@ -29,6 +30,12 @@ const triggerNodes: NodeTypeOption[] = [
     label: 'Trigger manually',
     description: 'Start the workflow manually without any trigger.',
     icon: MousePointerIcon,
+  },
+  {
+    type: NodeType.GOOGLE_FORM_TRIGGER,
+    label: 'Google Form Trigger',
+    description: 'Start the workflow when a Google Form is submitted.',
+    icon: GoogleFormIcon,
   },
 ];
 
