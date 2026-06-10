@@ -11,6 +11,7 @@
     "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:frontend\"",
     "dev:all": "mprocs",
     "lint": "pnpm -r run lint",
+    "build:packages": "pnpm --filter './libs/**' -r run build",
     "build": "pnpm -r run build",
     "test": "pnpm -w -r --filter ./apps/** run test",
     "prepare": "husky",

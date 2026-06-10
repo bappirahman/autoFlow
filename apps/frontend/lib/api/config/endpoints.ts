@@ -8,6 +8,10 @@ export const API_ENDPOINTS = {
     remove: (id: string) => `/workflows/${id}`,
     execute: (id: string) => `/workflows/${id}/execute`,
   },
+  EXECUTIONS: {
+    httpRequestStatusToken: () => '/realtime/http-request/status',
+    manualTriggerStatusToken: () => '/realtime/manual-trigger/status',
+  },
   USER: {
     base: '/users',
     getAll: () => `/users`,

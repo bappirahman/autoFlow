@@ -1,11 +1,11 @@
 import type { ComponentProps, HTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utils';
-import { NodeStatus } from '@/components/react-flow/node-status-indicator';
+import { NodeStatusEnum, NodeStatus } from '@autoflow/shared';
 import { CheckCircle2, Loader2Icon, XCircleIcon } from 'lucide-react';
 
 interface BaseNodeProps extends HTMLAttributes<HTMLDivElement> {
-  status?: NodeStatus;
+  status?: NodeStatusEnum;
 }
 
 export function BaseNode({ className, status, ...props }: BaseNodeProps) {
@@ -22,13 +22,13 @@ export function BaseNode({ className, status, ...props }: BaseNodeProps) {
       {...props}
     >
       {props.children}
-      {status === 'error' && (
+      {status === NodeStatus.ERROR && (
         <XCircleIcon className="absolute right-0.5 bottom-0.5 size-2 text-red-700 stroke-3" />
       )}
-      {status === 'success' && (
+      {status === NodeStatus.SUCCESS && (
         <CheckCircle2 className="absolute right-0.5 bottom-0.5 size-2 text-green-700 stroke-3" />
       )}
-      {status === 'loading' && (
+      {status === NodeStatus.LOADING && (
         <Loader2Icon className="absolute -right-0.5 -bottom-0.5 size-2 text-blue-700 stroke-3 animate-spin" />
       )}
     </div>

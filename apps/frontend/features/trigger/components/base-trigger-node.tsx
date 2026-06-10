@@ -2,10 +2,8 @@
 
 import { BaseHandle } from '@/components/react-flow/base-handle';
 import { BaseNode, BaseNodeContent } from '@/components/react-flow/base-node';
-import {
-  NodeStatus,
-  NodeStatusIndicator,
-} from '@/components/react-flow/node-status-indicator';
+import { NodeStatusIndicator } from '@/components/react-flow/node-status-indicator';
+import { NodeStatusEnum } from '@autoflow/shared';
 import { WorkflowNode } from '@/components/workflow-node';
 import { type NodeProps, Position, useReactFlow } from '@xyflow/react';
 import type { LucideIcon } from 'lucide-react';
@@ -18,7 +16,7 @@ interface BaseTriggerNodeProps extends NodeProps {
   name: string;
   description?: string;
   children?: ReactNode;
-  status?: NodeStatus;
+  status?: NodeStatusEnum;
   onSettings?: () => void;
   onDoubleClick?: () => void;
 }

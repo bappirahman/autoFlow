@@ -2,22 +2,19 @@
 
 import { BaseHandle } from '@/components/react-flow/base-handle';
 import { BaseNode, BaseNodeContent } from '@/components/react-flow/base-node';
-import {
-  NodeStatusIndicator,
-  type NodeStatus,
-} from '@/components/react-flow/node-status-indicator';
+import { NodeStatusIndicator } from '@/components/react-flow/node-status-indicator';
 import { WorkflowNode } from '@/components/workflow-node';
 import { type NodeProps, Position, useReactFlow } from '@xyflow/react';
 import type { LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import { memo, type ReactNode } from 'react';
-
+import { type NodeStatusEnum, NodeStatus } from '@autoflow/shared';
 interface BaseExecutionNodeProps extends NodeProps {
   icon: LucideIcon | string;
   name: string;
   description?: string;
   children?: ReactNode;
-  status?: NodeStatus;
+  status?: NodeStatusEnum;
   onSettings?: () => void;
   onDoubleClick?: () => void;
 }
@@ -28,7 +25,7 @@ export const BaseExecutionNode = memo<BaseExecutionNodeProps>(
     icon: Icon,
     name,
     description,
-    status = 'initial',
+    status = NodeStatus.INITIAL,
     children,
     onSettings,
     onDoubleClick,
