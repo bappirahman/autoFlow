@@ -11,6 +11,7 @@ export * from './node.schema';
 export * from './connection.schema';
 export * from './credential.schema';
 export * from './execution.schema';
+export * from './webhook.schema';
 export * from './enums/node-type.enum';
 export * from './enums/credential-type.enum';
 export * from './enums/execution-status.enum';
@@ -26,6 +27,7 @@ export type { Node, NewNode } from './node.schema';
 export type { Connection, NewConnection } from './connection.schema';
 export type { Credential, NewCredential } from './credential.schema';
 export type { Execution, NewExecution } from './execution.schema';
+export type { Webhook, NewWebhook } from './webhook.schema';
 
 export const authSchema = {
   user,

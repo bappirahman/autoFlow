@@ -8,6 +8,7 @@ import { subscription } from './subscription.schema';
 import { node } from './node.schema';
 import { connection } from './connection.schema';
 import { execution } from './execution.schema';
+import { webhook } from './webhook.schema';
 
 // ─── User ────────────────────────────────────────────────────────────────────
 // One user owns many sessions, accounts, workflows, credentials, and subscriptions.
@@ -47,7 +48,7 @@ export const subscriptionRelations = relations(subscription, ({ one }) => ({
 }));
 
 // ─── Workflow ────────────────────────────────────────────────────────────────
-// A workflow belongs to one user and owns many nodes, connections, and executions.
+// A workflow belongs to one user and owns many nodes, connections, executions, and webhooks.
 export const workflowRelations = relations(workflow, ({ one, many }) => ({
   user: one(user, {
     fields: [workflow.userId],
@@ -56,6 +57,16 @@ export const workflowRelations = relations(workflow, ({ one, many }) => ({
   nodes: many(node),
   connections: many(connection),
   executions: many(execution),
+  webhooks: many(webhook),
+}));
+
+// ─── Webhook ─────────────────────────────────────────────────────────────────
+// Each webhook belongs to one workflow.
+export const webhookRelations = relations(webhook, ({ one }) => ({
+  workflow: one(workflow, {
+    fields: [webhook.workflowId],
+    references: [workflow.id],
+  }),
 }));
 
 // ─── Credential ──────────────────────────────────────────────────────────────

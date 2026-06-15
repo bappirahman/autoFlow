@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,26 +8,155 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { generateGoogleFormScript } from '@/features/trigger/components/google-form-trigger/utils';
+import { useWebhook } from '@/features/trigger/hooks/use-webhook';
+import { CopyIcon, Loader2Icon } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const ManualTriggerDialog = ({ open, onOpenChange }: Props) => {
+export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
+  const params = useParams();
+  const workflowId = params.workflowId as string;
+
+  const { data: webhook, isLoading } = useWebhook(workflowId, open);
+
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const webhookUrl = webhook
+    ? `${baseUrl}/webhooks/google-form?secret=${webhook.secret}`
+    : null;
+
+  const copyToClipboard = () => {
+    if (!webhookUrl) return;
+    try {
+      navigator.clipboard.writeText(webhookUrl);
+      toast.success('Webhook URL copied to clipboard');
+    } catch {
+      toast.error('Failed to copy webhook URL to clipboard.');
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Manual Trigger</DialogTitle>
+          <DialogTitle>Google Form Trigger Configuration</DialogTitle>
           <DialogDescription>
-            Configure the manual trigger settings here.
+            Use this webhook URL in your Google Form&apos;s Apps Script to set up
+            your Google Form trigger. Whenever the form is submitted, it will
+            send a request to this URL to start the workflow.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-          <p className="text-sm text-muted-foreground">
-            No Configuration available for Manual Trigger
-          </p>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="webhook-url">Webhook URL</Label>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Input
+                  id="webhook-url"
+                  value={webhookUrl ?? ''}
+                  readOnly
+                  className="font-mono text-sm pr-8"
+                  placeholder={isLoading ? '' : 'No webhook URL'}
+                />
+                {isLoading && (
+                  <Loader2Icon className="absolute right-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground animate-spin" />
+                )}
+              </div>
+              <Button
+                onClick={copyToClipboard}
+                variant="outline"
+                type="button"
+                size="icon"
+                disabled={!webhookUrl}
+              >
+                <CopyIcon className="size-4" />
+              </Button>
+            </div>
+          </div>
+          <div className="rounded-lg bg-muted p-4 space-y-2">
+            <h4 className="font-medium text-sm">
+              How to connect your Google Form
+            </h4>
+            <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+              <li>Copy the webhook URL above and open your Google Form.</li>
+              <li>
+                Go to{' '}
+                <span className="text-foreground font-medium">
+                  Extensions → Apps Script
+                </span>
+                .
+              </li>
+              <li>
+                In the script editor, call{' '}
+                <span className="text-foreground font-mono text-xs">
+                  UrlFetchApp.fetch()
+                </span>{' '}
+                with the webhook URL on form submit.
+              </li>
+              <li>
+                Save the script, then add an{' '}
+                <span className="text-foreground font-medium">
+                  On form submit
+                </span>{' '}
+                trigger from the Triggers menu.
+              </li>
+              <li>Submit the form once to verify the workflow starts.</li>
+            </ol>
+          </div>
+          <div className="rounded-lg bg-muted p-4 space-y-3">
+            <h4 className="font-medium text-sm">Google Apps Script:</h4>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={!webhookUrl}
+              onClick={async () => {
+                if (!webhookUrl) return;
+                const script = generateGoogleFormScript(webhookUrl);
+                try {
+                  await navigator.clipboard.writeText(script);
+                  toast.success('Script copied to clipboard');
+                } catch {
+                  toast.error('Failed to copy Script to clipboard');
+                }
+              }}
+            >
+              <CopyIcon className="size-4 mr-2" />
+              Copy Google Apps Script
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              This script includes your webhook URL and handles form submissions
+            </p>
+          </div>
+          <div className="rounded-lg bg-muted p-4 space-y-2">
+            <h4 className="font-medium text-sm">Available Variables</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>
+                <code className="bg-background px-1 py-0.5 rounded">
+                  {'{{googleForm.respondentEmail}}'}
+                </code>
+                - Respondent&apos;s email
+              </li>
+              <li>
+                <code className="bg-background px-1 py-0.5 rounded">
+                  {"{{googleForm.responses['Question Name']}}"}
+                </code>
+                - Specific answer
+              </li>
+              <li>
+                <code className="bg-background px-1 py-0.5 rounded">
+                  {'{{json googleForm.responses}}'}
+                </code>{' '}
+                - All responses as JSON
+              </li>
+            </ul>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

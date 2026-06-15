@@ -11,6 +11,10 @@ export const API_ENDPOINTS = {
   EXECUTIONS: {
     httpRequestStatusToken: () => '/realtime/http-request/status',
     manualTriggerStatusToken: () => '/realtime/manual-trigger/status',
+    googleFormTriggerStatusToken: () => '/realtime/google-form-trigger/status',
+  },
+  WEBHOOKS: {
+    getOrCreate: (workflowId: string) => `/webhooks/${workflowId}`,
   },
   USER: {
     base: '/users',
