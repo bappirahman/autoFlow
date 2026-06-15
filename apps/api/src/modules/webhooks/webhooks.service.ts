@@ -1,4 +1,5 @@
 import { inngest } from '@/lib/inngest/client';
+import { InngestEvents } from '@/lib/inngest/events';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { WebhooksRepository } from './webhooks.repository';
 import { WorkflowsRepository } from '@/modules/workflows/workflows.repository';
@@ -40,7 +41,7 @@ export class WebhooksService {
     };
 
     const { ids } = await inngest.send({
-      name: 'workflows/execute.workflow',
+      name: InngestEvents.EXECUTE_WORKFLOW,
       data: {
         workflowId: webhook.workflowId,
         userId: webhook.userId,
