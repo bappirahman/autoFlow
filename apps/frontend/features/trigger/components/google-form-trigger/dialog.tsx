@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { generateGoogleFormScript } from '@/features/trigger/components/google-form-trigger/utils';
 import { useWebhook } from '@/features/trigger/hooks/use-webhook';
-import { CopyIcon, Loader2Icon } from 'lucide-react';
+import { CopyIcon, EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface Props {
@@ -25,11 +26,15 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
   const params = useParams();
   const workflowId = params.workflowId as string;
 
+  const [secretVisible, setSecretVisible] = useState(false);
   const { data: webhook, isLoading } = useWebhook(workflowId, open);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const webhookUrl = webhook
     ? `${baseUrl}/webhooks/google-form?secret=${webhook.secret}`
+    : null;
+  const maskedWebhookUrl = webhook
+    ? `${baseUrl}/webhooks/google-form?secret=${'•'.repeat(webhook.secret.length)}`
     : null;
 
   const copyToClipboard = () => {
@@ -48,8 +53,8 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
         <DialogHeader>
           <DialogTitle>Google Form Trigger Configuration</DialogTitle>
           <DialogDescription>
-            Use this webhook URL in your Google Form&apos;s Apps Script to set up
-            your Google Form trigger. Whenever the form is submitted, it will
+            Use this webhook URL in your Google Form&apos;s Apps Script to set
+            up your Google Form trigger. Whenever the form is submitted, it will
             send a request to this URL to start the workflow.
           </DialogDescription>
         </DialogHeader>
@@ -60,13 +65,31 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
               <div className="relative flex-1">
                 <Input
                   id="webhook-url"
-                  value={webhookUrl ?? ''}
+                  value={
+                    secretVisible
+                      ? (webhookUrl ?? '')
+                      : (maskedWebhookUrl ?? '')
+                  }
                   readOnly
                   className="font-mono text-sm pr-8"
                   placeholder={isLoading ? '' : 'No webhook URL'}
                 />
-                {isLoading && (
+                {isLoading ? (
                   <Loader2Icon className="absolute right-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground animate-spin" />
+                ) : (
+                  webhookUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setSecretVisible((v) => !v)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {secretVisible ? (
+                        <EyeOffIcon className="size-4" />
+                      ) : (
+                        <EyeIcon className="size-4" />
+                      )}
+                    </button>
+                  )
                 )}
               </div>
               <Button
