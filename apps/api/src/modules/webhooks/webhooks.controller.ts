@@ -8,6 +8,7 @@ import {
   Query,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Public } from '@thallesp/nestjs-better-auth';
 import { WebhooksService } from './webhooks.service';
 import { User } from '@/common/decorators/user.decorator';
 
@@ -24,6 +25,7 @@ export class WebhooksController {
     return this.webhooksService.registerWebhook(workflowId, userId);
   }
 
+  @Public()
   @Post('google-form')
   async handleGoogleFormSubmission(
     @Query('secret') secret: string | undefined,
