@@ -121,7 +121,10 @@ export class WorkflowsRepository {
 
         if (toDelete.length) {
           await tx.delete(node).where(
-            inArray(node.id, toDelete.map((n) => n.id)),
+            inArray(
+              node.id,
+              toDelete.map((n) => n.id),
+            ),
           );
         }
 
@@ -141,7 +144,11 @@ export class WorkflowsRepository {
         for (const n of toUpdate) {
           await tx
             .update(node)
-            .set({ position: n.position, data: n.data ?? {}, updatedAt: new Date() })
+            .set({
+              position: n.position,
+              data: n.data ?? {},
+              updatedAt: new Date(),
+            })
             .where(eq(node.id, n.id));
         }
       }
