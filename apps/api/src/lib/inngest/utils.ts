@@ -28,3 +28,6 @@ export const topologicalSort = (
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
   return sortedNodeIds.map((id) => nodeMap.get(id)!).filter(Boolean);
 };
+
+export const getChannelKey = (userId: string, channelName: string) =>
+  `${channelName}:${userId}`;

@@ -1,5 +1,6 @@
 import { WorkflowsRepository } from '@/modules/workflows/workflows.repository';
 import { inngest } from '@/lib/inngest/client';
+import { InngestEvents } from '@/lib/inngest/events';
 import { GetAllWorkflowsDto } from '@/modules/workflows/dto/get-all-workflows.dto';
 import { UpdateWorkflowNameDto } from '@/modules/workflows/dto/update-workflow-name.dto';
 import { Injectable } from '@nestjs/common';
@@ -33,7 +34,7 @@ export class WorkflowsService {
 
   async executeWorkflow(workflowId: string, userId: string) {
     const { ids } = await inngest.send({
-      name: 'workflows/execute.workflow',
+      name: InngestEvents.EXECUTE_WORKFLOW,
       data: { workflowId, userId },
     });
 

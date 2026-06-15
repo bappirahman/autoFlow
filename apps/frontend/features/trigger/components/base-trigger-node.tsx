@@ -3,7 +3,7 @@
 import { BaseHandle } from '@/components/react-flow/base-handle';
 import { BaseNode, BaseNodeContent } from '@/components/react-flow/base-node';
 import { NodeStatusIndicator } from '@/components/react-flow/node-status-indicator';
-import { NodeStatusEnum } from '@autoflow/shared';
+import { type NodeStatusEnum } from '@autoflow/shared';
 import { WorkflowNode } from '@/components/workflow-node';
 import { type NodeProps, Position, useReactFlow } from '@xyflow/react';
 import type { LucideIcon } from 'lucide-react';
@@ -12,7 +12,7 @@ import { memo, type ReactNode } from 'react';
 
 interface BaseTriggerNodeProps extends NodeProps {
   id: string;
-  icon: LucideIcon | string;
+  icon: LucideIcon | string | React.ComponentType<{ className?: string }>;
   name: string;
   description?: string;
   children?: ReactNode;
@@ -48,7 +48,11 @@ export const BaseTriggerNode = memo(
         onDelete={handleDelete}
         onSettings={onSettings}
       >
-        <NodeStatusIndicator status={status} variant="border" className="rounded-l-2xl">
+        <NodeStatusIndicator
+          status={status}
+          variant="border"
+          className="rounded-l-2xl"
+        >
           <BaseNode
             onDoubleClick={onDoubleClick}
             className="rounded-l-2xl relative group"

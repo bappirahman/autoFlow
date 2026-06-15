@@ -1,6 +1,7 @@
 import { getApp } from '@/app-ref';
 import { getExecutor } from '@/lib/executor-registry';
 import { inngest } from '@/lib/inngest/client';
+import { InngestEvents } from '@/lib/inngest/events';
 import { topologicalSort } from '@/lib/inngest/utils';
 import { WorkflowsRepository } from '@/modules/workflows/workflows.repository';
 import type { NodeTypeEnum } from '@autoflow/shared';
@@ -14,7 +15,7 @@ export const executeWorkflow = inngest.createFunction(
     description: 'A function to execute a workflow',
     retries: 0, // TODO: change retry for production
   },
-  { event: 'workflows/execute.workflow' },
+  { event: InngestEvents.EXECUTE_WORKFLOW },
   async ({ event, step, publish }) => {
     const eventId = event.id as string;
     const { workflowId, userId, initialData } = event.data as {
