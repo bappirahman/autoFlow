@@ -11,8 +11,7 @@ export const GoogleFormTrigger = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { refreshToken } = useGoogleFormTriggerStatusToken();
 
-  const nodeStatus = 'initial';
-  useNodeStatus({
+  const nodeStatus = useNodeStatus({
     nodeId: props.id,
     topic: 'status',
     refreshToken,
