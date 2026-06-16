@@ -15,6 +15,7 @@ export * from './webhook.schema';
 export * from './enums/node-type.enum';
 export * from './enums/credential-type.enum';
 export * from './enums/execution-status.enum';
+export * from './enums/webhook-provider.enum';
 export * from './relations';
 
 export type { User, NewUser } from './user.schema';
