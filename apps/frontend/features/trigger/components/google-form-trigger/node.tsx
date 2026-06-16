@@ -7,7 +7,7 @@ import { GoogleFormTriggerDialog } from '@/features/trigger/components/google-fo
 import { NodeProps } from '@xyflow/react';
 import { memo, useState } from 'react';
 
-export const GoogleFormTrigger = memo((props: NodeProps) => {
+export const GoogleFormTriggerNode = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { refreshToken } = useGoogleFormTriggerStatusToken();
 
@@ -21,7 +21,7 @@ export const GoogleFormTrigger = memo((props: NodeProps) => {
 
   return (
     <>
-      <GoogleFormTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      <GoogleFormTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} nodeId={props.id} />
       <BaseTriggerNode
         {...props}
         icon={GoogleFormIcon}
@@ -35,4 +35,4 @@ export const GoogleFormTrigger = memo((props: NodeProps) => {
   );
 });
 
-GoogleFormTrigger.displayName = 'GoogleFormTrigger';
+GoogleFormTriggerNode.displayName = 'GoogleFormTriggerNode';

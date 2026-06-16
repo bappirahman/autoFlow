@@ -11,30 +11,27 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { generateGoogleFormScript } from '@/features/trigger/components/google-form-trigger/utils';
-import { useWebhook } from '@/features/trigger/hooks/use-webhook';
+import { useWebhook } from '@/features/webhooks/hooks/use-webhook';
 import { CopyIcon, EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  nodeId: string;
 }
 
-export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
-  const params = useParams();
-  const workflowId = params.workflowId as string;
-
+export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) => {
   const [secretVisible, setSecretVisible] = useState(false);
-  const { data: webhook, isLoading } = useWebhook(workflowId, open);
+  const { data: webhook, isLoading } = useWebhook(nodeId, 'google_form', open);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const webhookUrl = webhook
-    ? `${baseUrl}/webhooks/google-form?secret=${webhook.secret}`
+    ? `${baseUrl}/webhooks/${webhook.provider}/${webhook.secret}`
     : null;
   const maskedWebhookUrl = webhook
-    ? `${baseUrl}/webhooks/google-form?secret=${'•'.repeat(webhook.secret.length)}`
+    ? `${baseUrl}/webhooks/${webhook.provider}/${'•'.repeat(webhook.secret.length)}`
     : null;
 
   const copyToClipboard = () => {

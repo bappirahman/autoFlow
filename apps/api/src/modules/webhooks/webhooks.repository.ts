@@ -1,7 +1,8 @@
 import { DRIZZLE_INJECTION_TOKEN } from '@/db';
-import { webhook, workflow } from '@/db/schema';
+import { webhook, node, workflow } from '@/db/schema';
+import type { WebhookProviderEnum } from '@/common/enums/webhook-provider';
 import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import type * as schema from '@/db/schema';
 import { randomBytes } from 'node:crypto';
@@ -14,18 +15,23 @@ export class WebhooksRepository {
     @Inject(DRIZZLE_INJECTION_TOKEN) private readonly db: DrizzleDb,
   ) {}
 
-  async create(workflowId: string) {
+  async createOrGet(
+    nodeId: string,
+    workflowId: string,
+    provider: WebhookProviderEnum,
+  ) {
     const secret = randomBytes(32).toString('hex');
-    return this.db
+    const inserted = await this.db
       .insert(webhook)
-      .values({ workflowId, secret })
+      .values({ nodeId, workflowId, provider, secret })
+      .onConflictDoNothing({ target: webhook.nodeId })
       .returning()
       .then((res) => res[0]);
-  }
 
-  async findByWorkflowId(workflowId: string) {
+    if (inserted) return inserted;
+
     return this.db.query.webhook.findFirst({
-      where: eq(webhook.workflowId, workflowId),
+      where: eq(webhook.nodeId, nodeId),
     });
   }
 
@@ -33,7 +39,9 @@ export class WebhooksRepository {
     return this.db
       .select({
         id: webhook.id,
+        nodeId: webhook.nodeId,
         workflowId: webhook.workflowId,
+        provider: webhook.provider,
         secret: webhook.secret,
         createdAt: webhook.createdAt,
         userId: workflow.userId,
@@ -45,10 +53,20 @@ export class WebhooksRepository {
       .then((res) => res[0]);
   }
 
-  async deleteByWorkflowId(workflowId: string) {
+  async findNodeOwner(nodeId: string, userId: string) {
+    return this.db
+      .select({ nodeId: node.id, workflowId: node.workflowId })
+      .from(node)
+      .innerJoin(workflow, eq(node.workflowId, workflow.id))
+      .where(and(eq(node.id, nodeId), eq(workflow.userId, userId)))
+      .limit(1)
+      .then((res) => res[0]);
+  }
+
+  async deleteByNodeId(nodeId: string) {
     return this.db
       .delete(webhook)
-      .where(eq(webhook.workflowId, workflowId))
+      .where(eq(webhook.nodeId, nodeId))
       .returning();
   }
 }
