@@ -5,6 +5,7 @@ import { manualTriggerChannel } from '@/lib/inngest/channels/manual-trigger';
 import { getSubscriptionToken, type Realtime } from '@inngest/realtime';
 import { UnauthorizedException, Controller, Get } from '@nestjs/common';
 import { googleFormTriggerChannel } from '@/lib/inngest/channels/google-form-trigger';
+import { stripeTriggerChannel } from '@/lib/inngest/channels/stripe-trigger';
 
 @Controller('realtime')
 export class InngestRealtimeController {
@@ -45,6 +46,19 @@ export class InngestRealtimeController {
 
     return getSubscriptionToken(inngest, {
       channel: googleFormTriggerChannel(userId),
+      topics: ['status'],
+    });
+  }
+  @Get('stripe-trigger/status')
+  async getStripeTriggerStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: stripeTriggerChannel(userId),
       topics: ['status'],
     });
   }
