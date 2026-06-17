@@ -6,4 +6,6 @@ export const executionKeys = {
     [...executionKeys.all, 'manual-trigger-status-token'] as const,
   googleFormTriggerStatusToken: () =>
     [...executionKeys.all, 'google-form-trigger-status-token'] as const,
+  stripeTriggerStatusToken: () =>
+    [...executionKeys.all, 'stripe-trigger-status-token'] as const,
 };
