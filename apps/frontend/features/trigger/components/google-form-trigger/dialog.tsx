@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { generateGoogleFormScript } from '@/features/trigger/components/google-form-trigger/utils';
-import { useWebhook } from '@/features/webhooks/hooks/use-webhook';
-import { CopyIcon, EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { generateGoogleFormScript } from "@/features/trigger/components/google-form-trigger/utils";
+import { useWebhook } from "@/features/webhooks/hooks/use-webhook";
+import { CopyIcon, EyeIcon, EyeOffIcon, Loader2Icon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -22,25 +22,29 @@ interface Props {
   nodeId: string;
 }
 
-export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) => {
+export const GoogleFormTriggerDialog = ({
+  open,
+  onOpenChange,
+  nodeId,
+}: Props) => {
   const [secretVisible, setSecretVisible] = useState(false);
-  const { data: webhook, isLoading } = useWebhook(nodeId, 'google_form', open);
+  const { data: webhook, isLoading } = useWebhook(nodeId, "google_form", open);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const webhookUrl = webhook
     ? `${baseUrl}/webhooks/${webhook.provider}/${webhook.secret}`
     : null;
   const maskedWebhookUrl = webhook
-    ? `${baseUrl}/webhooks/${webhook.provider}/${'•'.repeat(webhook.secret.length)}`
+    ? `${baseUrl}/webhooks/${webhook.provider}/${"•".repeat(webhook.secret.length)}`
     : null;
 
   const copyToClipboard = () => {
     if (!webhookUrl) return;
     try {
       navigator.clipboard.writeText(webhookUrl);
-      toast.success('Webhook URL copied to clipboard');
+      toast.success("Webhook URL copied to clipboard");
     } catch {
-      toast.error('Failed to copy webhook URL to clipboard.');
+      toast.error("Failed to copy webhook URL to clipboard.");
     }
   };
 
@@ -64,12 +68,12 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) =
                   id="webhook-url"
                   value={
                     secretVisible
-                      ? (webhookUrl ?? '')
-                      : (maskedWebhookUrl ?? '')
+                      ? (webhookUrl ?? "")
+                      : (maskedWebhookUrl ?? "")
                   }
                   readOnly
                   className="font-mono text-sm pr-8"
-                  placeholder={isLoading ? '' : 'No webhook URL'}
+                  placeholder={isLoading ? "" : "No webhook URL"}
                 />
                 {isLoading ? (
                   <Loader2Icon className="absolute right-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground animate-spin" />
@@ -107,24 +111,24 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) =
             <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
               <li>Copy the webhook URL above and open your Google Form.</li>
               <li>
-                Go to{' '}
+                Go to{" "}
                 <span className="text-foreground font-medium">
                   Extensions → Apps Script
                 </span>
                 .
               </li>
               <li>
-                In the script editor, call{' '}
+                In the script editor, call{" "}
                 <span className="text-foreground font-mono text-xs">
                   UrlFetchApp.fetch()
-                </span>{' '}
+                </span>{" "}
                 with the webhook URL on form submit.
               </li>
               <li>
-                Save the script, then add an{' '}
+                Save the script, then add an{" "}
                 <span className="text-foreground font-medium">
                   On form submit
-                </span>{' '}
+                </span>{" "}
                 trigger from the Triggers menu.
               </li>
               <li>Submit the form once to verify the workflow starts.</li>
@@ -141,9 +145,9 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) =
                 const script = generateGoogleFormScript(webhookUrl);
                 try {
                   await navigator.clipboard.writeText(script);
-                  toast.success('Script copied to clipboard');
+                  toast.success("Script copied to clipboard");
                 } catch {
-                  toast.error('Failed to copy Script to clipboard');
+                  toast.error("Failed to copy Script to clipboard");
                 }
               }}
             >
@@ -159,7 +163,7 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) =
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{googleForm.respondentEmail}}'}
+                  {"{{googleForm.respondentEmail}}"}
                 </code>
                 - Respondent&apos;s email
               </li>
@@ -171,8 +175,8 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange, nodeId }: Props) =
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{json googleForm.responses}}'}
-                </code>{' '}
+                  {"{{json googleForm.responses}}"}
+                </code>{" "}
                 - All responses as JSON
               </li>
             </ul>

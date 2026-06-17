@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { type ReactNode } from 'react';
+import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { type ReactNode } from "react";
 
-import { BaseNode } from '@/components/react-flow/base-node';
+import { BaseNode } from "@/components/react-flow/base-node";
 
 export type PlaceholderNodeProps = Partial<NodeProps> & {
   children?: ReactNode;
@@ -19,13 +19,13 @@ export function PlaceholderNode({ children, onClick }: PlaceholderNodeProps) {
       {children}
       <Handle
         type="target"
-        style={{ visibility: 'hidden' }}
+        style={{ visibility: "hidden" }}
         position={Position.Top}
         isConnectable={false}
       />
       <Handle
         type="source"
-        style={{ visibility: 'hidden' }}
+        style={{ visibility: "hidden" }}
         position={Position.Bottom}
         isConnectable={false}
       />

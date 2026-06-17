@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,8 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { FieldError } from '@/components/ui/field';
+} from "@/components/ui/dialog";
+import { FieldError } from "@/components/ui/field";
 import {
   Form,
   FormControl,
@@ -17,33 +17,33 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { GEMINI_MODELS } from '@autoflow/shared';
-import { useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
-import z from 'zod';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { GEMINI_MODELS } from "@autoflow/shared";
+import { useEffect } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import z from "zod";
 
 const formSchema = z.object({
   variableName: z
     .string()
-    .min(1, { message: 'Variable name is required' })
+    .min(1, { message: "Variable name is required" })
     .regex(
       /^[a-zA-Z_][a-zA-Z0-9_]*$/,
-      'Variable name must start with a letter or underscore and contain only letters, numbers, and underscores',
+      "Variable name must start with a letter or underscore and contain only letters, numbers, and underscores",
     ),
   model: z.enum(GEMINI_MODELS),
   systemPrompt: z.string().optional(),
-  userPrompt: z.string().min(1, { message: 'User prompt is required' }),
+  userPrompt: z.string().min(1, { message: "User prompt is required" }),
 });
 
 export type GeminiFormValues = z.infer<typeof formSchema>;
@@ -64,28 +64,28 @@ export const GeminiDialog = ({
   const form = useForm<GeminiFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      variableName: defaultValues.variableName || '',
+      variableName: defaultValues.variableName || "",
       model: defaultValues.model || GEMINI_MODELS[0],
-      systemPrompt: defaultValues.systemPrompt || '',
-      userPrompt: defaultValues.userPrompt || '',
+      systemPrompt: defaultValues.systemPrompt || "",
+      userPrompt: defaultValues.userPrompt || "",
     },
   });
 
   useEffect(() => {
     if (open) {
       form.reset({
-        variableName: defaultValues.variableName || '',
+        variableName: defaultValues.variableName || "",
         model: defaultValues.model || GEMINI_MODELS[0],
-        systemPrompt: defaultValues.systemPrompt || '',
-        userPrompt: defaultValues.userPrompt || '',
+        systemPrompt: defaultValues.systemPrompt || "",
+        userPrompt: defaultValues.userPrompt || "",
       });
     }
   }, [open, defaultValues, form]);
 
   const watchVariableName = useWatch({
     control: form.control,
-    name: 'variableName',
-    defaultValue: 'myApiCall',
+    name: "variableName",
+    defaultValue: "myApiCall",
   });
 
   const handleSubmit = (values: GeminiFormValues) => {
@@ -118,7 +118,7 @@ export const GeminiDialog = ({
                   </FormControl>
                   <FormDescription>
                     use this variable name to reference the response data in
-                    subsequent nodes, e.g.{' '}
+                    subsequent nodes, e.g.{" "}
                     <code>{`{{${watchVariableName}.aiResponse}}`}</code>.
                   </FormDescription>
                   {fieldState.error && (
@@ -173,7 +173,7 @@ export const GeminiDialog = ({
                   <FormControl>
                     <Textarea
                       placeholder={
-                        'You are a helpful assistant that provides concise answers.'
+                        "You are a helpful assistant that provides concise answers."
                       }
                       className="min-h-[80px] font-mono text-sm"
                       {...field}
@@ -182,8 +182,8 @@ export const GeminiDialog = ({
                   <FormDescription>
                     The system prompt sets the behavior of the assistant. You
                     can use it to provide instructions, context, or examples to
-                    guide the assistant&apos;s responses. Use {'{{variables}}'}{' '}
-                    or {'{{json variables}}'} to stringify objects.
+                    guide the assistant&apos;s responses. Use {"{{variables}}"}{" "}
+                    or {"{{json variables}}"} to stringify objects.
                   </FormDescription>
                   {fieldState.error && (
                     <FieldError className="text-red-500">
@@ -203,7 +203,7 @@ export const GeminiDialog = ({
                   <FormControl>
                     <Textarea
                       placeholder={
-                        'What is the weather like in New York today? or Summarize the following text: {{myTextVariable}}'
+                        "What is the weather like in New York today? or Summarize the following text: {{myTextVariable}}"
                       }
                       className="min-h-[80px] font-mono text-sm"
                       {...field}
@@ -212,8 +212,8 @@ export const GeminiDialog = ({
                   <FormDescription>
                     The user prompt is the message you want to send to the
                     assistant. You can use it to ask questions, request
-                    information, or give instructions. Use {'{{variables}}'} or
-                    {'{{json variables}}'} to stringify objects.
+                    information, or give instructions. Use {"{{variables}}"} or
+                    {"{{json variables}}"} to stringify objects.
                   </FormDescription>
                   {fieldState.error && (
                     <FieldError className="text-red-500">

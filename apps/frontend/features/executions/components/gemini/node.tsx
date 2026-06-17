@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { GeminiIcon } from '@/components/icons/gemini-icon';
-import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
-import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
-import { memo, useState } from 'react';
-import { BaseExecutionNode } from '../base-execution-node';
-import { GEMINI_MODELS, type GeminiModel } from '@autoflow/shared';
-import { GeminiDialog, GeminiFormValues } from './dialog';
-import { useGeminiStatusToken } from '@/features/executions/hooks/use-gemini-status-token';
+import { GeminiIcon } from "@/components/icons/gemini-icon";
+import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
+import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
+import { memo, useState } from "react";
+import { BaseExecutionNode } from "../base-execution-node";
+import { GEMINI_MODELS, type GeminiModel } from "@autoflow/shared";
+import { GeminiDialog, GeminiFormValues } from "./dialog";
+import { useGeminiStatusToken } from "@/features/executions/hooks/use-gemini-status-token";
 
 type GeminiNodeData = {
   model?: GeminiModel;
@@ -24,7 +24,7 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    topic: 'status',
+    topic: "status",
     refreshToken,
   });
 
@@ -50,7 +50,7 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   const nodeData = props.data;
   const description = nodeData.userPrompt
     ? `${nodeData.model || GEMINI_MODELS[0]}: ${nodeData.userPrompt.slice(0, 50)}...`
-    : 'Not configured';
+    : "Not configured";
 
   return (
     <>
@@ -73,4 +73,4 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   );
 });
 
-GeminiNode.displayName = 'GeminiNode';
+GeminiNode.displayName = "GeminiNode";

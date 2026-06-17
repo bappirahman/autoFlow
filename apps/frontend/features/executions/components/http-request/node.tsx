@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useReactFlow, type Node, type NodeProps } from '@xyflow/react';
-import { GlobeIcon } from 'lucide-react';
-import { memo, useState } from 'react';
-import { BaseExecutionNode } from '../base-execution-node';
+import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
+import { GlobeIcon } from "lucide-react";
+import { memo, useState } from "react";
+import { BaseExecutionNode } from "../base-execution-node";
 import {
   HttpRequestFormValues,
   HttpRequestDialog,
-} from '@/features/executions/components/http-request/dialog';
-import { useHttpRequestStatusToken } from '@/features/executions/hooks/use-http-request-status-token';
-import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
+} from "@/features/executions/components/http-request/dialog";
+import { useHttpRequestStatusToken } from "@/features/executions/hooks/use-http-request-status-token";
+import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
 
 type HttpRequestNodeData = {
   endpoint?: string;
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: string;
 };
 
@@ -26,7 +26,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    topic: 'status',
+    topic: "status",
     refreshToken,
   });
 
@@ -51,8 +51,8 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
 
   const nodeData = props.data;
   const description = nodeData.endpoint
-    ? `${nodeData.method || 'GET'}: ${nodeData.endpoint}`
-    : 'Not configured';
+    ? `${nodeData.method || "GET"}: ${nodeData.endpoint}`
+    : "Not configured";
 
   return (
     <>
@@ -75,4 +75,4 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   );
 });
 
-HttpRequestNode.displayName = 'HttpRequestNode';
+HttpRequestNode.displayName = "HttpRequestNode";

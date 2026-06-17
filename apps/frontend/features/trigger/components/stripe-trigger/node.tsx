@@ -1,11 +1,11 @@
-'use client';
-import { StripeIcon } from '@/components/icons/stripe-icon';
-import { useStripeTriggerStatusToken } from '@/features/executions/hooks/use-stripe-trigger-status.token';
-import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
-import { BaseTriggerNode } from '@/features/trigger/components/base-trigger-node';
-import { StripeTriggerDialog } from '@/features/trigger/components/stripe-trigger/dialog';
-import { NodeProps } from '@xyflow/react';
-import { memo, useState } from 'react';
+"use client";
+import { StripeIcon } from "@/components/icons/stripe-icon";
+import { useStripeTriggerStatusToken } from "@/features/executions/hooks/use-stripe-trigger-status.token";
+import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
+import { BaseTriggerNode } from "@/features/trigger/components/base-trigger-node";
+import { StripeTriggerDialog } from "@/features/trigger/components/stripe-trigger/dialog";
+import { NodeProps } from "@xyflow/react";
+import { memo, useState } from "react";
 
 export const StripeTriggerNode = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -13,7 +13,7 @@ export const StripeTriggerNode = memo((props: NodeProps) => {
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    topic: 'status',
+    topic: "status",
     refreshToken,
   });
 
@@ -39,4 +39,4 @@ export const StripeTriggerNode = memo((props: NodeProps) => {
   );
 });
 
-StripeTriggerNode.displayName = 'StripeTriggerNode';
+StripeTriggerNode.displayName = "StripeTriggerNode";

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { BaseHandle } from '@/components/react-flow/base-handle';
-import { BaseNode, BaseNodeContent } from '@/components/react-flow/base-node';
-import { NodeStatusIndicator } from '@/components/react-flow/node-status-indicator';
-import { type NodeStatusEnum } from '@autoflow/shared';
-import { WorkflowNode } from '@/components/workflow-node';
-import { type NodeProps, Position, useReactFlow } from '@xyflow/react';
-import type { LucideIcon } from 'lucide-react';
-import Image from 'next/image';
-import { memo, type ReactNode } from 'react';
+import { BaseHandle } from "@/components/react-flow/base-handle";
+import { BaseNode, BaseNodeContent } from "@/components/react-flow/base-node";
+import { NodeStatusIndicator } from "@/components/react-flow/node-status-indicator";
+import { type NodeStatusEnum } from "@autoflow/shared";
+import { WorkflowNode } from "@/components/workflow-node";
+import { type NodeProps, Position, useReactFlow } from "@xyflow/react";
+import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { memo, type ReactNode } from "react";
 
 interface BaseTriggerNodeProps extends NodeProps {
   id: string;
@@ -27,7 +27,7 @@ export const BaseTriggerNode = memo(
     icon: Icon,
     name,
     description,
-    status = 'initial',
+    status = "initial",
     children,
     onSettings,
     onDoubleClick,
@@ -35,7 +35,7 @@ export const BaseTriggerNode = memo(
     const { setNodes, setEdges } = useReactFlow();
 
     const handleDelete = () => {
-      console.log('clicked');
+      console.log("clicked");
       setNodes((currentNodes) => currentNodes.filter((node) => node.id !== id));
       setEdges((currentEdges) =>
         currentEdges.filter((edge) => edge.source !== id && edge.target !== id),
@@ -59,7 +59,7 @@ export const BaseTriggerNode = memo(
             status={status}
           >
             <BaseNodeContent>
-              {typeof Icon === 'string' ? (
+              {typeof Icon === "string" ? (
                 <Image src={Icon} alt={`${name} icon`} width={16} height={16} />
               ) : (
                 <Icon className="size-4 text-muted-foreground" />
@@ -78,4 +78,4 @@ export const BaseTriggerNode = memo(
   },
 );
 
-BaseTriggerNode.displayName = 'BaseTriggerNode';
+BaseTriggerNode.displayName = "BaseTriggerNode";

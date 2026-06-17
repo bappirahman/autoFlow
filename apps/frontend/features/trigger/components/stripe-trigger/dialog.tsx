@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useWebhook } from '@/features/webhooks/hooks/use-webhook';
-import { CopyIcon, EyeIcon, EyeOffIcon, Loader2Icon } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useWebhook } from "@/features/webhooks/hooks/use-webhook";
+import { CopyIcon, EyeIcon, EyeOffIcon, Loader2Icon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -23,23 +23,23 @@ interface Props {
 
 export const StripeTriggerDialog = ({ open, onOpenChange, nodeId }: Props) => {
   const [secretVisible, setSecretVisible] = useState(false);
-  const { data: webhook, isLoading } = useWebhook(nodeId, 'stripe', open);
+  const { data: webhook, isLoading } = useWebhook(nodeId, "stripe", open);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const webhookUrl = webhook
     ? `${baseUrl}/webhooks/${webhook.provider}/${webhook.secret}`
     : null;
   const maskedWebhookUrl = webhook
-    ? `${baseUrl}/webhooks/${webhook.provider}/${'•'.repeat(webhook.secret.length)}`
+    ? `${baseUrl}/webhooks/${webhook.provider}/${"•".repeat(webhook.secret.length)}`
     : null;
 
   const copyToClipboard = () => {
     if (!webhookUrl) return;
     try {
       navigator.clipboard.writeText(webhookUrl);
-      toast.success('Webhook URL copied to clipboard');
+      toast.success("Webhook URL copied to clipboard");
     } catch {
-      toast.error('Failed to copy webhook URL to clipboard.');
+      toast.error("Failed to copy webhook URL to clipboard.");
     }
   };
 
@@ -63,12 +63,12 @@ export const StripeTriggerDialog = ({ open, onOpenChange, nodeId }: Props) => {
                   id="webhook-url"
                   value={
                     secretVisible
-                      ? (webhookUrl ?? '')
-                      : (maskedWebhookUrl ?? '')
+                      ? (webhookUrl ?? "")
+                      : (maskedWebhookUrl ?? "")
                   }
                   readOnly
                   className="font-mono text-sm pr-8"
-                  placeholder={isLoading ? '' : 'No webhook URL'}
+                  placeholder={isLoading ? "" : "No webhook URL"}
                 />
                 {isLoading ? (
                   <Loader2Icon className="absolute right-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground animate-spin" />
@@ -120,32 +120,32 @@ export const StripeTriggerDialog = ({ open, onOpenChange, nodeId }: Props) => {
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{stripe.amount}}'}
-                </code>{' '}
+                  {"{{stripe.amount}}"}
+                </code>{" "}
                 - Payment amount
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{stripe.currency}}'}
-                </code>{' '}
+                  {"{{stripe.currency}}"}
+                </code>{" "}
                 - Currency code
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{stripe.customerId}}'}
-                </code>{' '}
+                  {"{{stripe.customerId}}"}
+                </code>{" "}
                 - Customer ID
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{json stripe}}'}
-                </code>{' '}
+                  {"{{json stripe}}"}
+                </code>{" "}
                 - Full event data as JSON
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{stripe.eventType}}'}
-                </code>{' '}
+                  {"{{stripe.eventType}}"}
+                </code>{" "}
                 - Event type (e.g., payment_intent.succeeded)
               </li>
             </ul>

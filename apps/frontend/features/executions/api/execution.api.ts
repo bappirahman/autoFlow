@@ -1,7 +1,7 @@
-import { type Realtime } from '@inngest/realtime';
+import { type Realtime } from "@inngest/realtime";
 
-import { api } from '@/lib/api/config/axios';
-import { API_ENDPOINTS } from '@/lib/api/config/endpoints';
+import { api } from "@/lib/api/config/axios";
+import { API_ENDPOINTS } from "@/lib/api/config/endpoints";
 
 export const fetchHttpRequestStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {

@@ -1,11 +1,11 @@
-'use client';
-import { GoogleFormIcon } from '@/components/icons/google-form-icon';
-import { useGoogleFormTriggerStatusToken } from '@/features/executions/hooks/use-google-form-trigger-status.token';
-import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
-import { BaseTriggerNode } from '@/features/trigger/components/base-trigger-node';
-import { GoogleFormTriggerDialog } from '@/features/trigger/components/google-form-trigger/dialog';
-import { NodeProps } from '@xyflow/react';
-import { memo, useState } from 'react';
+"use client";
+import { GoogleFormIcon } from "@/components/icons/google-form-icon";
+import { useGoogleFormTriggerStatusToken } from "@/features/executions/hooks/use-google-form-trigger-status.token";
+import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
+import { BaseTriggerNode } from "@/features/trigger/components/base-trigger-node";
+import { GoogleFormTriggerDialog } from "@/features/trigger/components/google-form-trigger/dialog";
+import { NodeProps } from "@xyflow/react";
+import { memo, useState } from "react";
 
 export const GoogleFormTriggerNode = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -13,7 +13,7 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    topic: 'status',
+    topic: "status",
     refreshToken,
   });
 
@@ -21,7 +21,11 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
 
   return (
     <>
-      <GoogleFormTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} nodeId={props.id} />
+      <GoogleFormTriggerDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        nodeId={props.id}
+      />
       <BaseTriggerNode
         {...props}
         icon={GoogleFormIcon}
@@ -35,4 +39,4 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
   );
 });
 
-GoogleFormTriggerNode.displayName = 'GoogleFormTriggerNode';
+GoogleFormTriggerNode.displayName = "GoogleFormTriggerNode";

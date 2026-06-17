@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
 
 import {
   EmptyView,
@@ -12,18 +12,18 @@ import {
   EntitySearch,
   ErrorView,
   LoadingView,
-} from '@/components/entity-component';
+} from "@/components/entity-component";
 import {
   useCreateWorkflow,
   useRemoveWorkflow,
   useWorkflows,
-} from '@/features/workflows/hooks/use-workflows';
-import { useWorkflowsParams } from '@/features/workflows/hooks/use-workflows-params';
-import { type Workflow } from '@/features/workflows/types/workflow';
-import { useEntitySearch } from '@/hooks/use-entity-search';
-import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
-import { WorkflowIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from "@/features/workflows/hooks/use-workflows";
+import { useWorkflowsParams } from "@/features/workflows/hooks/use-workflows-params";
+import { type Workflow } from "@/features/workflows/types/workflow";
+import { useEntitySearch } from "@/hooks/use-entity-search";
+import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
+import { WorkflowIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const WorkflowsSearch = () => {
   const [params, setParams] = useWorkflowsParams();
@@ -181,9 +181,9 @@ export const WorkflowItem = ({ workflow }: WorkflowItemProps) => {
       title={name}
       subtitle={
         <>
-          Updated{' '}
+          Updated{" "}
           {formatDistanceToNow(new Date(updatedAt), { addSuffix: true })} &bull;
-          Created{' '}
+          Created{" "}
           {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
         </>
       }

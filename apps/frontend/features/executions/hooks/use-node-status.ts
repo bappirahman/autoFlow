@@ -1,8 +1,8 @@
-import type { Realtime } from '@inngest/realtime';
-import { useInngestSubscription } from '@inngest/realtime/hooks';
-import { useMemo } from 'react';
+import type { Realtime } from "@inngest/realtime";
+import { useInngestSubscription } from "@inngest/realtime/hooks";
+import { useMemo } from "react";
 
-import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
+import { NodeStatus, type NodeStatusEnum } from "@autoflow/shared";
 
 interface UseNodeStatusProps {
   nodeId: string;
@@ -28,12 +28,12 @@ export const useNodeStatus = ({
     const latestMessage = data
       .filter(
         (message) =>
-          message.kind === 'data' &&
+          message.kind === "data" &&
           message.topic === topic &&
           message.data.nodeId === nodeId,
       )
       .sort((a, b) => {
-        if (a.kind === 'data' && b.kind === 'data') {
+        if (a.kind === "data" && b.kind === "data") {
           return (
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
