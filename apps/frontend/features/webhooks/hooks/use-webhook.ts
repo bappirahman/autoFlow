@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { fetchWebhook } from '@/features/webhooks/api/webhook.api';
-import { webhookKeys } from '@/lib/query-keys/webhooks';
-import { useQuery } from '@tanstack/react-query';
+import { fetchWebhook } from "@/features/webhooks/api/webhook.api";
+import { webhookKeys } from "@/lib/query-keys/webhooks";
+import { useQuery } from "@tanstack/react-query";
 
 export const useWebhook = (nodeId: string, provider: string, enabled = true) =>
   useQuery({

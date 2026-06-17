@@ -1,11 +1,14 @@
 import { User } from '@/common/decorators/user.decorator';
 import { inngest } from '@/lib/inngest/client';
 import { httpRequestChannel } from '@/lib/inngest/channels/http-request';
-import { manualTriggerChannel } from '@/lib/inngest/channels/manual-trigger';
+import { manualChannel } from '@/lib/inngest/channels/manual';
 import { getSubscriptionToken, type Realtime } from '@inngest/realtime';
 import { UnauthorizedException, Controller, Get } from '@nestjs/common';
-import { googleFormTriggerChannel } from '@/lib/inngest/channels/google-form-trigger';
-import { stripeTriggerChannel } from '@/lib/inngest/channels/stripe-trigger';
+import { googleFormChannel } from '@/lib/inngest/channels/google-form';
+import { stripeChannel } from '@/lib/inngest/channels/stripe';
+import { geminiChannel } from '@/lib/inngest/channels/gemini';
+import { anthropicChannel } from '@/lib/inngest/channels/anthropic';
+import { openaiChannel } from '@/lib/inngest/channels/openai';
 
 @Controller('realtime')
 export class InngestRealtimeController {
@@ -32,7 +35,7 @@ export class InngestRealtimeController {
     }
 
     return getSubscriptionToken(inngest, {
-      channel: manualTriggerChannel(userId),
+      channel: manualChannel(userId),
       topics: ['status'],
     });
   }
@@ -45,7 +48,7 @@ export class InngestRealtimeController {
     }
 
     return getSubscriptionToken(inngest, {
-      channel: googleFormTriggerChannel(userId),
+      channel: googleFormChannel(userId),
       topics: ['status'],
     });
   }
@@ -58,7 +61,48 @@ export class InngestRealtimeController {
     }
 
     return getSubscriptionToken(inngest, {
-      channel: stripeTriggerChannel(userId),
+      channel: stripeChannel(userId),
+      topics: ['status'],
+    });
+  }
+  @Get('gemini/status')
+  async getGeminiExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: geminiChannel(userId),
+      topics: ['status'],
+    });
+  }
+
+  @Get('anthropic/status')
+  async getAnthropicExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: anthropicChannel(userId),
+      topics: ['status'],
+    });
+  }
+
+  @Get('openai/status')
+  async getOpenAIExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: openaiChannel(userId),
       topics: ['status'],
     });
   }

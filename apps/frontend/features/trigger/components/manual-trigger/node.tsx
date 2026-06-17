@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { BaseTriggerNode } from '@/features/trigger/components/base-trigger-node';
-import { ManualTriggerDialog } from '@/features/trigger/components/manual-trigger/dialog';
-import { useManualTriggerStatusToken } from '@/features/executions/hooks/use-manual-trigger-status-token';
-import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
-import { NodeProps } from '@xyflow/react';
-import { MousePointerIcon } from 'lucide-react';
-import { memo, useState } from 'react';
+import { BaseTriggerNode } from "@/features/trigger/components/base-trigger-node";
+import { ManualTriggerDialog } from "@/features/trigger/components/manual-trigger/dialog";
+import { useManualTriggerStatusToken } from "@/features/executions/hooks/use-manual-trigger-status-token";
+import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
+import { NodeProps } from "@xyflow/react";
+import { MousePointerIcon } from "lucide-react";
+import { memo, useState } from "react";
 
 export const ManualTriggerNode = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -14,7 +14,7 @@ export const ManualTriggerNode = memo((props: NodeProps) => {
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    topic: 'status',
+    topic: "status",
     refreshToken,
   });
 
@@ -35,4 +35,4 @@ export const ManualTriggerNode = memo((props: NodeProps) => {
   );
 });
 
-ManualTriggerNode.displayName = 'ManualTriggerNode';
+ManualTriggerNode.displayName = "ManualTriggerNode";

@@ -9,17 +9,20 @@ export const API_ENDPOINTS = {
     execute: (id: string) => `/workflows/${id}/execute`,
   },
   EXECUTIONS: {
-    httpRequestStatusToken: () => '/realtime/http-request/status',
-    manualTriggerStatusToken: () => '/realtime/manual-trigger/status',
-    googleFormTriggerStatusToken: () => '/realtime/google-form-trigger/status',
-    stripeTriggerStatusToken: () => '/realtime/stripe-trigger/status',
+    httpRequestStatusToken: () => "/realtime/http-request/status",
+    geminiStatusToken: () => "/realtime/gemini/status",
+    openaiStatusToken: () => "/realtime/openai/status",
+    anthropicStatusToken: () => "/realtime/anthropic/status",
+    manualTriggerStatusToken: () => "/realtime/manual-trigger/status",
+    googleFormTriggerStatusToken: () => "/realtime/google-form-trigger/status",
+    stripeTriggerStatusToken: () => "/realtime/stripe-trigger/status",
   },
   WEBHOOKS: {
     getOrCreate: (nodeId: string, provider: string) =>
       `/webhooks/${nodeId}/${provider}`,
   },
   USER: {
-    base: '/users',
+    base: "/users",
     getAll: () => `/users`,
     getById: (id: string) => `/users/${id}`,
     create: () => `/users`,

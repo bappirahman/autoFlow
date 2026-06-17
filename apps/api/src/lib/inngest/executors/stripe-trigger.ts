@@ -1,6 +1,7 @@
 import type { NodeExecutor } from '@/types';
-import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
-import { stripeTriggerChannel } from '@/lib/inngest/channels/stripe-trigger';
+import { NodeStatus } from '@autoflow/shared';
+import { createPublishStatus } from '@/lib/inngest/utils';
+import { stripeChannel } from '@/lib/inngest/channels/stripe';
 
 type StripeTriggerData = Record<string, unknown>;
 
@@ -11,14 +12,11 @@ export const stripeTriggerExecutor: NodeExecutor<StripeTriggerData> = async ({
   step,
   publish,
 }) => {
-  const publishStatus = async (status: NodeStatusEnum) => {
-    await publish(
-      stripeTriggerChannel(userId).status({
-        nodeId,
-        status,
-      }),
-    );
-  };
+  const publishStatus = createPublishStatus(
+    publish,
+    stripeChannel(userId),
+    nodeId,
+  );
 
   await publishStatus(NodeStatus.LOADING);
 

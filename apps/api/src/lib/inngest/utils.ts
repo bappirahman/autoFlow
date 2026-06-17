@@ -1,4 +1,6 @@
 import { Connection, Node } from '@/db/schema';
+import type { Realtime } from '@inngest/realtime';
+import type { NodeStatusEnum } from '@autoflow/shared';
 import toposort from 'toposort';
 
 export const topologicalSort = (
@@ -31,3 +33,33 @@ export const topologicalSort = (
 
 export const getChannelKey = (userId: string, channelName: string) =>
   `${channelName}:${userId}`;
+
+type PublishToken = Parameters<Realtime.PublishFn>[0];
+
+type StatusChannel = {
+  status: (args: { nodeId: string; status: NodeStatusEnum }) => PublishToken;
+};
+
+/**
+ * Creates a `publishStatus` helper bound to a specific Inngest channel and node.
+ *
+ * Each executor uses a dedicated channel (e.g. `geminiChannel`, `httpRequestChannel`).
+ * This factory captures the `publish` function, channel instance, and nodeId so
+ * callers only need to pass the status value.
+ *
+ * @param publish - The Inngest `publish` function from the executor params.
+ * @param channel - The channel instance bound to a userId (e.g. `geminiChannel(userId)`).
+ * @param nodeId - The ID of the node whose status is being published.
+ *
+ * @example
+ * const publishStatus = createPublishStatus(publish, geminiChannel(userId), nodeId);
+ * await publishStatus(NodeStatus.LOADING);
+ */
+export function createPublishStatus(
+  publish: Realtime.PublishFn,
+  channel: StatusChannel,
+  nodeId: string,
+) {
+  return (status: NodeStatusEnum) =>
+    publish(channel.status({ nodeId, status }));
+}

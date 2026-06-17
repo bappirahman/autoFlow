@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   createWorkflow,
@@ -7,10 +7,10 @@ import {
   fetchWorkflows,
   removeWorkflow,
   updateWorkflow,
-} from '@/features/workflows/api/workflow.api';
-import { useWorkflowsParams } from '@/features/workflows/hooks/use-workflows-params';
-import { type WorkflowsResponse } from '@/features/workflows/types/workflow';
-import { workflowKeys } from '@/lib/query-keys/workflows';
+} from "@/features/workflows/api/workflow.api";
+import { useWorkflowsParams } from "@/features/workflows/hooks/use-workflows-params";
+import { type WorkflowsResponse } from "@/features/workflows/types/workflow";
+import { workflowKeys } from "@/lib/query-keys/workflows";
 
 import {
   useMutation,
@@ -18,8 +18,8 @@ import {
   useQuery,
   useQueryClient,
   type UseQueryOptions,
-} from '@tanstack/react-query';
-import { toast } from 'sonner';
+} from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const useWorkflows = (
   options: Omit<
@@ -29,7 +29,7 @@ export const useWorkflows = (
       WorkflowsResponse,
       ReturnType<typeof workflowKeys.list>
     >,
-    'queryKey' | 'queryFn'
+    "queryKey" | "queryFn"
   > = {},
 ) => {
   const [params] = useWorkflowsParams();
@@ -51,7 +51,7 @@ export const useWorkflow = ({
       Awaited<ReturnType<typeof fetchWorkflowById>>,
       ReturnType<typeof workflowKeys.details>
     >,
-    'queryKey' | 'queryFn'
+    "queryKey" | "queryFn"
   >;
 }) => {
   return useQuery({

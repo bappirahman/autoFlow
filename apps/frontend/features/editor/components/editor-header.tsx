@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,17 +9,17 @@ import {
   BreadcrumbList,
   // BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { Input } from '@/components/ui/input';
-import { useEffect, useRef, useState } from 'react';
-import { SaveIcon } from 'lucide-react';
-import Link from 'next/link';
+} from "@/components/ui/breadcrumb";
+import { Input } from "@/components/ui/input";
+import { useEffect, useRef, useState } from "react";
+import { SaveIcon } from "lucide-react";
+import Link from "next/link";
 import {
   useUpdateWorkflow,
   useWorkflow,
-} from '@/features/workflows/hooks/use-workflows';
-import { useAtomValue } from 'jotai';
-import { editorAtom } from '@/features/editor/store/atom';
+} from "@/features/workflows/hooks/use-workflows";
+import { useAtomValue } from "jotai";
+import { editorAtom } from "@/features/editor/store/atom";
 
 export function EditorBreadcrumbs({ workflowId }: { workflowId: string }) {
   return (
@@ -45,10 +45,10 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
   const updateWorkflow = useUpdateWorkflow();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState('');
+  const [editValue, setEditValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const displayName = isEditing ? editValue : workflow?.name || '';
+  const displayName = isEditing ? editValue : workflow?.name || "";
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -58,7 +58,7 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
   }, [isEditing]);
 
   const handleEdit = () => {
-    setEditValue(workflow?.name || '');
+    setEditValue(workflow?.name || "");
     setIsEditing(true);
   };
 
@@ -73,17 +73,17 @@ export function EditorNameInput({ workflowId }: { workflowId: string }) {
         data: { name: editValue },
       });
     } catch {
-      setEditValue(workflow?.name || '');
+      setEditValue(workflow?.name || "");
     } finally {
       setIsEditing(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSave();
-    } else if (e.key === 'Escape') {
-      setEditValue(workflow?.name || '');
+    } else if (e.key === "Escape") {
+      setEditValue(workflow?.name || "");
       setIsEditing(false);
     }
   };

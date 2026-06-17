@@ -1,5 +1,5 @@
 import { getApp } from '@/app-ref';
-import { getExecutor } from '@/lib/executor-registry';
+import { getExecutor } from '@/lib/inngest/executor-registry';
 import { inngest } from '@/lib/inngest/client';
 import { InngestEvents } from '@/lib/inngest/events';
 import { topologicalSort } from '@/lib/inngest/utils';

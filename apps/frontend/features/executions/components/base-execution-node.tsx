@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { BaseHandle } from '@/components/react-flow/base-handle';
-import { BaseNode, BaseNodeContent } from '@/components/react-flow/base-node';
-import { NodeStatusIndicator } from '@/components/react-flow/node-status-indicator';
-import { WorkflowNode } from '@/components/workflow-node';
-import { type NodeProps, Position, useReactFlow } from '@xyflow/react';
-import type { LucideIcon } from 'lucide-react';
-import Image from 'next/image';
-import { memo, type ReactNode } from 'react';
-import { type NodeStatusEnum, NodeStatus } from '@autoflow/shared';
+import { BaseHandle } from "@/components/react-flow/base-handle";
+import { BaseNode, BaseNodeContent } from "@/components/react-flow/base-node";
+import { NodeStatusIndicator } from "@/components/react-flow/node-status-indicator";
+import { WorkflowNode } from "@/components/workflow-node";
+import { type NodeProps, Position, useReactFlow } from "@xyflow/react";
+import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { memo, type ReactNode } from "react";
+import { type NodeStatusEnum, NodeStatus } from "@autoflow/shared";
 interface BaseExecutionNodeProps extends NodeProps {
-  icon: LucideIcon | string;
+  icon: LucideIcon | string | React.ComponentType<{ className?: string }>;
   name: string;
   description?: string;
   children?: ReactNode;
@@ -33,7 +33,7 @@ export const BaseExecutionNode = memo<BaseExecutionNodeProps>(
     const { setNodes, setEdges } = useReactFlow();
 
     const handleDelete = () => {
-      console.log('clicked');
+      console.log("clicked");
       setNodes((currentNodes) => currentNodes.filter((node) => node.id !== id));
       setEdges((currentEdges) =>
         currentEdges.filter((edge) => edge.source !== id && edge.target !== id),
@@ -50,7 +50,7 @@ export const BaseExecutionNode = memo<BaseExecutionNodeProps>(
         <NodeStatusIndicator status={status} variant="border">
           <BaseNode onDoubleClick={onDoubleClick} status={status}>
             <BaseNodeContent>
-              {typeof Icon === 'string' ? (
+              {typeof Icon === "string" ? (
                 <Image src={Icon} alt={`${name} icon`} width={16} height={16} />
               ) : (
                 <Icon className="size-4 text-muted-foreground" />
@@ -74,4 +74,4 @@ export const BaseExecutionNode = memo<BaseExecutionNodeProps>(
   },
 );
 
-BaseExecutionNode.displayName = 'BaseExecutionNode';
+BaseExecutionNode.displayName = "BaseExecutionNode";

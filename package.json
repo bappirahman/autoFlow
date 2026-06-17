@@ -12,6 +12,7 @@
     "ngrok:dev": "ngrok http 3000",
     "dev:all": "mprocs",
     "lint": "pnpm -r run lint",
+    "format": "pnpm -r run format",
     "build:packages": "pnpm --filter './libs/**' -r run build",
     "watch:packages": "pnpm --filter './libs/**' -r run watch",
     "build": "pnpm -r run build",

@@ -52,6 +52,7 @@
     "inngest": "^3.54.2",
     "nest-inngest": "^1.3.2",
     "pg": "^8.18.0",
+    "random-word-slugs": "^0.1.7",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "toposort": "^2.0.2",

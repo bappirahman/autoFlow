@@ -1,10 +1,10 @@
-import { type ReactNode } from 'react';
-import { LoaderCircle } from 'lucide-react';
-import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
+import { type ReactNode } from "react";
+import { LoaderCircle } from "lucide-react";
+import { NodeStatus, type NodeStatusEnum } from "@autoflow/shared";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
-export type NodeStatusVariant = 'overlay' | 'border';
+export type NodeStatusVariant = "overlay" | "border";
 
 export type NodeStatusIndicatorProps = {
   status?: NodeStatusEnum;
@@ -61,7 +61,7 @@ export const BorderLoadingIndicator = ({
         </style>
         <div
           className={cn(
-            'absolute inset-0 overflow-hidden rounded-sm',
+            "absolute inset-0 overflow-hidden rounded-sm",
             className,
           )}
         >
@@ -84,7 +84,7 @@ const StatusBorder = ({
     <>
       <div
         className={cn(
-          'absolute -left-[2px] -top-[2px] h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-md border-3',
+          "absolute -left-[2px] -top-[2px] h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-md border-3",
           className,
         )}
       />
@@ -95,16 +95,16 @@ const StatusBorder = ({
 
 export const NodeStatusIndicator = ({
   status,
-  variant = 'border',
+  variant = "border",
   children,
   className,
 }: NodeStatusIndicatorProps) => {
   switch (status) {
     case NodeStatus.LOADING:
       switch (variant) {
-        case 'overlay':
+        case "overlay":
           return <SpinnerLoadingIndicator>{children}</SpinnerLoadingIndicator>;
-        case 'border':
+        case "border":
           return (
             <BorderLoadingIndicator className={className}>
               {children}
@@ -115,13 +115,13 @@ export const NodeStatusIndicator = ({
       }
     case NodeStatus.SUCCESS:
       return (
-        <StatusBorder className={cn('border-green-700/50', className)}>
+        <StatusBorder className={cn("border-green-700/50", className)}>
           {children}
         </StatusBorder>
       );
     case NodeStatus.ERROR:
       return (
-        <StatusBorder className={cn('border-red-700/50', className)}>
+        <StatusBorder className={cn("border-red-700/50", className)}>
           {children}
         </StatusBorder>
       );

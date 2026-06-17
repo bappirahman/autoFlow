@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useMemo } from 'react';
-import { ErrorView, LoadingView } from '@/components/entity-component';
-import { useWorkflow } from '@/features/workflows/hooks/use-workflows';
+import { useState, useCallback, useMemo } from "react";
+import { ErrorView, LoadingView } from "@/components/entity-component";
+import { useWorkflow } from "@/features/workflows/hooks/use-workflows";
 import {
   ReactFlow,
   applyNodeChanges,
@@ -16,14 +16,14 @@ import {
   Background,
   MiniMap,
   Panel,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import { nodeComponents } from '@/config/node-components';
-import { AddNodeButton } from '@/features/editor/components/add-node-button';
-import { useSetAtom } from 'jotai';
-import { editorAtom } from '@/features/editor/store/atom';
-import { NodeType } from '@autoflow/shared';
-import { ExecuteWorkflowButton } from '@/features/editor/components/execute-workflow-button';
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { nodeComponents } from "@/config/node-components";
+import { AddNodeButton } from "@/features/editor/components/add-node-button";
+import { useSetAtom } from "jotai";
+import { editorAtom } from "@/features/editor/store/atom";
+import { NodeType } from "@autoflow/shared";
+import { ExecuteWorkflowButton } from "@/features/editor/components/execute-workflow-button";
 
 export const EditorLoading = () => {
   return <LoadingView message="Loading Editor..." />;
@@ -45,7 +45,7 @@ const EditorCanvas = ({
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const setEditor = useSetAtom(editorAtom);
-  console.log('initialEdges', initialEdges);
+  console.log("initialEdges", initialEdges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>

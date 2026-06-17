@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import type { Realtime } from '@inngest/realtime';
+import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import type { Realtime } from "@inngest/realtime";
 
 export const useRealtimeStatusToken = (
   queryKey: readonly unknown[],
@@ -15,18 +15,16 @@ export const useRealtimeStatusToken = (
     staleTime: 0,
   });
 
-  const refreshToken = useCallback(
-    async (): Promise<Realtime.Subscribe.Token> => {
+  const refreshToken =
+    useCallback(async (): Promise<Realtime.Subscribe.Token> => {
       const result = await refetch();
 
       if (!result.data) {
-        throw new Error('Failed to fetch realtime subscription token');
+        throw new Error("Failed to fetch realtime subscription token");
       }
 
       return result.data;
-    },
-    [refetch],
-  );
+    }, [refetch]);
 
   return {
     data,

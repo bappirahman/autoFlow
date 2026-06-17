@@ -1,5 +1,5 @@
-import { api } from '@/lib/api/config/axios';
-import { API_ENDPOINTS } from '@/lib/api/config/endpoints';
+import { api } from "@/lib/api/config/axios";
+import { API_ENDPOINTS } from "@/lib/api/config/endpoints";
 
 export type WebhookResponse = {
   id: string;

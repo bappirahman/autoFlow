@@ -1,6 +1,6 @@
 "use client";
 
-import { Logo } from "@/components/icons/logo";
+import { LogoIcon } from "@/components/icons/logo-icon";
 import { authClient } from "@/lib/auth-client";
 import {
   CreditCardIcon,
@@ -61,7 +61,7 @@ export const AppSidebar = () => {
             prefetch
             className="flex items-center justify-center gap-x-2"
           >
-            <Logo className="size-12" />
+            <LogoIcon className="size-12" />
             <span className="font-semibold text-sm">autoFlow</span>
           </Link>
         </SidebarMenuItem>

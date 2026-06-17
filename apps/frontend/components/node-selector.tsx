@@ -1,8 +1,11 @@
-'use client';
+"use client";
 
-import { GoogleFormIcon } from '@/components/icons/google-form-icon';
-import { StripeIcon } from '@/components/icons/stripe';
-import { Separator } from '@/components/ui/separator';
+import { GeminiIcon } from "@/components/icons/gemini-icon";
+import { AnthropicIcon } from "@/components/icons/anthropic-icon";
+import { OpenaiIcon } from "@/components/icons/openai-icon";
+import { GoogleFormIcon } from "@/components/icons/google-form-icon";
+import { StripeIcon } from "@/components/icons/stripe-icon";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -10,13 +13,13 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { NodeType, type NodeTypeEnum } from '@autoflow/shared';
-import { useReactFlow } from '@xyflow/react';
-import { GlobeIcon, MousePointerIcon } from 'lucide-react';
-import Image from 'next/image';
-import { useCallback } from 'react';
-import { toast } from 'sonner';
+} from "@/components/ui/sheet";
+import { NodeType, type NodeTypeEnum } from "@autoflow/shared";
+import { useReactFlow } from "@xyflow/react";
+import { GlobeIcon, MousePointerIcon } from "lucide-react";
+import Image from "next/image";
+import { useCallback } from "react";
+import { toast } from "sonner";
 
 export type NodeTypeOption = {
   type: NodeTypeEnum;
@@ -28,20 +31,20 @@ export type NodeTypeOption = {
 const triggerNodes: NodeTypeOption[] = [
   {
     type: NodeType.MANUAL_TRIGGER,
-    label: 'Trigger manually',
-    description: 'Start the workflow manually without any trigger.',
+    label: "Trigger manually",
+    description: "Start the workflow manually without any trigger.",
     icon: MousePointerIcon,
   },
   {
     type: NodeType.GOOGLE_FORM_TRIGGER,
-    label: 'Google Form Trigger',
-    description: 'Start the workflow when a Google Form is submitted.',
+    label: "Google Form Trigger",
+    description: "Start the workflow when a Google Form is submitted.",
     icon: GoogleFormIcon,
   },
   {
     type: NodeType.STRIPE_TRIGGER,
-    label: 'Stripe Trigger',
-    description: 'Start the workflow when a Stripe event occurs.',
+    label: "Stripe Trigger",
+    description: "Start the workflow when a Stripe event occurs.",
     icon: StripeIcon,
   },
 ];
@@ -49,9 +52,27 @@ const triggerNodes: NodeTypeOption[] = [
 const executionNodes: NodeTypeOption[] = [
   {
     type: NodeType.HTTP_REQUEST,
-    label: 'HTTP Request',
-    description: 'Make an HTTP request to a REST API endpoint.',
+    label: "HTTP Request",
+    description: "Make an HTTP request to a REST API endpoint.",
     icon: GlobeIcon,
+  },
+  {
+    type: NodeType.GEMINI,
+    label: "Gemini",
+    description: "Use Google Gemini for AI-powered execution.",
+    icon: GeminiIcon,
+  },
+  {
+    type: NodeType.OPENAI,
+    label: "OpenAI",
+    description: "Use OpenAI GPT models for AI-powered execution.",
+    icon: OpenaiIcon,
+  },
+  {
+    type: NodeType.ANTHROPIC,
+    label: "Anthropic",
+    description: "Use Anthropic Claude models for AI-powered execution.",
+    icon: AnthropicIcon,
   },
 ];
 
@@ -78,7 +99,7 @@ export const NodeSelector: React.FC<NodeSelectorProps> = ({
         );
 
         if (hasManualTrigger) {
-          toast.error('Only one manual trigger is allowed per workflow');
+          toast.error("Only one manual trigger is allowed per workflow");
           return;
         }
       }
@@ -134,7 +155,7 @@ export const NodeSelector: React.FC<NodeSelectorProps> = ({
                 onClick={() => handleNodeSelect(node)}
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
-                  {typeof Icon === 'string' ? (
+                  {typeof Icon === "string" ? (
                     <Image
                       src={Icon}
                       alt={node.label}
@@ -167,7 +188,7 @@ export const NodeSelector: React.FC<NodeSelectorProps> = ({
                 onClick={() => handleNodeSelect(node)}
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
-                  {typeof Icon === 'string' ? (
+                  {typeof Icon === "string" ? (
                     <Image
                       src={Icon}
                       alt={node.label}
