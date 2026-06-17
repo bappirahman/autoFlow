@@ -1,7 +1,11 @@
 import { anthropicChannel } from '@/lib/inngest/channels/anthropic';
 import type { NodeExecutor } from '@/types';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { ANTHROPIC_MODELS, NodeStatus, type AnthropicModel } from '@autoflow/shared';
+import {
+  ANTHROPIC_MODELS,
+  NodeStatus,
+  type AnthropicModel,
+} from '@autoflow/shared';
 import { generateText } from 'ai';
 import Handlebars from 'handlebars';
 import { NonRetriableError } from 'inngest';

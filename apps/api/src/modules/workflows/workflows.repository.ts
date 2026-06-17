@@ -8,6 +8,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { and, count, desc, eq, ilike, inArray } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import type * as schema from '@/db/schema';
+import { generateSlug } from 'random-word-slugs';
 
 type DrizzleDb = NodePgDatabase<typeof schema>;
 
@@ -25,7 +26,7 @@ export class WorkflowsRepository {
   async create(userId: string) {
     const wf = await this.db
       .insert(workflow)
-      .values({ userId, name: 'New Workflow' })
+      .values({ userId, name: generateSlug() })
       .returning()
       .then((res) => res[0]);
 
