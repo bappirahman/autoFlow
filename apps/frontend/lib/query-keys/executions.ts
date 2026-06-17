@@ -6,6 +6,8 @@ export const executionKeys = {
     [...executionKeys.all, "gemini-status-token"] as const,
   openaiStatusToken: () =>
     [...executionKeys.all, "openai-status-token"] as const,
+  anthropicStatusToken: () =>
+    [...executionKeys.all, "anthropic-status-token"] as const,
   manualTriggerStatusToken: () =>
     [...executionKeys.all, "manual-trigger-status-token"] as const,
   googleFormTriggerStatusToken: () =>

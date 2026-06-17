@@ -1,4 +1,5 @@
 import { geminiExecutor } from '@/lib/inngest/executors/gemini';
+import { anthropicExecutor } from '@/lib/inngest/executors/anthropic';
 import { openaiExecutor } from '@/lib/inngest/executors/openai';
 import { googleFormExecutor } from '@/lib/inngest/executors/google-form';
 import { httpRequestExecutor } from '@/lib/inngest/executors/http-request';
@@ -15,6 +16,7 @@ export const executorRegistry: Record<NodeTypeEnum, NodeExecutor> = {
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI]: geminiExecutor,
   [NodeType.OPENAI]: openaiExecutor,
+  [NodeType.ANTHROPIC]: anthropicExecutor,
 };
 
 export const getExecutor = (type: NodeTypeEnum): NodeExecutor => {

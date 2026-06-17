@@ -1,6 +1,7 @@
 "use client";
 
 import { GeminiIcon } from "@/components/icons/gemini-icon";
+import { AnthropicIcon } from "@/components/icons/anthropic-icon";
 import { OpenaiIcon } from "@/components/icons/openai-icon";
 import { GoogleFormIcon } from "@/components/icons/google-form-icon";
 import { StripeIcon } from "@/components/icons/stripe-icon";
@@ -66,6 +67,12 @@ const executionNodes: NodeTypeOption[] = [
     label: "OpenAI",
     description: "Use OpenAI GPT models for AI-powered execution.",
     icon: OpenaiIcon,
+  },
+  {
+    type: NodeType.ANTHROPIC,
+    label: "Anthropic",
+    description: "Use Anthropic Claude models for AI-powered execution.",
+    icon: AnthropicIcon,
   },
 ];
 

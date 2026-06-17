@@ -7,6 +7,7 @@ import { UnauthorizedException, Controller, Get } from '@nestjs/common';
 import { googleFormChannel } from '@/lib/inngest/channels/google-form';
 import { stripeChannel } from '@/lib/inngest/channels/stripe';
 import { geminiChannel } from '@/lib/inngest/channels/gemini';
+import { anthropicChannel } from '@/lib/inngest/channels/anthropic';
 import { openaiChannel } from '@/lib/inngest/channels/openai';
 
 @Controller('realtime')
@@ -74,6 +75,20 @@ export class InngestRealtimeController {
 
     return getSubscriptionToken(inngest, {
       channel: geminiChannel(userId),
+      topics: ['status'],
+    });
+  }
+
+  @Get('anthropic/status')
+  async getAnthropicExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: anthropicChannel(userId),
       topics: ['status'],
     });
   }

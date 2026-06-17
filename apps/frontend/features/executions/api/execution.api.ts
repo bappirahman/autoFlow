@@ -26,6 +26,14 @@ export const fetchOpenAIStatusToken =
     return response.data;
   };
 
+export const fetchAnthropicStatusToken =
+  async (): Promise<Realtime.Subscribe.Token> => {
+    const response = await api.get(
+      API_ENDPOINTS.EXECUTIONS.anthropicStatusToken(),
+    );
+    return response.data;
+  };
+
 export const fetchManualTriggerStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {
     const response = await api.get(
