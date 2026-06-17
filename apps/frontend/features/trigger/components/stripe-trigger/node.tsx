@@ -1,5 +1,5 @@
 'use client';
-import { StripeIcon } from '@/components/icons/stripe';
+import { StripeIcon } from '@/components/icons/stripe-icon';
 import { useStripeTriggerStatusToken } from '@/features/executions/hooks/use-stripe-trigger-status.token';
 import { useNodeStatus } from '@/features/executions/hooks/use-node-status';
 import { BaseTriggerNode } from '@/features/trigger/components/base-trigger-node';

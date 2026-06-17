@@ -1,4 +1,4 @@
-export function Logo({ className }: { className?: string }) {
+export function LogoIcon({ className }: { className?: string }) {
   return (
     <svg
       width="100%"

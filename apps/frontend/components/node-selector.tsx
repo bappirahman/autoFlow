@@ -1,7 +1,7 @@
 'use client';
 
 import { GoogleFormIcon } from '@/components/icons/google-form-icon';
-import { StripeIcon } from '@/components/icons/stripe';
+import { StripeIcon } from '@/components/icons/stripe-icon';
 import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
