@@ -5,33 +5,56 @@ import {
   Get,
   Param,
   Post,
-  Query,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { WebhooksService } from './webhooks.service';
 import { User } from '@/common/decorators/user.decorator';
+import {
+  WebhookProvider,
+  type WebhookProviderEnum,
+} from '@/common/enums/webhook-provider';
 
 @Controller('webhooks')
 export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) {}
 
-  @Get(':workflowId')
+  @Get(':nodeId/:provider')
   async getOrCreateWebhook(
-    @Param('workflowId') workflowId: string,
+    @Param('nodeId') nodeId: string,
+    @Param('provider') provider: string,
     @User('id') userId: string | undefined,
   ) {
     if (!userId) throw new UnauthorizedException();
-    return this.webhooksService.registerWebhook(workflowId, userId);
+
+    const validProviders = Object.values(WebhookProvider) as string[];
+    if (!validProviders.includes(provider)) {
+      throw new BadRequestException(`Invalid provider: ${provider}`);
+    }
+
+    return this.webhooksService.registerWebhook(
+      nodeId,
+      userId,
+      provider as WebhookProviderEnum,
+    );
   }
 
   @AllowAnonymous()
-  @Post('google-form')
-  async handleGoogleFormSubmission(
-    @Query('secret') secret: string | undefined,
+  @Post(':provider/:secret')
+  async handleWebhook(
+    @Param('provider') provider: string,
+    @Param('secret') secret: string,
     @Body() payload: Record<string, unknown>,
   ) {
-    if (!secret) throw new BadRequestException('Missing secret');
-    return this.webhooksService.handleGoogleFormSubmission(secret, payload);
+    const validProviders = Object.values(WebhookProvider) as string[];
+    if (!validProviders.includes(provider)) {
+      throw new BadRequestException(`Invalid provider: ${provider}`);
+    }
+
+    return this.webhooksService.handleWebhook(
+      provider as WebhookProviderEnum,
+      secret,
+      payload,
+    );
   }
 }

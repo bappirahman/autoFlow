@@ -48,7 +48,7 @@ export const subscriptionRelations = relations(subscription, ({ one }) => ({
 }));
 
 // ─── Workflow ────────────────────────────────────────────────────────────────
-// A workflow belongs to one user and owns many nodes, connections, executions, and webhooks.
+// A workflow belongs to one user and owns many nodes, connections, and executions.
 export const workflowRelations = relations(workflow, ({ one, many }) => ({
   user: one(user, {
     fields: [workflow.userId],
@@ -57,12 +57,16 @@ export const workflowRelations = relations(workflow, ({ one, many }) => ({
   nodes: many(node),
   connections: many(connection),
   executions: many(execution),
-  webhooks: many(webhook),
 }));
 
 // ─── Webhook ─────────────────────────────────────────────────────────────────
-// Each webhook belongs to one workflow.
+// Each webhook belongs to one node (one secret per trigger node).
+// workflowId is denormalized for fast lookup on the hot path (handleWebhook).
 export const webhookRelations = relations(webhook, ({ one }) => ({
+  node: one(node, {
+    fields: [webhook.nodeId],
+    references: [node.id],
+  }),
   workflow: one(workflow, {
     fields: [webhook.workflowId],
     references: [workflow.id],
@@ -82,6 +86,7 @@ export const credentialRelations = relations(credential, ({ one, many }) => ({
 // ─── Node ────────────────────────────────────────────────────────────────────
 // A node belongs to one workflow and optionally one credential.
 // It can be the source of many outgoing connections and the target of many incoming ones.
+// Trigger nodes may have one webhook.
 export const nodeRelations = relations(node, ({ one, many }) => ({
   workflow: one(workflow, {
     fields: [node.workflowId],
@@ -90,6 +95,10 @@ export const nodeRelations = relations(node, ({ one, many }) => ({
   credential: one(credential, {
     fields: [node.credentialId],
     references: [credential.id],
+  }),
+  webhook: one(webhook, {
+    fields: [node.id],
+    references: [webhook.nodeId],
   }),
   // Connections where this node is the source
   outputConnections: many(connection, { relationName: 'fromNode' }),

@@ -1,6 +1,7 @@
 'use client';
 
 import { GoogleFormIcon } from '@/components/icons/google-form-icon';
+import { StripeIcon } from '@/components/icons/stripe';
 import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
@@ -36,6 +37,12 @@ const triggerNodes: NodeTypeOption[] = [
     label: 'Google Form Trigger',
     description: 'Start the workflow when a Google Form is submitted.',
     icon: GoogleFormIcon,
+  },
+  {
+    type: NodeType.STRIPE_TRIGGER,
+    label: 'Stripe Trigger',
+    description: 'Start the workflow when a Stripe event occurs.',
+    icon: StripeIcon,
   },
 ];
 

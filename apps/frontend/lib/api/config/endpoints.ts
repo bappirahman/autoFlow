@@ -12,9 +12,11 @@ export const API_ENDPOINTS = {
     httpRequestStatusToken: () => '/realtime/http-request/status',
     manualTriggerStatusToken: () => '/realtime/manual-trigger/status',
     googleFormTriggerStatusToken: () => '/realtime/google-form-trigger/status',
+    stripeTriggerStatusToken: () => '/realtime/stripe-trigger/status',
   },
   WEBHOOKS: {
-    getOrCreate: (workflowId: string) => `/webhooks/${workflowId}`,
+    getOrCreate: (nodeId: string, provider: string) =>
+      `/webhooks/${nodeId}/${provider}`,
   },
   USER: {
     base: '/users',

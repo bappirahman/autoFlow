@@ -25,3 +25,11 @@ export const fetchGoogleFormTriggerStatusToken =
     );
     return response.data;
   };
+
+export const fetchStripeTriggerStatusToken =
+  async (): Promise<Realtime.Subscribe.Token> => {
+    const response = await api.get(
+      API_ENDPOINTS.EXECUTIONS.stripeTriggerStatusToken(),
+    );
+    return response.data;
+  };
