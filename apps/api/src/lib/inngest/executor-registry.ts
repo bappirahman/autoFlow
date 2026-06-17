@@ -1,7 +1,8 @@
-import { googleFormExecutor } from '@/lib/executors/google-form';
-import { httpRequestExecutor } from '@/lib/executors/http-request';
-import { manualTriggerExecutor } from '@/lib/executors/manual-trigger';
-import { stripeTriggerExecutor } from '@/lib/executors/stripe-trigger';
+import { geminiExecutor } from '@/lib/inngest/executors/gemini';
+import { googleFormExecutor } from '@/lib/inngest/executors/google-form';
+import { httpRequestExecutor } from '@/lib/inngest/executors/http-request';
+import { manualTriggerExecutor } from '@/lib/inngest/executors/manual-trigger';
+import { stripeTriggerExecutor } from '@/lib/inngest/executors/stripe-trigger';
 import { NodeExecutor } from '@/types';
 import { NodeType, NodeTypeEnum } from '@autoflow/shared';
 
@@ -11,6 +12,7 @@ export const executorRegistry: Record<NodeTypeEnum, NodeExecutor> = {
   [NodeType.HTTP_REQUEST]: httpRequestExecutor,
   [NodeType.GOOGLE_FORM_TRIGGER]: googleFormExecutor,
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
+  [NodeType.GEMINI]: geminiExecutor,
 };
 
 export const getExecutor = (type: NodeTypeEnum): NodeExecutor => {

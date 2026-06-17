@@ -2,7 +2,8 @@ import type { NodeExecutor } from '@/types';
 import { NonRetriableError } from 'inngest';
 import Handlebars from 'handlebars';
 import { httpRequestChannel } from '@/lib/inngest/channels/http-request';
-import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
+import { NodeStatus } from '@autoflow/shared';
+import { createPublishStatus } from '@/lib/inngest/utils';
 
 Handlebars.registerHelper('json', (context) => {
   const jsonString = JSON.stringify(context ?? null, null, 2);
@@ -10,9 +11,9 @@ Handlebars.registerHelper('json', (context) => {
 });
 type TMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type HttpRequestData = {
-  variableName: string; // variable name to store the response in context
-  endpoint: string;
-  method: TMethod;
+  variableName?: string;
+  endpoint?: string;
+  method?: TMethod;
   body?: string;
 };
 
@@ -24,21 +25,13 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
   step,
   publish,
 }) => {
-  const publishStatus = async (status: NodeStatusEnum) => {
-    await publish(
-      httpRequestChannel(userId).status({
-        nodeId,
-        status,
-      }),
-    );
-  };
-
-  await publish(
-    httpRequestChannel(userId).status({
-      nodeId,
-      status: NodeStatus.LOADING,
-    }),
+  const publishStatus = createPublishStatus(
+    publish,
+    httpRequestChannel(userId),
+    nodeId,
   );
+
+  await publishStatus(NodeStatus.LOADING);
 
   if (!data.variableName) {
     await publishStatus(NodeStatus.ERROR);
@@ -59,12 +52,10 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
     );
   }
 
+  const { variableName, endpoint, method } = data;
+
   try {
     const result = await step.run('http-request', async () => {
-      // Compile the endpoint with Handlebars to allow dynamic values from context
-      const endpoint = Handlebars.compile(data.endpoint)(context);
-      const method = data.method;
-
       const options: RequestInit = { method };
 
       if (['POST', 'PUT', 'PATCH'].includes(method)) {
@@ -74,7 +65,10 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
         options.body = resolved;
       }
 
-      const response = await step.fetch(endpoint, options);
+      const response = await step.fetch(
+        Handlebars.compile(endpoint)(context),
+        options,
+      );
       const contentType = response.headers.get('content-type');
       const responseData: unknown = contentType?.includes('application/json')
         ? await response.json()
@@ -90,7 +84,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
 
       return {
         ...context,
-        [data.variableName]: responsePayload,
+        [variableName]: responsePayload,
       };
     });
 

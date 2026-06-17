@@ -10,6 +10,13 @@ export const fetchHttpRequestStatusToken =
     );
     return response.data;
   };
+export const fetchGeminiStatusToken =
+  async (): Promise<Realtime.Subscribe.Token> => {
+    const response = await api.get(
+      API_ENDPOINTS.EXECUTIONS.geminiStatusToken(),
+    );
+    return response.data;
+  };
 
 export const fetchManualTriggerStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {

@@ -6,6 +6,7 @@ import { getSubscriptionToken, type Realtime } from '@inngest/realtime';
 import { UnauthorizedException, Controller, Get } from '@nestjs/common';
 import { googleFormChannel } from '@/lib/inngest/channels/google-form';
 import { stripeChannel } from '@/lib/inngest/channels/stripe';
+import { geminiChannel } from '@/lib/inngest/channels/gemini';
 
 @Controller('realtime')
 export class InngestRealtimeController {
@@ -59,6 +60,19 @@ export class InngestRealtimeController {
 
     return getSubscriptionToken(inngest, {
       channel: stripeChannel(userId),
+      topics: ['status'],
+    });
+  }
+  @Get('gemini/status')
+  async getGeminiExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: geminiChannel(userId),
       topics: ['status'],
     });
   }

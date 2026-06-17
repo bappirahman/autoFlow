@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { memo, type ReactNode } from 'react';
 import { type NodeStatusEnum, NodeStatus } from '@autoflow/shared';
 interface BaseExecutionNodeProps extends NodeProps {
-  icon: LucideIcon | string;
+  icon: LucideIcon | string | React.ComponentType<{ className?: string }>;
   name: string;
   description?: string;
   children?: ReactNode;

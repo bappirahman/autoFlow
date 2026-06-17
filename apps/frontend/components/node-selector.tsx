@@ -1,5 +1,6 @@
 'use client';
 
+import { GeminiIcon } from '@/components/icons/gemini-icon';
 import { GoogleFormIcon } from '@/components/icons/google-form-icon';
 import { StripeIcon } from '@/components/icons/stripe-icon';
 import { Separator } from '@/components/ui/separator';
@@ -52,6 +53,12 @@ const executionNodes: NodeTypeOption[] = [
     label: 'HTTP Request',
     description: 'Make an HTTP request to a REST API endpoint.',
     icon: GlobeIcon,
+  },
+  {
+    type: NodeType.GEMINI,
+    label: 'Gemini',
+    description: 'Use Google Gemini for AI-powered execution.',
+    icon: GeminiIcon,
   },
 ];
 

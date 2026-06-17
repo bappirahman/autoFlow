@@ -21,7 +21,11 @@ export const StripeTriggerNode = memo((props: NodeProps) => {
 
   return (
     <>
-      <StripeTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} nodeId={props.id} />
+      <StripeTriggerDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        nodeId={props.id}
+      />
       <BaseTriggerNode
         {...props}
         icon={StripeIcon}
