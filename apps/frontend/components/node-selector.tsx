@@ -1,6 +1,7 @@
 "use client";
 
 import { GeminiIcon } from "@/components/icons/gemini-icon";
+import { OpenaiIcon } from "@/components/icons/openai-icon";
 import { GoogleFormIcon } from "@/components/icons/google-form-icon";
 import { StripeIcon } from "@/components/icons/stripe-icon";
 import { Separator } from "@/components/ui/separator";
@@ -59,6 +60,12 @@ const executionNodes: NodeTypeOption[] = [
     label: "Gemini",
     description: "Use Google Gemini for AI-powered execution.",
     icon: GeminiIcon,
+  },
+  {
+    type: NodeType.OPENAI,
+    label: "OpenAI",
+    description: "Use OpenAI GPT models for AI-powered execution.",
+    icon: OpenaiIcon,
   },
 ];
 

@@ -18,6 +18,14 @@ export const fetchGeminiStatusToken =
     return response.data;
   };
 
+export const fetchOpenAIStatusToken =
+  async (): Promise<Realtime.Subscribe.Token> => {
+    const response = await api.get(
+      API_ENDPOINTS.EXECUTIONS.openaiStatusToken(),
+    );
+    return response.data;
+  };
+
 export const fetchManualTriggerStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {
     const response = await api.get(

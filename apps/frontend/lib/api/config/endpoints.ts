@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
   EXECUTIONS: {
     httpRequestStatusToken: () => "/realtime/http-request/status",
     geminiStatusToken: () => "/realtime/gemini/status",
+    openaiStatusToken: () => "/realtime/openai/status",
     manualTriggerStatusToken: () => "/realtime/manual-trigger/status",
     googleFormTriggerStatusToken: () => "/realtime/google-form-trigger/status",
     stripeTriggerStatusToken: () => "/realtime/stripe-trigger/status",
