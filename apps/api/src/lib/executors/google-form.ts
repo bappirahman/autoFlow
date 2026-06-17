@@ -1,6 +1,6 @@
 import type { NodeExecutor } from '@/types';
 import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
-import { googleFormTriggerChannel } from '@/lib/inngest/channels/google-form-trigger';
+import { googleFormChannel } from '@/lib/inngest/channels/google-form';
 
 type GoogleFormData = Record<string, unknown>;
 
@@ -13,7 +13,7 @@ export const googleFormExecutor: NodeExecutor<GoogleFormData> = async ({
 }) => {
   const publishStatus = async (status: NodeStatusEnum) => {
     await publish(
-      googleFormTriggerChannel(userId).status({
+      googleFormChannel(userId).status({
         nodeId,
         status,
       }),

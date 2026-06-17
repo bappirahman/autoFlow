@@ -1,5 +1,5 @@
 import type { NodeExecutor } from '@/types';
-import { manualTriggerChannel } from '@/lib/inngest/channels/manual-trigger';
+import { manualChannel } from '@/lib/inngest/channels/manual';
 import { NodeStatus, type NodeStatusEnum } from '@autoflow/shared';
 
 type ManualTriggerData = Record<string, unknown>;
@@ -13,7 +13,7 @@ export const manualTriggerExecutor: NodeExecutor<ManualTriggerData> = async ({
 }) => {
   const publishStatus = async (status: NodeStatusEnum) => {
     await publish(
-      manualTriggerChannel(userId).status({
+      manualChannel(userId).status({
         nodeId,
         status,
       }),

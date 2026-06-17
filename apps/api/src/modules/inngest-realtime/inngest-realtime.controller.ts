@@ -1,11 +1,11 @@
 import { User } from '@/common/decorators/user.decorator';
 import { inngest } from '@/lib/inngest/client';
 import { httpRequestChannel } from '@/lib/inngest/channels/http-request';
-import { manualTriggerChannel } from '@/lib/inngest/channels/manual-trigger';
+import { manualChannel } from '@/lib/inngest/channels/manual';
 import { getSubscriptionToken, type Realtime } from '@inngest/realtime';
 import { UnauthorizedException, Controller, Get } from '@nestjs/common';
-import { googleFormTriggerChannel } from '@/lib/inngest/channels/google-form-trigger';
-import { stripeTriggerChannel } from '@/lib/inngest/channels/stripe-trigger';
+import { googleFormChannel } from '@/lib/inngest/channels/google-form';
+import { stripeChannel } from '@/lib/inngest/channels/stripe';
 
 @Controller('realtime')
 export class InngestRealtimeController {
@@ -32,7 +32,7 @@ export class InngestRealtimeController {
     }
 
     return getSubscriptionToken(inngest, {
-      channel: manualTriggerChannel(userId),
+      channel: manualChannel(userId),
       topics: ['status'],
     });
   }
@@ -45,7 +45,7 @@ export class InngestRealtimeController {
     }
 
     return getSubscriptionToken(inngest, {
-      channel: googleFormTriggerChannel(userId),
+      channel: googleFormChannel(userId),
       topics: ['status'],
     });
   }
@@ -58,7 +58,7 @@ export class InngestRealtimeController {
     }
 
     return getSubscriptionToken(inngest, {
-      channel: stripeTriggerChannel(userId),
+      channel: stripeChannel(userId),
       topics: ['status'],
     });
   }

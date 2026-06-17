@@ -13,8 +13,8 @@ jest.mock('@/lib/inngest/channels/http-request', () => ({
   httpRequestChannel: (userId: string) => ({ name: `http-request:${userId}` }),
 }));
 
-jest.mock('@/lib/inngest/channels/manual-trigger', () => ({
-  manualTriggerChannel: (userId: string) => ({
+jest.mock('@/lib/inngest/channels/manual', () => ({
+  manualChannel: (userId: string) => ({
     name: `manual-trigger:${userId}`,
   }),
 }));
