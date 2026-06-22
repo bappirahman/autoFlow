@@ -10,6 +10,7 @@ import { DbModule } from './db/db.module';
 import { InngestRealtimeModule } from './modules/inngest-realtime/inngest-realtime.module';
 import { WorkflowsModule } from './modules/workflows/workflows.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
+import { CredentialsModule } from './modules/credentials/credentials.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { WebhooksModule } from './modules/webhooks/webhooks.module';
     InngestRealtimeModule,
     WorkflowsModule,
     WebhooksModule,
+    CredentialsModule,
   ],
   controllers: [AppController],
   providers: [

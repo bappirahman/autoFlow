@@ -16,11 +16,11 @@ type OpenAINodeData = {
   userPrompt?: string;
 };
 
-type OpenAINodeType = Node<OpenAINodeData>;
+type OpenAINodeType = Node<OpenAINodeData> & { credentialId?: string | null };
 
 export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setNodes } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
   const { refreshToken } = useOpenAIStatusToken();
 
   const nodeStatus = useNodeStatus({
@@ -32,14 +32,16 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
   const handleOpenSettings = () => setDialogOpen(true);
 
   const handleSubmit = (values: OpenAIFormValues) => {
+    const { credentialId, ...nodeData } = values;
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === props.id) {
           return {
             ...node,
+            credentialId: credentialId ?? null,
             data: {
               ...node.data,
-              ...values,
+              ...nodeData,
             },
           };
         }
@@ -49,6 +51,7 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
   };
 
   const nodeData = props.data;
+  const currentNode = getNode(props.id) as OpenAINodeType | undefined;
   const description = nodeData.userPrompt
     ? `${nodeData.model || OPENAI_MODELS[0]}: ${nodeData.userPrompt.slice(0, 50)}...`
     : "Not configured";
@@ -59,7 +62,10 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
-        defaultValues={nodeData}
+        defaultValues={{
+          ...nodeData,
+          credentialId: currentNode?.credentialId ?? null,
+        }}
       />
       <BaseExecutionNode
         {...props}

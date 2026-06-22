@@ -270,7 +270,7 @@ export const EntityList = <T,>({
 };
 
 interface EntityItemProps {
-  href: string;
+  href?: string;
   title: string;
   subtitle?: React.ReactNode;
   image?: React.ReactNode;
@@ -299,9 +299,8 @@ export const EntityItem = ({
     }
   };
 
-  return (
-    <Link href={href} prefetch>
-      <Card
+  const card = (
+    <Card
         className={cn(
           "p-4 shadow-none hover:shadow cursor-pointer",
           isRemoving && "opacity-50 cursor-not-allowed",
@@ -351,6 +350,13 @@ export const EntityItem = ({
           )}
         </CardContent>
       </Card>
+  );
+
+  return href ? (
+    <Link href={href} prefetch>
+      {card}
     </Link>
+  ) : (
+    card
   );
 };

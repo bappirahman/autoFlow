@@ -17,6 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,8 +28,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useCredentials } from "@/features/credentials/hooks/use-credentials";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ANTHROPIC_MODELS } from "@autoflow/shared";
+import Link from "next/link";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import z from "zod";
@@ -44,6 +47,7 @@ const formSchema = z.object({
   model: z.enum(ANTHROPIC_MODELS),
   systemPrompt: z.string().optional(),
   userPrompt: z.string().min(1, { message: "User prompt is required" }),
+  credentialId: z.string().nullable().optional(),
 });
 
 export type AnthropicFormValues = z.infer<typeof formSchema>;
@@ -61,6 +65,11 @@ export const AnthropicDialog = ({
   onSubmit,
   defaultValues = {},
 }: Props) => {
+  const { data: credentialsData } = useCredentials();
+  const anthropicCredentials = (credentialsData?.items ?? []).filter(
+    (c) => c.type === "ANTHROPIC",
+  );
+
   const form = useForm<AnthropicFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,6 +77,7 @@ export const AnthropicDialog = ({
       model: defaultValues.model || ANTHROPIC_MODELS[0],
       systemPrompt: defaultValues.systemPrompt || "",
       userPrompt: defaultValues.userPrompt || "",
+      credentialId: defaultValues.credentialId ?? null,
     },
   });
 
@@ -78,6 +88,7 @@ export const AnthropicDialog = ({
         model: defaultValues.model || ANTHROPIC_MODELS[0],
         systemPrompt: defaultValues.systemPrompt || "",
         userPrompt: defaultValues.userPrompt || "",
+        credentialId: defaultValues.credentialId ?? null,
       });
     }
   }, [open, defaultValues, form]);
@@ -107,6 +118,40 @@ export const AnthropicDialog = ({
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-8 mt-4"
           >
+            <FormField
+              control={form.control}
+              name="credentialId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>API Key</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value ?? ""}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a credential" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {anthropicCredentials.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Select an Anthropic credential or{" "}
+                    <Link href="/credentials/new" className="underline" target="_blank">
+                      add one
+                    </Link>
+                    .
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="variableName"

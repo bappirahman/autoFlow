@@ -10,16 +10,17 @@ import { GeminiDialog, GeminiFormValues } from "./dialog";
 import { useGeminiStatusToken } from "@/features/executions/hooks/use-gemini-status-token";
 
 type GeminiNodeData = {
+  variableName?: string;
   model?: GeminiModel;
   systemPrompt?: string;
   userPrompt?: string;
 };
 
-type GeminiNodeType = Node<GeminiNodeData>;
+type GeminiNodeType = Node<GeminiNodeData> & { credentialId?: string | null };
 
 export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setNodes } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
   const { refreshToken } = useGeminiStatusToken();
 
   const nodeStatus = useNodeStatus({
@@ -31,14 +32,16 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   const handleOpenSettings = () => setDialogOpen(true);
 
   const handleSubmit = (values: GeminiFormValues) => {
+    const { credentialId, ...nodeData } = values;
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === props.id) {
           return {
             ...node,
+            credentialId: credentialId ?? null,
             data: {
               ...node.data,
-              ...values,
+              ...nodeData,
             },
           };
         }
@@ -48,6 +51,7 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   };
 
   const nodeData = props.data;
+  const currentNode = getNode(props.id) as GeminiNodeType | undefined;
   const description = nodeData.userPrompt
     ? `${nodeData.model || GEMINI_MODELS[0]}: ${nodeData.userPrompt.slice(0, 50)}...`
     : "Not configured";
@@ -58,7 +62,10 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
-        defaultValues={nodeData}
+        defaultValues={{
+          ...nodeData,
+          credentialId: currentNode?.credentialId ?? null,
+        }}
       />
       <BaseExecutionNode
         {...props}

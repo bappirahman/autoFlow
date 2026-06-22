@@ -1,4 +1,6 @@
+import { getApp } from '@/app-ref';
 import { openaiChannel } from '@/lib/inngest/channels/openai';
+import { CredentialsRepository } from '@/modules/credentials/credentials.repository';
 import type { NodeExecutor } from '@/types';
 import { createOpenAI } from '@ai-sdk/openai';
 import { OPENAI_MODELS, NodeStatus, type OpenAIModel } from '@autoflow/shared';
@@ -23,6 +25,7 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({
   data,
   nodeId,
   userId,
+  credentialId,
   context,
   step,
   publish,
@@ -54,16 +57,16 @@ export const openaiExecutor: NodeExecutor<OpenAIData> = async ({
 
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  // TODO: Fetch credential that user selected
-
-  const credentialValue = process.env.OPENAI_API_KEY;
-
-  if (!credentialValue) {
+  if (!credentialId) {
     await publishStatus(NodeStatus.ERROR);
     throw new NonRetriableError(
-      'OpenAI Node: OpenAI API key is not configured',
+      'OpenAI Node: No credential selected. Add an OpenAI credential to this node.',
     );
   }
+
+  const credRepo = getApp().get(CredentialsRepository);
+  const credential = await credRepo.findByIdDecrypted(credentialId, userId);
+  const credentialValue = credential.value;
 
   const openai = createOpenAI({
     apiKey: credentialValue,

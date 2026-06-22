@@ -21,6 +21,11 @@ export const API_ENDPOINTS = {
     getOrCreate: (nodeId: string, provider: string) =>
       `/webhooks/${nodeId}/${provider}`,
   },
+  CREDENTIALS: {
+    getAll: `/credentials`,
+    create: `/credentials`,
+    remove: (id: string) => `/credentials/${id}`,
+  },
   USER: {
     base: "/users",
     getAll: () => `/users`,

@@ -16,11 +16,11 @@ type AnthropicNodeData = {
   userPrompt?: string;
 };
 
-type AnthropicNodeType = Node<AnthropicNodeData>;
+type AnthropicNodeType = Node<AnthropicNodeData> & { credentialId?: string | null };
 
 export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setNodes } = useReactFlow();
+  const { getNode, setNodes } = useReactFlow();
   const { refreshToken } = useAnthropicStatusToken();
 
   const nodeStatus = useNodeStatus({
@@ -32,14 +32,16 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
   const handleOpenSettings = () => setDialogOpen(true);
 
   const handleSubmit = (values: AnthropicFormValues) => {
+    const { credentialId, ...nodeData } = values;
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === props.id) {
           return {
             ...node,
+            credentialId: credentialId ?? null,
             data: {
               ...node.data,
-              ...values,
+              ...nodeData,
             },
           };
         }
@@ -49,6 +51,7 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
   };
 
   const nodeData = props.data;
+  const currentNode = getNode(props.id) as AnthropicNodeType | undefined;
   const description = nodeData.userPrompt
     ? `${nodeData.model || ANTHROPIC_MODELS[0]}: ${nodeData.userPrompt.slice(0, 50)}...`
     : "Not configured";
@@ -59,7 +62,10 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
-        defaultValues={nodeData}
+        defaultValues={{
+          ...nodeData,
+          credentialId: currentNode?.credentialId ?? null,
+        }}
       />
       <BaseExecutionNode
         {...props}

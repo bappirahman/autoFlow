@@ -1,4 +1,6 @@
+import { getApp } from '@/app-ref';
 import { anthropicChannel } from '@/lib/inngest/channels/anthropic';
+import { CredentialsRepository } from '@/modules/credentials/credentials.repository';
 import type { NodeExecutor } from '@/types';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import {
@@ -27,6 +29,7 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({
   data,
   nodeId,
   userId,
+  credentialId,
   context,
   step,
   publish,
@@ -58,16 +61,16 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({
 
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  // TODO: Fetch credential that user selected
-
-  const credentialValue = process.env.ANTHROPIC_API_KEY;
-
-  if (!credentialValue) {
+  if (!credentialId) {
     await publishStatus(NodeStatus.ERROR);
     throw new NonRetriableError(
-      'Anthropic Node: Anthropic API key is not configured',
+      'Anthropic Node: No credential selected. Add an Anthropic credential to this node.',
     );
   }
+
+  const credRepo = getApp().get(CredentialsRepository);
+  const credential = await credRepo.findByIdDecrypted(credentialId, userId);
+  const credentialValue = credential.value;
 
   const anthropic = createAnthropic({
     apiKey: credentialValue,
