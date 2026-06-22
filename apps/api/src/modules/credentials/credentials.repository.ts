@@ -21,7 +21,12 @@ export class CredentialsRepository {
   async create(userId: string, dto: CreateCredentialDto) {
     const result = await this.db
       .insert(credential)
-      .values({ userId, name: dto.name, value: encrypt(dto.value), type: dto.type })
+      .values({
+        userId,
+        name: dto.name!,
+        value: encrypt(dto.value!),
+        type: dto.type!,
+      })
       .returning()
       .then((res) => res[0]);
     return { ...result, value: MASKED_VALUE };
@@ -29,7 +34,11 @@ export class CredentialsRepository {
 
   async findMany(
     userId: string,
-    { page, pageSize, search }: { page: number; pageSize: number; search?: string },
+    {
+      page,
+      pageSize,
+      search,
+    }: { page: number; pageSize: number; search?: string },
   ) {
     const filters = and(
       eq(credential.userId, userId),

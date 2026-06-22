@@ -16,12 +16,18 @@ export const fetchCredentials = async ({
   return response.data;
 };
 
-export const createCredential = async (dto: CreateCredentialDto): Promise<Credential> => {
+export const createCredential = async (
+  dto: CreateCredentialDto,
+): Promise<Credential> => {
   const response = await api.post(API_ENDPOINTS.CREDENTIALS.create, dto);
   return response.data;
 };
 
-export const removeCredential = async ({ id }: { id: string }): Promise<Credential[]> => {
+export const removeCredential = async ({
+  id,
+}: {
+  id: string;
+}): Promise<Credential[]> => {
   const response = await api.delete(API_ENDPOINTS.CREDENTIALS.remove(id));
   return response.data;
 };

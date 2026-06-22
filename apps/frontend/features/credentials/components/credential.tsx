@@ -41,7 +41,10 @@ const CREDENTIAL_TYPES: { value: CredentialType; label: string }[] = [
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  type: z.enum(["OPENAI", "ANTHROPIC", "GEMINI"] as [CredentialType, ...CredentialType[]]),
+  type: z.enum(["OPENAI", "ANTHROPIC", "GEMINI"] as [
+    CredentialType,
+    ...CredentialType[],
+  ]),
   value: z.string().min(1, "API key is required"),
 });
 
@@ -102,7 +105,10 @@ export const CredentialForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Provider</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select provider" />
@@ -135,7 +141,9 @@ export const CredentialForm = () => {
               />
               <div className="flex gap-4">
                 <Button type="submit" disabled={createCredential.isPending}>
-                  {createCredential.isPending ? "Creating..." : "Create credential"}
+                  {createCredential.isPending
+                    ? "Creating..."
+                    : "Create credential"}
                 </Button>
                 <Button type="button" variant="outline" asChild>
                   <Link href="/credentials" prefetch>

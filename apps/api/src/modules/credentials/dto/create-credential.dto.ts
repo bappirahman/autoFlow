@@ -1,15 +1,18 @@
-import { CredentialType, type CredentialTypeEnum } from '@/common/enums/credential-type';
+import {
+  CredentialType,
+  type CredentialTypeEnum,
+} from '@/common/enums/credential-type';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCredentialDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @IsString()
   @IsNotEmpty()
-  value: string;
+  value?: string;
 
   @IsEnum(CredentialType)
-  type: CredentialTypeEnum;
+  type?: CredentialTypeEnum;
 }

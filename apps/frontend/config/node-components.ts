@@ -8,6 +8,7 @@ import { ManualTriggerNode } from "@/features/trigger/components/manual-trigger/
 import { StripeTriggerNode } from "@/features/trigger/components/stripe-trigger/node";
 import { NodeType } from "@autoflow/shared";
 import type { NodeTypes } from "@xyflow/react";
+import { DiscordNode } from "@/features/executions/components/discord/node";
 
 export const nodeComponents = {
   [NodeType.INITIAL]: InitialNode,
@@ -18,6 +19,7 @@ export const nodeComponents = {
   [NodeType.GEMINI]: GeminiNode,
   [NodeType.OPENAI]: OpenAINode,
   [NodeType.ANTHROPIC]: AnthropicNode,
+  [NodeType.DISCORD]: DiscordNode,
 } as const satisfies NodeTypes;
 
 export type RegisterNodeType = keyof typeof nodeComponents;

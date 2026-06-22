@@ -301,55 +301,53 @@ export const EntityItem = ({
 
   const card = (
     <Card
-        className={cn(
-          "p-4 shadow-none hover:shadow cursor-pointer",
-          isRemoving && "opacity-50 cursor-not-allowed",
-          className,
-        )}
-      >
-        <CardContent className="flex flex-row items-center justify-between p-0">
-          <div className="flex items-center gap-3">
-            {image}
-            <div>
-              <CardTitle className="text-base font-medium">{title}</CardTitle>
-              {!!subtitle && (
-                <CardDescription className="text-xs ">
-                  {subtitle}
-                </CardDescription>
-              )}
-            </div>
+      className={cn(
+        "p-4 shadow-none hover:shadow cursor-pointer",
+        isRemoving && "opacity-50 cursor-not-allowed",
+        className,
+      )}
+    >
+      <CardContent className="flex flex-row items-center justify-between p-0">
+        <div className="flex items-center gap-3">
+          {image}
+          <div>
+            <CardTitle className="text-base font-medium">{title}</CardTitle>
+            {!!subtitle && (
+              <CardDescription className="text-xs ">{subtitle}</CardDescription>
+            )}
           </div>
-          {(actions || onRemove) && (
-            <div className="flex gap-x-4 items-center">
-              {actions}
-              {onRemove && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <MoreVerticalIcon className="size-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
+        </div>
+        {(actions || onRemove) && (
+          <div className="flex gap-x-4 items-center">
+            {actions}
+            {onRemove && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={(e) => e.stopPropagation()}
-                    align="end"
                   >
-                    <DropdownMenuItem
-                      onClick={handleRemove}
-                      disabled={isRemoving}
-                    >
-                      <TrashIcon className="size-4" /> Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                    <MoreVerticalIcon className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  onClick={(e) => e.stopPropagation()}
+                  align="end"
+                >
+                  <DropdownMenuItem
+                    onClick={handleRemove}
+                    disabled={isRemoving}
+                  >
+                    <TrashIcon className="size-4" /> Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 
   return href ? (

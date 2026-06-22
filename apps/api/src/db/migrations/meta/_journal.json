@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1777570190101,
-      "tag": "20260430172950_melodic_wong",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1781541242827,
-      "tag": "20260615163402_eminent_wallow",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1781590177160,
-      "tag": "20260616060937_chubby_polaris",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1781731500734,
-      "tag": "20260617212500_goofy_crusher_hogan",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1781818800000,
-      "tag": "20260618000000_add_openai_node_type",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1781733548100,
-      "tag": "20260617215908_tired_arachne",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1781818800001,
-      "tag": "20260618000001_add_anthropic_node_type",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1781734540082,
-      "tag": "20260617221540_glorious_wild_pack",
+      "when": 1782167174258,
+      "tag": "20260622222614_strong_vision",
       "breakpoints": true
     }
   ]

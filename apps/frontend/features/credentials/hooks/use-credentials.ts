@@ -5,7 +5,10 @@ import {
   fetchCredentials,
   removeCredential,
 } from "@/features/credentials/api/credential.api";
-import type { CreateCredentialDto, CredentialsResponse } from "@/features/credentials/types/credential";
+import type {
+  CreateCredentialDto,
+  CredentialsResponse,
+} from "@/features/credentials/types/credential";
 import { credentialKeys } from "@/lib/query-keys/credentials";
 import { useCredentialsParams } from "./use-credentials-params";
 import {

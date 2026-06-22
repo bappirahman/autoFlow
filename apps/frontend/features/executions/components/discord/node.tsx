@@ -1,29 +1,27 @@
 "use client";
 
-import { AnthropicIcon } from "@/components/icons/anthropic-icon";
+import { DiscordIcon } from "@/components/icons/discord-icon";
 import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
 import { BaseExecutionNode } from "../base-execution-node";
-import { ANTHROPIC_MODELS, type AnthropicModel } from "@autoflow/shared";
-import { AnthropicDialog, AnthropicFormValues } from "./dialog";
-import { useAnthropicStatusToken } from "@/features/executions/hooks/use-anthropic-status-token";
+// import { GEMINI_MODELS, type GeminiModel } from "@autoflow/shared";
+import { useDiscordStatusToken } from "@/features/executions/hooks/use-discord-status-token";
+import { DiscordDialog, DiscordFormValues } from "./dialog";
 
-type AnthropicNodeData = {
+type DiscordNodeData = {
   variableName?: string;
-  model?: AnthropicModel;
-  systemPrompt?: string;
-  userPrompt?: string;
+  webhookUrl?: string;
+  content?: string;
+  username?: string;
 };
 
-type AnthropicNodeType = Node<AnthropicNodeData> & {
-  credentialId?: string | null;
-};
+type DiscordNodeType = Node<DiscordNodeData> & { credentialId?: string | null };
 
-export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
+export const DiscordNode = memo((props: NodeProps<DiscordNodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { getNode, setNodes } = useReactFlow();
-  const { refreshToken } = useAnthropicStatusToken();
+  const { refreshToken } = useDiscordStatusToken();
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
@@ -33,7 +31,7 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
 
   const handleOpenSettings = () => setDialogOpen(true);
 
-  const handleSubmit = (values: AnthropicFormValues) => {
+  const handleSubmit = (values: DiscordFormValues) => {
     const { credentialId, ...nodeData } = values;
     setNodes((nodes) =>
       nodes.map((node) => {
@@ -53,14 +51,14 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
   };
 
   const nodeData = props.data;
-  const currentNode = getNode(props.id) as AnthropicNodeType | undefined;
-  const description = nodeData.userPrompt
-    ? `${nodeData.model || ANTHROPIC_MODELS[0]}: ${nodeData.userPrompt.slice(0, 50)}...`
-    : "Not configured";
+  const currentNode = getNode(props.id) as DiscordNodeType | undefined;
+  const description = nodeData?.content
+    ? `Send "${nodeData.content.slice(0, 50)}..." to Discord`
+    : "No content configured";
 
   return (
     <>
-      <AnthropicDialog
+      <DiscordDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
@@ -71,8 +69,8 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
       />
       <BaseExecutionNode
         {...props}
-        icon={AnthropicIcon}
-        name="Anthropic Execution"
+        icon={DiscordIcon}
+        name="Discord Execution"
         description={description}
         status={nodeStatus}
         onSettings={handleOpenSettings}
@@ -82,4 +80,4 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
   );
 });
 
-AnthropicNode.displayName = "AnthropicNode";
+DiscordNode.displayName = "DiscordNode";

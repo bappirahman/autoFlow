@@ -143,7 +143,11 @@ export const GeminiDialog = ({
                   </Select>
                   <FormDescription>
                     Select a Gemini credential or{" "}
-                    <Link href="/credentials/new" className="underline" target="_blank">
+                    <Link
+                      href="/credentials/new"
+                      className="underline"
+                      target="_blank"
+                    >
                       add one
                     </Link>
                     .

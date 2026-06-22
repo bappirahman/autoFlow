@@ -44,7 +44,9 @@ const formSchema = z.object({
     .string()
     .min(1, "Endpoint is required")
     .refine(
-      (val) => val.startsWith("{{") || z.string().url().safeParse(val).success,
+      (val) =>
+        (val.startsWith("{{") && val.endsWith("}}")) ||
+        z.url().safeParse(val).success,
       "Please enter a valid URL or a template expression like {{variable.field}}",
     ),
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),

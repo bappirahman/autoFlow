@@ -4,6 +4,8 @@ export const executionKeys = {
     [...executionKeys.all, "http-request-status-token"] as const,
   geminiStatusToken: () =>
     [...executionKeys.all, "gemini-status-token"] as const,
+  discordStatusToken: () =>
+    [...executionKeys.all, "discord-status-token"] as const,
   openaiStatusToken: () =>
     [...executionKeys.all, "openai-status-token"] as const,
   anthropicStatusToken: () =>

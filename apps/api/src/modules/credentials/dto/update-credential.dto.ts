@@ -1,4 +1,7 @@
-import { CredentialType, type CredentialTypeEnum } from '@/common/enums/credential-type';
+import {
+  CredentialType,
+  type CredentialTypeEnum,
+} from '@/common/enums/credential-type';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateCredentialDto {

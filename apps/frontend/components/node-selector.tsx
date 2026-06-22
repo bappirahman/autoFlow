@@ -20,6 +20,7 @@ import { GlobeIcon, MousePointerIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { DiscordIcon } from "@/components/icons/discord-icon";
 
 export type NodeTypeOption = {
   type: NodeTypeEnum;
@@ -73,6 +74,12 @@ const executionNodes: NodeTypeOption[] = [
     label: "Anthropic",
     description: "Use Anthropic Claude models for AI-powered execution.",
     icon: AnthropicIcon,
+  },
+  {
+    type: NodeType.DISCORD,
+    label: "Discord",
+    description: "Use Discord for communication and execution.",
+    icon: DiscordIcon,
   },
 ];
 
