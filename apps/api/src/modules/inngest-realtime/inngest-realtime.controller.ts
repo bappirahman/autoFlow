@@ -10,6 +10,7 @@ import { geminiChannel } from '@/lib/inngest/channels/gemini';
 import { anthropicChannel } from '@/lib/inngest/channels/anthropic';
 import { openaiChannel } from '@/lib/inngest/channels/openai';
 import { DiscordChannel } from '@/lib/inngest/channels/discord';
+import { SlackChannel } from '@/lib/inngest/channels/slack';
 
 @Controller('realtime')
 export class InngestRealtimeController {
@@ -117,6 +118,20 @@ export class InngestRealtimeController {
 
     return getSubscriptionToken(inngest, {
       channel: DiscordChannel(userId),
+      topics: ['status'],
+    });
+  }
+
+  @Get('slack/status')
+  async getSlackExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: SlackChannel(userId),
       topics: ['status'],
     });
   }

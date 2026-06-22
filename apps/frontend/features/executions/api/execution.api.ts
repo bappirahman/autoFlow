@@ -25,6 +25,14 @@ export const fetchDiscordStatusToken =
     return response.data;
   };
 
+export const fetchSlackStatusToken =
+  async (): Promise<Realtime.Subscribe.Token> => {
+    const response = await api.get(
+      API_ENDPOINTS.EXECUTIONS.slackStatusToken(),
+    );
+    return response.data;
+  };
+
 export const fetchOpenAIStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {
     const response = await api.get(

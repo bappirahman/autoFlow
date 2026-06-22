@@ -21,6 +21,7 @@ import Image from "next/image";
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { DiscordIcon } from "@/components/icons/discord-icon";
+import { SlackIcon } from "@/components/icons/slack-icon";
 
 export type NodeTypeOption = {
   type: NodeTypeEnum;
@@ -80,6 +81,12 @@ const executionNodes: NodeTypeOption[] = [
     label: "Discord",
     description: "Use Discord for communication and execution.",
     icon: DiscordIcon,
+  },
+  {
+    type: NodeType.SLACK,
+    label: "Slack",
+    description: "Send messages to a Slack channel via webhook.",
+    icon: SlackIcon,
   },
 ];
 
