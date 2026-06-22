@@ -9,6 +9,7 @@ import { stripeChannel } from '@/lib/inngest/channels/stripe';
 import { geminiChannel } from '@/lib/inngest/channels/gemini';
 import { anthropicChannel } from '@/lib/inngest/channels/anthropic';
 import { openaiChannel } from '@/lib/inngest/channels/openai';
+import { DiscordChannel } from '@/lib/inngest/channels/discord';
 
 @Controller('realtime')
 export class InngestRealtimeController {
@@ -103,6 +104,19 @@ export class InngestRealtimeController {
 
     return getSubscriptionToken(inngest, {
       channel: openaiChannel(userId),
+      topics: ['status'],
+    });
+  }
+  @Get('discord/status')
+  async getDiscordExecutionStatusToken(
+    @User('id') userId: string | undefined,
+  ): Promise<Realtime.Subscribe.Token> {
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    return getSubscriptionToken(inngest, {
+      channel: DiscordChannel(userId),
       topics: ['status'],
     });
   }

@@ -17,6 +17,13 @@ export const fetchGeminiStatusToken =
     );
     return response.data;
   };
+export const fetchDiscordStatusToken =
+  async (): Promise<Realtime.Subscribe.Token> => {
+    const response = await api.get(
+      API_ENDPOINTS.EXECUTIONS.discordStatusToken(),
+    );
+    return response.data;
+  };
 
 export const fetchOpenAIStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {

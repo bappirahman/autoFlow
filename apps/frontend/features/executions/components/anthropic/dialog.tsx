@@ -143,7 +143,11 @@ export const AnthropicDialog = ({
                   </Select>
                   <FormDescription>
                     Select an Anthropic credential or{" "}
-                    <Link href="/credentials/new" className="underline" target="_blank">
+                    <Link
+                      href="/credentials/new"
+                      className="underline"
+                      target="_blank"
+                    >
                       add one
                     </Link>
                     .

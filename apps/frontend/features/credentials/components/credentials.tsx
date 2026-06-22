@@ -20,7 +20,10 @@ import {
   useRemoveCredential,
 } from "@/features/credentials/hooks/use-credentials";
 import { useCredentialsParams } from "@/features/credentials/hooks/use-credentials-params";
-import type { Credential, CredentialType } from "@/features/credentials/types/credential";
+import type {
+  Credential,
+  CredentialType,
+} from "@/features/credentials/types/credential";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +42,10 @@ const ProviderIcon = ({ type }: { type: CredentialType }) => {
 
 export const CredentialsSearch = () => {
   const [params, setParams] = useCredentialsParams();
-  const { searchValue, onSearchChange } = useEntitySearch({ params, setParams });
+  const { searchValue, onSearchChange } = useEntitySearch({
+    params,
+    setParams,
+  });
   return (
     <EntitySearch
       placeholder="Search credentials..."
@@ -80,7 +86,9 @@ const CredentialItem = ({ credential }: { credential: Credential }) => {
       subtitle={
         <>
           {TYPE_LABELS[credential.type]} &bull; Updated{" "}
-          {formatDistanceToNow(new Date(credential.updatedAt), { addSuffix: true })}
+          {formatDistanceToNow(new Date(credential.updatedAt), {
+            addSuffix: true,
+          })}
         </>
       }
       image={

@@ -7,6 +7,7 @@ import { manualTriggerExecutor } from '@/lib/inngest/executors/manual-trigger';
 import { stripeTriggerExecutor } from '@/lib/inngest/executors/stripe-trigger';
 import { NodeExecutor } from '@/types';
 import { NodeType, NodeTypeEnum } from '@autoflow/shared';
+import { discordExecutor } from '@/lib/inngest/executors/discord';
 
 export const executorRegistry: Record<NodeTypeEnum, NodeExecutor> = {
   [NodeType.INITIAL]: manualTriggerExecutor, // Initial will never be executed, but we need to have an executor for it to avoid errors during topological sort
@@ -17,6 +18,8 @@ export const executorRegistry: Record<NodeTypeEnum, NodeExecutor> = {
   [NodeType.GEMINI]: geminiExecutor,
   [NodeType.OPENAI]: openaiExecutor,
   [NodeType.ANTHROPIC]: anthropicExecutor,
+  [NodeType.DISCORD]: discordExecutor,
+  [NodeType.SLACK]: discordExecutor, // TODO: replace with slackExecutor
 };
 
 export const getExecutor = (type: NodeTypeEnum): NodeExecutor => {

@@ -110,6 +110,9 @@ importers:
       handlebars:
         specifier: ^4.7.9
         version: 4.7.9
+      html-entities:
+        specifier: ^2.6.0
+        version: 2.6.0
       inngest:
         specifier: ^3.54.2
         version: 3.54.2(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(express@5.2.1)(next@16.1.1(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(babel-plugin-macros@3.1.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@5.9.3)(zod@4.4.1)
@@ -6551,6 +6554,9 @@ packages:
 
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
+
+  html-entities@2.6.0:
+    resolution: {integrity: sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==}
 
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
@@ -15532,6 +15538,8 @@ snapshots:
   hermes-parser@0.25.1:
     dependencies:
       hermes-estree: 0.25.1
+
+  html-entities@2.6.0: {}
 
   html-escaper@2.0.2: {}
 

@@ -1,6 +1,6 @@
 {
-  "id": "d124d5c0-0b6e-443b-8c5d-eab11ca2a277",
-  "prevId": "b356dffe-e789-4d45-ab52-db1b3f75c7a2",
+  "id": "cc906964-7842-4278-a796-0a65038bb2a5",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -959,7 +959,12 @@
         "MANUAL_TRIGGER",
         "HTTP_REQUEST",
         "GOOGLE_FORM_TRIGGER",
-        "STRIPE_TRIGGER"
+        "STRIPE_TRIGGER",
+        "ANTHROPIC",
+        "GEMINI",
+        "OPENAI",
+        "DISCORD",
+        "SLACK"
       ]
     },
     "public.credential_type": {
@@ -984,7 +989,8 @@
       "name": "webhook_provider",
       "schema": "public",
       "values": [
-        "google_form"
+        "google_form",
+        "stripe"
       ]
     }
   },

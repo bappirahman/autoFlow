@@ -31,4 +31,3 @@ export type CreateCredentialDto = {
   value: string;
   type: CredentialType;
 };
-
