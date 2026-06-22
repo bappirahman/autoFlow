@@ -45,6 +45,7 @@ export const executeWorkflow = inngest.createFunction(
           data: node.data as Record<string, unknown>,
           nodeId: node.id,
           userId,
+          credentialId: node.credentialId,
           context,
           step,
           publish,

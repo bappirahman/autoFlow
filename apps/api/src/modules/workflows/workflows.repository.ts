@@ -138,6 +138,7 @@ export class WorkflowsRepository {
               name: n.type || 'unknown',
               position: n.position,
               data: n.data ?? {},
+              credentialId: n.credentialId ?? null,
             })),
           );
         }
@@ -148,6 +149,7 @@ export class WorkflowsRepository {
             .set({
               position: n.position,
               data: n.data ?? {},
+              credentialId: n.credentialId ?? null,
               updatedAt: new Date(),
             })
             .where(eq(node.id, n.id));

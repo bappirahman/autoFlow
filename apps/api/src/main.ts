@@ -23,8 +23,10 @@ async function bootstrap() {
     origin: process.env.CORS_URL || 'http://localhost:3001',
     credentials: true,
   });
-  app.use('/api/inngest', express.json({ type: '*/*' }));
   app.use('/api/auth/webhooks/polar', express.raw({ type: '*/*' }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use('/api/inngest', express.json({ type: '*/*' }));
   app.use('/api/webhooks', express.json());
   app.use('/api/inngest', serve({ client: inngest, functions }));
   console.log(`CORS enabled for: ${process.env.CORS_URL}`);

@@ -29,4 +29,8 @@ export class NodeDto {
 
   @IsOptional()
   data?: Record<string, unknown>;
+
+  @IsOptional()
+  @IsString()
+  credentialId?: string | null;
 }

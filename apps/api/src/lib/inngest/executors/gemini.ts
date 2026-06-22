@@ -1,4 +1,6 @@
+import { getApp } from '@/app-ref';
 import { geminiChannel } from '@/lib/inngest/channels/gemini';
+import { CredentialsRepository } from '@/modules/credentials/credentials.repository';
 import type { NodeExecutor } from '@/types';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { GEMINI_MODELS, NodeStatus, type GeminiModel } from '@autoflow/shared';
@@ -22,6 +24,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({
   data,
   nodeId,
   userId,
+  credentialId,
   context,
   step,
   publish,
@@ -53,16 +56,16 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({
 
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  // TODO: Fetch credential that user selected
-
-  const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-
-  if (!credentialValue) {
+  if (!credentialId) {
     await publishStatus(NodeStatus.ERROR);
     throw new NonRetriableError(
-      'Gemini Node: Google Generative AI API key is not configured',
+      'Gemini Node: No credential selected. Add a Gemini credential to this node.',
     );
   }
+
+  const credRepo = getApp().get(CredentialsRepository);
+  const credential = await credRepo.findByIdDecrypted(credentialId, userId);
+  const credentialValue = credential.value;
   const google = createGoogleGenerativeAI({
     apiKey: credentialValue,
   });
