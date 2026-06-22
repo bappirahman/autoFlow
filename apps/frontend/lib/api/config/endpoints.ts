@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
     googleFormTriggerStatusToken: () => "/realtime/google-form-trigger/status",
     stripeTriggerStatusToken: () => "/realtime/stripe-trigger/status",
     discordStatusToken: () => "/realtime/discord/status",
+    slackStatusToken: () => "/realtime/slack/status",
   },
   WEBHOOKS: {
     getOrCreate: (nodeId: string, provider: string) =>

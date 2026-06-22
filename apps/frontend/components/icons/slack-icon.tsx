@@ -1,8 +1,7 @@
 export function SlackIcon({ className }: { className?: string }) {
   return (
     <svg
-      width="127"
-      height="127"
+      viewBox="0 0 127 127"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
