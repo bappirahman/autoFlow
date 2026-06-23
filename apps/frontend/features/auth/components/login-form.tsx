@@ -40,6 +40,39 @@ export function LoginForm() {
     defaultValues: { email: "", password: "" },
   });
 
+  const singInWithGithub = async () => {
+    await authClient.signIn.social(
+      {
+        provider: "github",
+        callbackURL: `${window.location.origin}/`,
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      },
+    );
+  };
+  const singInWithGoogle = async () => {
+    await authClient.signIn.social(
+      {
+        provider: "google",
+        callbackURL: `${window.location.origin}/`,
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      },
+    );
+  };
+
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     await authClient.signIn.email(
       {
@@ -123,6 +156,7 @@ export function LoginForm() {
                     disabled={isPending}
                     className="w-full"
                     type="button"
+                    onClick={singInWithGoogle}
                   >
                     <GoogleIcon />
                     Continue with Google
@@ -132,6 +166,7 @@ export function LoginForm() {
                     disabled={isPending}
                     className="w-full"
                     type="button"
+                    onClick={singInWithGithub}
                   >
                     <GithubIcon />
                     Continue with Github

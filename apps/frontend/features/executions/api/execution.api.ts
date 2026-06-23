@@ -27,9 +27,7 @@ export const fetchDiscordStatusToken =
 
 export const fetchSlackStatusToken =
   async (): Promise<Realtime.Subscribe.Token> => {
-    const response = await api.get(
-      API_ENDPOINTS.EXECUTIONS.slackStatusToken(),
-    );
+    const response = await api.get(API_ENDPOINTS.EXECUTIONS.slackStatusToken());
     return response.data;
   };
 

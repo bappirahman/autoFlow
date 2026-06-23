@@ -13,7 +13,7 @@ export const executeWorkflow = inngest.createFunction(
     id: 'execute-workflow',
     name: 'Execute Workflow',
     description: 'A function to execute a workflow',
-    retries: 0, // TODO: change retry for production
+    retries: process.env.NODE_ENV === 'production' ? 3 : 0,
   },
   { event: InngestEvents.EXECUTE_WORKFLOW },
   async ({ event, step, publish }) => {

@@ -140,7 +140,9 @@ export const SlackDialog = ({
                     />
                   </FormControl>
                   <div className="rounded-lg bg-muted p-4 space-y-2">
-                    <h4 className="font-medium text-sm">How to get your Slack webhook URL</h4>
+                    <h4 className="font-medium text-sm">
+                      How to get your Slack webhook URL
+                    </h4>
                     <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
                       <li>
                         In Slack, go to{" "}
