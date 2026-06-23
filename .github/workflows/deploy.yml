@@ -1,0 +1,79 @@
+name: Deploy autoFlow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # ─── Build Check ────────────────────────────────────────────────────────────
+  build-check:
+    name: Build Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared library
+        run: pnpm build:packages
+
+      - name: Build API
+        run: pnpm --filter ./apps/api run build
+
+      - name: Build frontend
+        run: pnpm --filter ./apps/frontend run build
+
+  # ─── Deploy ─────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to DigitalOcean
+    needs: build-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: root
+          password: ${{ secrets.DROPLET_PASSWORD }}
+          timeout: 300s
+          script: |
+            set -e
+
+            echo "━━━ Pulling latest code ━━━"
+            cd /var/www/autoFlow
+            git pull origin main
+
+            echo "━━━ Installing dependencies ━━━"
+            pnpm install --frozen-lockfile
+
+            echo "━━━ Building shared library ━━━"
+            pnpm build:packages
+
+            echo "━━━ Building API ━━━"
+            pnpm --filter ./apps/api run build
+
+            echo "━━━ Building frontend ━━━"
+            pnpm --filter ./apps/frontend run build
+
+            echo "━━━ Running migrations ━━━"
+            pnpm --filter ./apps/api run db:migrate
+
+            echo "━━━ Reloading PM2 ━━━"
+            pm2 reload /var/www/ecosystem.config.js --update-env
+
+            echo "━━━ Done ━━━"
+            pm2 status
