@@ -8,8 +8,7 @@ export const executionKeys = {
     [...executionKeys.all, "gemini-status-token"] as const,
   discordStatusToken: () =>
     [...executionKeys.all, "discord-status-token"] as const,
-  slackStatusToken: () =>
-    [...executionKeys.all, "slack-status-token"] as const,
+  slackStatusToken: () => [...executionKeys.all, "slack-status-token"] as const,
   openaiStatusToken: () =>
     [...executionKeys.all, "openai-status-token"] as const,
   anthropicStatusToken: () =>

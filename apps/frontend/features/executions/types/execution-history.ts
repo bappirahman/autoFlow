@@ -1,4 +1,4 @@
-export type ExecutionStatus = 'RUNNING' | 'SUCCESS' | 'FAILED';
+export type ExecutionStatus = "RUNNING" | "SUCCESS" | "FAILED";
 
 export type ExecutionHistoryItem = {
   id: string;

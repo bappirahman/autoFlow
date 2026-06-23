@@ -46,7 +46,6 @@ export const BaseExecutionNode = memo<BaseExecutionNodeProps>(
         onDelete={handleDelete}
         onSettings={onSettings}
       >
-        {/* TODO: Wrap within NodeStatus */}
         <NodeStatusIndicator status={status} variant="border">
           <BaseNode onDoubleClick={onDoubleClick} status={status}>
             <BaseNodeContent>

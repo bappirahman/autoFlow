@@ -7,10 +7,7 @@ import {
 import { useExecutionHistoryParams } from "@/features/executions/hooks/use-execution-history-params";
 import { type ExecutionHistoryResponse } from "@/features/executions/types/execution-history";
 import { executionKeys } from "@/lib/query-keys/executions";
-import {
-  useQuery,
-  type UseQueryOptions,
-} from "@tanstack/react-query";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 
 export const useExecutionHistory = (
   options: Omit<

@@ -5,7 +5,11 @@ import { formatDistanceToNow, format } from "date-fns";
 import { LoadingView } from "@/components/entity-component";
 import { StatusBadge } from "@/features/executions/components/execution-history";
 import { useExecutionHistoryItem } from "@/features/executions/hooks/use-execution-history";
-import { AlertTriangleIcon, ArrowLeftIcon, ChevronDownIcon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  ArrowLeftIcon,
+  ChevronDownIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

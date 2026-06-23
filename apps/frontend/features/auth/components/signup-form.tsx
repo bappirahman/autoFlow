@@ -68,6 +68,24 @@ export default function SignupForm() {
     );
   };
 
+  const signInWithGithub = async () => {
+    await authClient.signIn.social(
+      { provider: "github", callbackURL: `${window.location.origin}/` },
+      {
+        onError: (ctx) => { toast.error(ctx.error.message); },
+      },
+    );
+  };
+
+  const signInWithGoogle = async () => {
+    await authClient.signIn.social(
+      { provider: "google", callbackURL: `${window.location.origin}/` },
+      {
+        onError: (ctx) => { toast.error(ctx.error.message); },
+      },
+    );
+  };
+
   const isPending = form.formState.isSubmitting;
   return (
     <section className="flex flex-col gap-6 w-full max-w-md px-4">
@@ -158,6 +176,7 @@ export default function SignupForm() {
                     disabled={isPending}
                     className="w-full"
                     type="button"
+                    onClick={signInWithGoogle}
                   >
                     <GoogleIcon />
                     Continue with Google
@@ -167,6 +186,7 @@ export default function SignupForm() {
                     disabled={isPending}
                     className="w-full"
                     type="button"
+                    onClick={signInWithGithub}
                   >
                     <GithubIcon />
                     Continue with Github

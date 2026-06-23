@@ -11,11 +11,12 @@ import {
   EntityPagination,
   LoadingView,
 } from "@/components/entity-component";
-import {
-  useExecutionHistory,
-} from "@/features/executions/hooks/use-execution-history";
+import { useExecutionHistory } from "@/features/executions/hooks/use-execution-history";
 import { useExecutionHistoryParams } from "@/features/executions/hooks/use-execution-history-params";
-import { type ExecutionHistoryItem, type ExecutionStatus } from "@/features/executions/types/execution-history";
+import {
+  type ExecutionHistoryItem,
+  type ExecutionStatus,
+} from "@/features/executions/types/execution-history";
 import { AlertTriangleIcon, HistoryIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
