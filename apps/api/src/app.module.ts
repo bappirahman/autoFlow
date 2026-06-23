@@ -11,6 +11,7 @@ import { InngestRealtimeModule } from './modules/inngest-realtime/inngest-realti
 import { WorkflowsModule } from './modules/workflows/workflows.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { CredentialsModule } from './modules/credentials/credentials.module';
+import { ExecutionsModule } from './modules/executions/executions.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CredentialsModule } from './modules/credentials/credentials.module';
     WorkflowsModule,
     WebhooksModule,
     CredentialsModule,
+    ExecutionsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -8,6 +8,10 @@ export const API_ENDPOINTS = {
     remove: (id: string) => `/workflows/${id}`,
     execute: (id: string) => `/workflows/${id}/execute`,
   },
+  EXECUTION_HISTORY: {
+    getAll: `/executions`,
+    getById: (id: string) => `/executions/${id}`,
+  },
   EXECUTIONS: {
     httpRequestStatusToken: () => "/realtime/http-request/status",
     geminiStatusToken: () => "/realtime/gemini/status",
