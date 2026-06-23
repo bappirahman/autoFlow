@@ -1,5 +1,7 @@
 export const executionKeys = {
   all: ["executions"] as const,
+  list: (filters: unknown) => [...executionKeys.all, filters] as const,
+  details: (id: string) => [...executionKeys.all, "details", id] as const,
   httpRequestStatusToken: () =>
     [...executionKeys.all, "http-request-status-token"] as const,
   geminiStatusToken: () =>
