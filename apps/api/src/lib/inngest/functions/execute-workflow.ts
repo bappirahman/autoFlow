@@ -2,7 +2,7 @@ import { getApp } from '@/app-ref';
 import { getExecutor } from '@/lib/inngest/executor-registry';
 import { inngest } from '@/lib/inngest/client';
 import { InngestEvents } from '@/lib/inngest/events';
-import { topologicalSort } from '@/lib/inngest/utils';
+import { topologicalSort, getReachableNodes } from '@/lib/inngest/utils';
 import { WorkflowsRepository } from '@/modules/workflows/workflows.repository';
 import type { NodeTypeEnum } from '@autoflow/shared';
 import { ExecutionStatus } from '@/common/enums/execution-status';
@@ -18,10 +18,11 @@ export const executeWorkflow = inngest.createFunction(
   { event: InngestEvents.EXECUTE_WORKFLOW },
   async ({ event, step, publish }) => {
     const eventId = event.id as string;
-    const { workflowId, userId, initialData } = event.data as {
+    const { workflowId, userId, initialData, triggerNodeId } = event.data as {
       workflowId?: string;
       userId?: string;
       initialData?: Record<string, unknown>;
+      triggerNodeId?: string;
     };
     if (!workflowId || !userId) {
       throw new NonRetriableError('workflowId and userId are required');
@@ -32,7 +33,24 @@ export const executeWorkflow = inngest.createFunction(
     try {
       const sortedNodes = await step.run('prepare-workflow', async () => {
         const wf = await repo.findById(workflowId, userId);
-        return topologicalSort(wf.nodes, wf.connections);
+
+        let nodesToRun = wf.nodes;
+        let connectionsToUse = wf.connections;
+
+        if (triggerNodeId) {
+          nodesToRun = getReachableNodes(
+            triggerNodeId,
+            wf.nodes,
+            wf.connections,
+          );
+          const reachableIds = new Set(nodesToRun.map((n) => n.id));
+          connectionsToUse = wf.connections.filter(
+            (c) =>
+              reachableIds.has(c.fromNodeId) && reachableIds.has(c.toNodeId),
+          );
+        }
+
+        return topologicalSort(nodesToRun, connectionsToUse);
       });
 
       // Initialize the context with any initial data from trigger

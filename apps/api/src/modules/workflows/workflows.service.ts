@@ -32,10 +32,14 @@ export class WorkflowsService {
     return this.workflowsRepository.update(id, userId, payload);
   }
 
-  async executeWorkflow(workflowId: string, userId: string) {
+  async executeWorkflow(
+    workflowId: string,
+    userId: string,
+    triggerNodeId?: string,
+  ) {
     const { ids } = await inngest.send({
       name: InngestEvents.EXECUTE_WORKFLOW,
-      data: { workflowId, userId },
+      data: { workflowId, userId, triggerNodeId },
     });
 
     return await this.workflowsRepository.createExecution(workflowId, ids[0]);

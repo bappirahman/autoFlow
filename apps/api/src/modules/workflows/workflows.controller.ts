@@ -37,8 +37,13 @@ export class WorkflowsController {
   async executeWorkflow(
     @Param('id') workflowId: string,
     @User('id') userId: string,
+    @Body() body?: { triggerNodeId?: string },
   ) {
-    return this.workflowService.executeWorkflow(workflowId, userId);
+    return this.workflowService.executeWorkflow(
+      workflowId,
+      userId,
+      body?.triggerNodeId,
+    );
   }
   @Delete(':id')
   async removeWorkflow(@Param('id') id: string, @User('id') userId: string) {

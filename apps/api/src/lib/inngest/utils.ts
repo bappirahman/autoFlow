@@ -31,6 +31,25 @@ export const topologicalSort = (
   return sortedNodeIds.map((id) => nodeMap.get(id)!).filter(Boolean);
 };
 
+export function getReachableNodes(
+  startNodeId: string,
+  nodes: Node[],
+  connections: Connection[],
+): Node[] {
+  const visited = new Set<string>([startNodeId]);
+  const queue = [startNodeId];
+  while (queue.length) {
+    const current = queue.shift()!;
+    for (const conn of connections) {
+      if (conn.fromNodeId === current && !visited.has(conn.toNodeId)) {
+        visited.add(conn.toNodeId);
+        queue.push(conn.toNodeId);
+      }
+    }
+  }
+  return nodes.filter((n) => visited.has(n.id));
+}
+
 export const getChannelKey = (userId: string, channelName: string) =>
   `${channelName}:${userId}`;
 

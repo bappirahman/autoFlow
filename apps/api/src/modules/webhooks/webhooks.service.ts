@@ -48,9 +48,19 @@ export class WebhooksService {
 
     switch (provider) {
       case WebhookProvider.GOOGLE_FORM:
-        return this.handleGoogleForm(webhook.workflowId, webhook.userId, body);
+        return this.handleGoogleForm(
+          webhook.workflowId,
+          webhook.userId,
+          webhook.nodeId,
+          body,
+        );
       case WebhookProvider.STRIPE:
-        return this.handleStripe(webhook.workflowId, webhook.userId, body);
+        return this.handleStripe(
+          webhook.workflowId,
+          webhook.userId,
+          webhook.nodeId,
+          body,
+        );
       default:
         throw new BadRequestException(
           `Unsupported webhook provider: ${provider as string}`,
@@ -61,6 +71,7 @@ export class WebhooksService {
   private async handleStripe(
     workflowId: string,
     userId: string,
+    triggerNodeId: string,
     body: Record<string, unknown>,
   ) {
     const stripeData = {
@@ -89,6 +100,7 @@ export class WebhooksService {
         workflowId,
         userId,
         initialData: { stripe: stripeData },
+        triggerNodeId,
       },
     });
 
@@ -98,6 +110,7 @@ export class WebhooksService {
   private async handleGoogleForm(
     workflowId: string,
     userId: string,
+    triggerNodeId: string,
     body: Record<string, unknown>,
   ) {
     const formData = {
@@ -116,6 +129,7 @@ export class WebhooksService {
         workflowId,
         userId,
         initialData: { googleForm: formData },
+        triggerNodeId,
       },
     });
 

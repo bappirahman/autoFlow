@@ -58,7 +58,15 @@ export const removeWorkflow = async ({ id }: { id: string }) => {
   return response.data;
 };
 
-export const executeWorkflow = async ({ id }: { id: string }) => {
-  const response = await api.post(API_ENDPOINTS.WORKFLOWS.execute(id));
+export const executeWorkflow = async ({
+  id,
+  triggerNodeId,
+}: {
+  id: string;
+  triggerNodeId?: string;
+}) => {
+  const response = await api.post(API_ENDPOINTS.WORKFLOWS.execute(id), {
+    triggerNodeId,
+  });
   return response.data;
 };

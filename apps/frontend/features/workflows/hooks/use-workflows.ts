@@ -141,14 +141,20 @@ export const useExecuteWorkflow = (
   options?: UseMutationOptions<
     Awaited<ReturnType<typeof executeWorkflow>>,
     Error,
-    { id: string }
+    { id: string; triggerNodeId?: string }
   >,
 ) => {
   const { onSuccess, onError, ...restOptions } = options ?? {};
 
   return useMutation({
     ...restOptions,
-    mutationFn: ({ id }: { id: string }) => executeWorkflow({ id }),
+    mutationFn: ({
+      id,
+      triggerNodeId,
+    }: {
+      id: string;
+      triggerNodeId?: string;
+    }) => executeWorkflow({ id, triggerNodeId }),
     onSuccess: (data, variables, onMutateResult, context) => {
       console.log(data);
       toast.success(`Workflow executed successfully`);

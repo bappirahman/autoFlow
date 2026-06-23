@@ -72,7 +72,9 @@ export default function SignupForm() {
     await authClient.signIn.social(
       { provider: "github", callbackURL: `${window.location.origin}/` },
       {
-        onError: (ctx) => { toast.error(ctx.error.message); },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
       },
     );
   };
@@ -81,7 +83,9 @@ export default function SignupForm() {
     await authClient.signIn.social(
       { provider: "google", callbackURL: `${window.location.origin}/` },
       {
-        onError: (ctx) => { toast.error(ctx.error.message); },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
       },
     );
   };
