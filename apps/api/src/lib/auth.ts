@@ -14,7 +14,7 @@ export const auth = betterAuth({
     provider: 'pg',
     schema: authSchema,
   }),
-  baseUrl: process.env.API_URL || 'http://localhost:3000',
+  baseUrl: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   basePath: '/api/auth',
   session: {
     cookieCache: {
