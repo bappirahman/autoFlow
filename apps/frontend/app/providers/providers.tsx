@@ -8,7 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient: QueryClient = getQueryClient();
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="light">
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </ThemeProvider>
   );
