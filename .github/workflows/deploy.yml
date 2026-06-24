@@ -18,6 +18,6 @@ jobs:
           host: ${{ secrets.DROPLET_HOST }}
           username: ${{ secrets.DROPLET_USERNAME }}
           password: ${{ secrets.DROPLET_PASSWORD }}
-          timeout: 600s
+          timeout: 1800s
           script: |
             /var/www/deploy.sh
