@@ -21,10 +21,11 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 60 * 60 * 24, // 1 day in seconds
     },
-    cookieOptions: {
+  },
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true,
       domain: '.boringdocs.dev',
-      sameSite: 'none' as const,
-      secure: true,
     },
   },
   trustedOrigins: [process.env.CORS_URL!],
